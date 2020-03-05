@@ -210,3 +210,11 @@ html {
   .orange-btn{
     background: rgba(87,198,255,.5);
   }
+
+  #login{
+    font-family: 'Open Sans Condensed', sans-serif;
+    text-align: center;
+    padding: 4px 8px;
+    background: rgba(107,255,3,0.3);
+  }
+   

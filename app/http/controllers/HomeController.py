@@ -1,5 +1,5 @@
 from app import app
-from app.framework.controller import Controller, route
+from app.framework.controller import *
 
 class HomeController(Controller):
 
@@ -8,9 +8,9 @@ class HomeController(Controller):
 
     @route('/test', methods=["GET"])
     def test(self):
-        return self.view('test')
+        return view('test')
 
     @route('/', methods=["GET"])
     def home(self):
-        return self.view('index')
+        return view('index')
 

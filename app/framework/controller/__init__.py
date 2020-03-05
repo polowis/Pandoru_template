@@ -1,6 +1,7 @@
 import inspect
 import re
 from flask import render_template, flash, redirect
+from app.framework.requests import requests
 
 def route(rule, **options):
     """Route function"""
@@ -88,7 +89,18 @@ def getMethodMembers(base_class, cls):
     all_members = inspect.getmembers(cls, predicate=predicate)
     return[member for member in all_members]
 
-    
+
+def view(template_name, **option):
+    """return view"""
+    return render_template(template_name+'.html', **option)
+
+def flash_message(message, category="message"):
+    """flash message"""
+    return flash(message, category)
+
+def redirect_to(location, code=302, response=None):
+    """redirect to location"""
+    return redirect(location, code, response)
 
 
 
