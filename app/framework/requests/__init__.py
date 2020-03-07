@@ -6,10 +6,11 @@ def requests(name):
     return request.form.get(name)
 
 
-class Request:
+class FormRequest:
     TYPE = ['integer', 'alpha', 'alphanumeric', 'email']
 
-    def register(cls, validation: list):
+    def register(cls, validation: dict):
+        """Register FormRequest"""
         for index, value in validation:
             try:
                 result = requests(index)
@@ -18,10 +19,12 @@ class Request:
                 print(f'Not found {index}')
         
     def validate(self, index: str, value: str):
-        for i in Request.TYPE:
-            if value == Request.TYPE:
+        """Validate request"""
+        for i in FormRequest.TYPE:
+            if value == FormRequest.TYPE:
                 return self.validate_with(index, value)
-    
+        return True
+
     def validate_with(self, index: str, value: str):
         if value == 'integer':
             return Validator.validate_integer(value)

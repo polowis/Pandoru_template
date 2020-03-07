@@ -1,5 +1,6 @@
 from app import app
 from app.framework.controller import *
+from app.framework.requests.request import Request
 
 
 class UserController(Controller):
@@ -16,5 +17,5 @@ class UserController(Controller):
 
     @route('/login', methods=['POST'])
     def login_action(self):
-        user = {'username': requests('username')}
+        user = {'username': Request.input('username')}
         return view('dashboard', user=user)
