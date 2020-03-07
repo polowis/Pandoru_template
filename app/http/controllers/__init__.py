@@ -2,7 +2,6 @@
 """
 Reposible for handling controller files. DO NOT MODIFY!
 """
-
 import os
 controller_files = os.listdir('./app/http/controllers')
 controllers = {}

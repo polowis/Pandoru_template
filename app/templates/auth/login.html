@@ -16,7 +16,7 @@
     </span>
   
     <form method="POST"action="/login" accept-charset="UTF-8">
-
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       <input type="email" name="username" placeholder="E-mail">
       <input type="password" name="pass" placeholder="Password">
       <button id="login">Login</button>
