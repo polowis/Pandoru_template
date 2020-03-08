@@ -1,6 +1,11 @@
 <html>
     <head>
         <title>Login Here!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width" />
+        <meta name="description" content="Interactive web page built with Pandoru framework">
+        <meta name="author" content="Polowis">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/auth/login.css')}}">
         
     </head>

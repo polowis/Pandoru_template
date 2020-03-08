@@ -41,7 +41,9 @@ class Request:
         """Get cookie value through request"""
         return req.cookies.get(name)
     
-    
+    def get(self, name):
+        return req.values.get(name)
+        
     def only(self, name: list):
         """Get only value from request"""
         if isinstance(name, list):
