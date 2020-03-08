@@ -1,7 +1,7 @@
 import inspect
 import re
 from flask import render_template, flash, redirect
-from app.framework.requests import requests
+from app.framework.requests import request
 
 def route(rule, **options):
     """Route function"""

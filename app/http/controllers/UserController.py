@@ -1,6 +1,8 @@
 from app import app
 from app.framework.controller import *
-from app.framework.requests.request import Request
+from app.framework.requests import FormRequest
+from app.framework.requests.request import request
+
 
 
 class UserController(Controller):
@@ -17,5 +19,13 @@ class UserController(Controller):
 
     @route('/login', methods=['POST'])
     def login_action(self):
-        user = {'username': Request.input('username')}
-        return view('dashboard', user=user)
+
+        form = FormRequest({
+            'username': 'alphanumeric'
+        })
+
+        if form.is_validated():
+            user = {'username': request.input('username')}
+            return view('dashboard', user=user)
+        else:
+            return redirect('/')
