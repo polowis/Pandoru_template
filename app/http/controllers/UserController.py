@@ -21,11 +21,11 @@ class UserController(Controller):
     def login_action(self):
 
         form = FormRequest({
-            'username': 'alphanumeric'
+            'user_email': 'email'
         })
 
         if form.is_validated():
-            user = {'username': request.input('username')}
+            user = {'username': request.input('user_email')}
             return view('dashboard', user=user)
         else:
-            return redirect('/')
+            return redirect('/login')

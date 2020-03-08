@@ -10,3 +10,5 @@ from app.framework.config import *
 Configurate(app, Config)
 
 from app import http, framework, kernel
+from app.framework.util.template import ViewFunction
+ViewFunction(app)

@@ -19,10 +19,17 @@
     <span class="close-btn">
       <img src="https://cdn4.iconfinder.com/data/icons/miu/22/circle_close_delete_-128.png"></img>
     </span>
-  
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+            <p style="margin-left: 10px; color:red;">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
     <form method="POST"action="/login" accept-charset="UTF-8">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-      <input type="email" name="username" placeholder="E-mail">
+      <input type="text" name="user_email" placeholder="E-mail">
+      <p style="margin-left: 10px; color:red; font-size: 13px;">{{ error('user_email')}}</p>
       <input type="password" name="pass" placeholder="Password">
       <button id="login">Login</button>
       <div id="remember-container">

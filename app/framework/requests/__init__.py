@@ -16,32 +16,45 @@ class FormRequest:
     def __init__(self, validate_list: list):
         self.validate_list = validate_list
         self.validated = []
+        self.custom_error_message = None
+
+    def __message(self, custom_error_message : list):
+        self.custom_error_message = custom_error_message
+    
+    def __getMessage(self, key):
+        for index, value in self.custom_error_message.items():
+            if index == key:
+                return value
 
     def is_validated(self):
         """Check if all rules are validated"""
         for index, value in self.validate_list.items():
             result = req.form.get(index)
+            name_field = index
             if result is not None:
-                self.__validate(result, value)
+                self.__validate(result, value, name_field)
 
-        self.__return_after_validation()
+        return self.__return_after_validation()
 
-    def __validate(self, response: str, types: str) -> bool:
+    def __validate(self, response: str, types: str, name_field: str) -> bool:
         """Validate request"""
         for i in FormRequest.TYPE:
             if types == i:
-                return self.__validate_with(response, types)
+                return self.__validate_with(response, types.lower(), name_field)
         
 
-    def __validate_with(self, response: str, types: str) -> bool:
+    def __validate_with(self, response: str, types: str, name_field: str) -> bool:
         """Check for type and validate"""
         if types == 'integer':
-            return self.validated.append(Validator.validate_integer(response))
+            return self.validated.append(Validator.validate_integer(response, name_field))
         if types == 'alphanumeric':
-            return self.validated.append(Validator.validate_alphanumeric(response))
-    
+            return self.validated.append(Validator.validate_alphanumeric(response, name_field))
+        if types == 'email':
+            return self.validated.append(Validator.validate_email(response, name_field))
+
     def __return_after_validation(self) -> bool:
         """Return after validate"""
+        
         for condition in self.validated:
             if condition == False:
                 return False
