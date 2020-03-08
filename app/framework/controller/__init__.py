@@ -67,6 +67,7 @@ class Controller(object):
             print(cls.decorators)
         
         return view
+
     @staticmethod
     def view(template_name, **option):
         """return view"""
@@ -76,6 +77,7 @@ class Controller(object):
     def flash_message(message, category="message"):
         """flash message"""
         return flash(message, category)
+        
     @staticmethod
     def redirect_to(location, code=302, response=None):
         """redirect to location"""
