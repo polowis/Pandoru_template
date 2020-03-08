@@ -29,7 +29,9 @@
     <form method="POST"action="/login" accept-charset="UTF-8">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       <input type="text" name="user_email" placeholder="E-mail">
-      <p style="margin-left: 10px; color:red; font-size: 13px;">{{ error('user_email')}}</p>
+      {% if error('user_email') %}
+      <p style="margin-left: 10px; color:red; font-size: 13px;">{{ error_message('user_email')}}</p>
+      {% endif %}
       <input type="password" name="pass" placeholder="Password">
       <button id="login">Login</button>
       <div id="remember-container">

@@ -3,9 +3,16 @@ from flask import get_flashed_messages
 class ViewFunction:
     def __init__(self, app):
         self.app = app
-        self.app.jinja_env.globals.update(error=self.__error)
+        self.app.jinja_env.globals.update(error_message=self.__error_message, error=self.__error)
+        
 
     def __error(self, name_field):
+        """Check if error exists"""
+        messages = get_flashed_messages(with_categories=True)
+        if len(messages) >= 1:
+            return True
+
+    def __error_message(self, name_field):
         """Display error message"""
         messages = get_flashed_messages(with_categories=True)
         if len(messages) >= 1:
