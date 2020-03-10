@@ -12,14 +12,20 @@ def return_error(key, custom_response=None):
     if custom_response = None:
         return rule_errors.get(key)
 
+def in_array(key: str, array: list):
+    """Return True if given key exists in given array"""
+    if key in array:
+        return True
+    else:
+        return False
 
-def match(pattern: str, string: str, error: str, category: str) -> bool:
+def match(pattern: str, string: str, error_response: str, category: str) -> bool:
     """Try to apply the pattern at the start of the string, 
     Return boolean."""
     if re.match(pattern, string):
         return True
     else:
-        flash(error, category)
+        flash(error_response, category)
         return False
 
 def is_string(value: str):
@@ -59,6 +65,12 @@ class Validator:
             flash(return_error('alpha_dash'))
             return False
         return match('/^[\pL\pM\pN]+$/u', value)
+    
+    @staticmethod
+    def validate_boolean(value, category):
+        """Validate that an attribute is a boolean."""
+        acceptable_values = [True, False, 0, 1, '0', '1']
+        return in_array(value, acceptable_values)
     
 
 
