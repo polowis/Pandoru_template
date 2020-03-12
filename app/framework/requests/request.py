@@ -2,8 +2,10 @@ from flask import request as req
 
 class Request:
     """Handle request, response"""
-    def input(self, name):
+    def input(self, name=None):
         """Get input form data"""
+        if name is None:
+            return req.form
         if isinstance(name, str):
             return req.form.get(name)
         raise ValueError("Argument must be a string")
@@ -37,9 +39,13 @@ class Request:
         return False
 
    
-    def cookie(self, name):
+    def cookie(self, name=None):
         """Get cookie value through request"""
-        return req.cookies.get(name)
+        if name is None:
+            return req.cookies
+        if isinstance(name, str):
+            return req.cookies.get(name)
+        raise ValueError("Name must be a string")
     
     def get(self, name):
         return req.values.get(name)

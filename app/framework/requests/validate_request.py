@@ -1,16 +1,25 @@
 import re
 from flask import flash
 
-rule_errors = {
+external_error = {
+    'min': 'Input field must be greater than ',
+    'max': 'Input field must be lower than '
+}
+
+
+primary_errors = {
     'alphanumeric': 'Input field must be alpha numeric',
     'email': 'Input field must be a valid email address',
-    'integer': 'Input field must be an integer'
+    'integer': 'Input field must be an integer', 
+    'alphadash': 'Input field must contains only alpha-numeric characters, dashes, and underscores ',
+    'alpha': 'Input field must contains only alphabetic characters',
+    'boolean': 'Input field must be boolean format.'
 }
 
 def return_error(key, custom_response=None):
     """Return error response"""
-    if custom_response = None:
-        return rule_errors.get(key)
+    if custom_response == None:
+        return primary_errors.get(key)
 
 def in_array(key: str, array: list):
     """Return True if given key exists in given array"""
@@ -25,7 +34,7 @@ def match(pattern: str, string: str, error_response: str, category: str) -> bool
     if re.match(pattern, string):
         return True
     else:
-        flash(error_response, category)
+        #flash(error_response, category)
         return False
 
 def is_string(value: str):
@@ -56,7 +65,7 @@ class Validator:
     @staticmethod
     def validate_alpha(value, category):
         """Validate that an attribute contains only alphabetic characters."""
-        return is_string(value) and match('/^[\pL\pM]+$/u', value)
+        return is_string(value) and match('[^\W\d_]+', value, 'Input field must contains only alphabetic characters', category)
 
     @staticmethod
     def validate_alpha_dash(value, category):
@@ -70,7 +79,12 @@ class Validator:
     def validate_boolean(value, category):
         """Validate that an attribute is a boolean."""
         acceptable_values = [True, False, 0, 1, '0', '1']
+        
         return in_array(value, acceptable_values)
+    
+
+    
+
     
 
 
