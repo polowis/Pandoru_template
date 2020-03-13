@@ -5,6 +5,7 @@ class Configurate:
     def __init__(self, app, config):
         self.app = app
         self.config = config
+        self.SQLALCHEMY_DATABASE_URI = 'SQLALCHEMY_DATABASE_URI'
         self.register()
     
     def register(self):
@@ -12,18 +13,78 @@ class Configurate:
         self.register_debug()
         self.register_crsf()
         self.register_secret_key()
+        self.register_database()
+        self.register_sqlalchemy_track_modifications()
     
+
     def register_debug(self):
         """Check for debug properties"""
         if self.config.DEBUG_ENABLED:
             self.app.debug = True
     
+
     def register_crsf(self):
         """Check for csrf properties"""
         if self.config.CSRF_ENABLED:
             csrf.init_app(self.app)
 
+
     def register_secret_key(self):
         """Check for secret key"""
-        self.app.secret_key = self.config.SECRET_KEY
-        
+        if self.has_existing_key('SECRET_KEY'):
+            self.app.secret_key = self.config.SECRET_KEY
+    
+
+    def register_database(self):
+        """Register database"""
+        database_support = ['mysql', 'sqlite', 'postgresql', 'oracle', 'firebird', 'sybase']
+        if self.config.DB_CONNECTION.lower() in database_support:
+            self.connect_to_database_engine()
+
+
+    def register_sqlalchemy_track_modifications(self):
+        """Register sqlalchemy track modification"""
+        if self.has_existing_key('SQLALCHEMY_TRACK_MODIFICATIONS'):
+            self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = self.config.SQLALCHEMY_TRACK_MODIFICATIONS
+
+
+    def connect_to_database_engine(self):
+        """Establish a connection to database"""
+        if self.config.DB_CONNECTION == 'mysql':
+            self.connect_to_mysql()
+
+        if self.config.DB_CONNECTION == 'postgresql':
+            self.connect_to_postgresql()
+
+
+    def connect_to_mysql(self):
+        """connect to mysql engine"""
+        if self.has_database_uri() == False:
+            database_uri = f'{self.config.DB_CONNECTION}://{self.config.DB_USERNAME}:{self.config.DB_PASSWORD}@{self.config.DB_HOST}:{self.config.DB_PORT}/{self.config.DB_DATABASE}'
+            self.app.config[self.SQLALCHEMY_DATABASE_URI] = database_uri
+    
+
+    def connect_to_postgresql(self):
+        """connect to postgresql engine"""
+        if self.has_database_uri() == False:
+            database_uri = f'postgresql+psycopg2://{self.config.DB_USERNAME}:{self.config.DB_PASSWORD}@{self.config.DB_HOST}:{self.config.DB_PORT}/{self.config.DB_DATABASE}'
+            self.app.config[self.SQLALCHEMY_DATABASE_URI] = database_uri
+    
+
+    def has_existing_key(self, key: str):
+        """Check if environment key exists"""
+        members = dir(self.config)
+        if key in members:
+            if key != '':
+                return True
+        return False
+        """ error_message = "Expected environment variable '{}' not set in Config file.".format(key)
+        raise Exception(error_message)"""
+    
+
+    def has_database_uri(self):
+        """check if database URI is available in config"""
+        if self.has_existing_key('DB_URL'):
+            self.app.config[self.SQLALCHEMY_DATABASE_URI] = self.config.DB_URI
+            return True
+        return False
