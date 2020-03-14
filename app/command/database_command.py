@@ -4,7 +4,7 @@ from app.framework.util.color import *
 import os
 
 @app.cli.command('db:fresh')
-def drop_database():
+def reset_database():
     """Destroys the database and tables."""
     database_url = app.config.get('SQLALCHEMY_DATABASE_URI')
     from sqlalchemy_utils import database_exists, create_database, drop_database
@@ -20,3 +20,9 @@ def drop_database():
     db.create_all()
     info('Refreshed successfully')
 
+
+@app.cli.command('db:migrate')
+def migrate_database():
+    """Generate migration"""
+    os.system('flask db migrate')
+    os.system('flask db upgrade')
