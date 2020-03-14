@@ -48,7 +48,9 @@ class Request:
         raise ValueError("Name must be a string")
     
     def get(self, name):
+        """Retrieve value from request"""
         return req.values.get(name)
+    
         
     def only(self, name: list):
         """Get only value from request"""
@@ -61,5 +63,10 @@ class Request:
             return response
         else:
             raise ValueError('Argument must be a list')
+
+    def get_json(self):
+        """Return json"""
+        return req.get_json()
+
 
 request = Request()
