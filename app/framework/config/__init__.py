@@ -66,6 +66,7 @@ class Configurate:
 
     def register_database(self):
         """Register database"""
+        
         database_support = ['mysql', 'sqlite', 'postgresql', 'oracle', 'firebird', 'sybase']
         if self.config.DB_CONNECTION.lower() in database_support:
             self.connect_to_database_engine()
@@ -84,6 +85,15 @@ class Configurate:
 
         if self.config.DB_CONNECTION == 'postgresql':
             self.connect_to_postgresql()
+        
+        if self.config.DB_CONNECTION == 'sqlite':
+            self.connect_to_sqlite()
+
+
+    def connect_to_sqlite(self):
+        """connect to sqlite database"""
+        if self.has_database_uri() == False:
+            raise Exception('Please provide sqlite db path in config file')
 
 
     def connect_to_mysql(self):
@@ -113,7 +123,7 @@ class Configurate:
 
     def has_database_uri(self):
         """check if database URI is available in config"""
-        if self.has_existing_key('DB_URL'):
+        if self.has_existing_key('DB_URI'):
             self.app.config[self.SQLALCHEMY_DATABASE_URI] = self.config.DB_URI
             return True
         return False
