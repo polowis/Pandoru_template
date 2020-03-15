@@ -26,3 +26,13 @@ def migrate_database():
     """Generate migration"""
     os.system('flask db migrate')
     os.system('flask db upgrade')
+
+
+@app.cli.command('test')
+def test():
+    """Run unittest"""
+    try:
+        import nose2
+        os.system('nose2')
+    except ImportError:
+        error('Nose2 is not installed. Try to run pip install nose2')
