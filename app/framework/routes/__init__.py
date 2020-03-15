@@ -1,6 +1,15 @@
 from app import app
 from importlib import import_module
 from app.framework.routes.route_action import getFunction, getModule
+from flask import request
+
+def next():
+    """Redirect user to the next page"""
+    return request.args.get('next')
+
+def back():
+    """Redirect user back to previous page"""
+    return request.referrer
 
 class Route:
     def get(self, url, view_function, name=None, middleware=None):

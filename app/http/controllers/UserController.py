@@ -1,6 +1,6 @@
 from app import app
 from app.framework.controller import *
-from app.framework.requests import FormRequest
+from app.framework.requests.form_request import FormRequest
 from app.framework.requests.request import request
 from app.model.user import User
 
@@ -12,7 +12,7 @@ class UserController(Controller):
 
     @route('/dashboard', methods=['GET'])
     def dashboard_view(self):
-        return view('dashboard')
+        return 'logged in'
 
     @route('/login', methods=['GET'])
     def login_view(self):
@@ -51,5 +51,6 @@ class UserController(Controller):
             user.email = request.input('email')
             user.password = request.input('password')
             user.save()
-            return 'logged in'
-        
+            return redirect_to('/dashboard')
+        else:
+            return redirect_to('/register')
