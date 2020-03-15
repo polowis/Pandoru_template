@@ -14,3 +14,4 @@ Werkzeug==1.0.0
 WTForms==2.2.1
 bcrypt==3.1.7
 sqlalchemy_utils==0.36.1
+flask-login==0.4.1
