@@ -3,8 +3,8 @@
 ## Requirement
 
 1. Python >= 3.6+
-2. Selenium driver (browser tesing)
-3. Database setup
+2. Selenium driver (browser testing, driver used: Chrome)
+3. Database setup (sqlite, mysql, postgresql, etc.)
 
 ## Installation
 

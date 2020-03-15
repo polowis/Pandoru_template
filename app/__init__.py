@@ -21,3 +21,4 @@ from app import http, framework, kernel, model
 from app.framework.util.template import ViewFunction
 
 ViewFunction(app)
+

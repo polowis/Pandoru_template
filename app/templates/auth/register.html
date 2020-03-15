@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="csrf-token" content="MkcrOJI9aRzcVGS9IuK18OdBNVIAnPpS2nWsB6MC">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <title>Register</title>
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="manifest" href="manifest.json">
@@ -79,12 +79,11 @@
 </div>
 <div class="form-group row mb-0">
 <div class="col-md-6 offset-md-4">
-<button type="submit" class="btn btn-primary">
+<button type="submit" id="register" class="btn btn-primary">
 Register
 </button>
 <br>
 <br>
-<p>By registering to our service you agree to our <a href="/about">Terms of Service &amp; Privacy Policy</a></p>
 </div>
 </div>
 </form>

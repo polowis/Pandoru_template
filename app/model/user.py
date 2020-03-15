@@ -45,7 +45,7 @@ class User(UserMixin, db.Model, BaseModel):
     
     def has_correct_password(self, password: str):
         """Return true if password match"""
-        return bcrypt.checkpw(password.encode(), self._password)
+        return bcrypt.checkpw(password.encode(), self._password.encode())
 
 @login.user_loader
 def load_user(id):

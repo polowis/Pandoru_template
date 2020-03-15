@@ -2,6 +2,15 @@ import inspect
 import re
 from flask import render_template, flash, redirect
 from app.framework.requests import request
+from flask_login import current_user, login_user, logout_user, login_required
+from flask import session
+from app.framework.util import *
+
+
+def redirect_if_authenticated(redirect_url):
+    """Redirect if user is not authenticated"""
+    if current_user.is_authenticated:
+        return redirect(redirect_url)
 
 def route(rule, **options):
     """Route function"""

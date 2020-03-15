@@ -1,6 +1,8 @@
 import os
 class Config(object):
     # enable debug
+    APP_URL = 'http://localhost'
+    APP_PORT = 5000
     DEBUG_ENABLED = False
 
     #enable testing

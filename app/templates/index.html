@@ -21,7 +21,11 @@
                             <span class="navbar-toggler-bar"></span>
                             <span class="navbar-toggler-bar"></span>
                         </button>
+                        {% if current_user.is_authenticated %}
+                        <a class="navbar-brand" href="/">{{ current_user.username }}</a>
+                        {% else %}
                         <a class="navbar-brand" href="/">Pandoru</a>
+                        {% endif %}
                     </div>
                     <div class="collapse navbar-collapse" id="navbarToggler">
                         <ul class="navbar-nav ml-auto">
@@ -32,7 +36,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" rel="tooltip" title="Like us on Facebook" data-placement="bottom" href="https://www.facebook.com/" target="_blank">
+                                <a class="nav-link" rel="tooltip" title="Like us on Facebook" data-placement="bottom" href="https://www.facebook.com/polowis.hungtran" target="_blank">
                                     <i class="fa fa-facebook-square"></i>
                                     <p class="hidden-lg-up">Facebook</p>
                                 </a>
@@ -44,14 +48,23 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" rel="tooltip" title="Star on GitHub" data-placement="bottom" href="https://www.github.com/" target="_blank">
+                                <a class="nav-link" rel="tooltip" title="Star on GitHub" data-placement="bottom" href="https://www.github.com/polowis" target="_blank">
                                     <i class="fa fa-github"></i>
                                     <p class="hidden-lg-up">GitHub</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/login" class="btn btn-danger btn-round">Login</a>
+                                {% if current_user.is_authenticated %}
+                                <a href="/logout" class="btn btn-danger btn-round" onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">Register</a>
+                                {% else %}
+                                <a href="/register" class="btn btn-danger btn-round">Register</a>
+                                {% endif %}
                             </li>
+
+                            <form id="logout-form" action="/logout" method="POST" style="display: none;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            </form>
                         </ul>
                     </div>
                 </div>

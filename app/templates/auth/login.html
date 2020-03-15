@@ -26,14 +26,14 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-    <form method="POST"action="/login" accept-charset="UTF-8">
+    <form id="login-form" method="POST"action="/login" accept-charset="UTF-8">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       <input type="text" name="user_email" placeholder="E-mail">
       {% if error('user_email') %}
       <p style="margin-left: 10px; color:red; font-size: 13px;">{{ error_message('user_email')}}</p>
       {% endif %}
       <input type="password" name="pass" placeholder="Password">
-      <button id="login">Login</button>
+      <a href="/" onclick=" event.preventDefault(); document.getElementById('login-form').submit();">Login</a>
       <div id="remember-container">
         <input type="checkbox" id="checkbox-2-1" class="checkbox" checked="checked"/>
         <span id="remember">Remember me</span>
@@ -41,6 +41,7 @@
       </div>
   </form>
   </div>
+  
   
   <!-- Forgotten Password Container -->
   <div id="forgotten-container">

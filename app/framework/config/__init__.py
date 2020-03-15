@@ -14,11 +14,17 @@ class Configurate:
         elif option.lower() == "env":
             self.register_env()
         
-        
+
     def register_env(self):
         """Register environment variable"""   
         if self.__env_file_exists():
             SECRET_KEY = os.getenv('SECRET_KEY')
+
+
+    def register_app_url(self):
+        """Register app url"""
+        self.app.config['APP_URL'] = self.config.APP_URL
+        self.app.config['APP_PORT'] = self.config.APP_PORT
 
 
     def __env_file_exists(self):
@@ -37,6 +43,7 @@ class Configurate:
         self.register_secret_key()
         self.register_database()
         self.register_sqlalchemy_track_modifications()
+        self.register_app_url()
     
 
     def register_debug(self):
