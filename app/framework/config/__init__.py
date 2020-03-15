@@ -1,14 +1,36 @@
 from flask_wtf.csrf import CSRFProtect
+from dotenv import load_dotenv
+import os
 csrf = CSRFProtect()
+
 class Configurate:
     
-    def __init__(self, app, config):
+    def __init__(self, app, config, option="config"):
         self.app = app
         self.config = config
         self.SQLALCHEMY_DATABASE_URI = 'SQLALCHEMY_DATABASE_URI'
-        self.register()
-    
-    def register(self):
+        if option == "config":
+            self.register_config()
+        elif option.lower() == "env":
+            self.register_env()
+        
+        
+    def register_env(self):
+        """Register environment variable"""   
+        if self.__env_file_exists():
+            SECRET_KEY = os.getenv('SECRET_KEY')
+
+
+    def __env_file_exists(self):
+        """Return true if .env file exists"""
+        dotenv_path = join(dirname(__file__), '.env')
+        if os.path.exists(dotenv_path):
+            load_dotenv(dotenv_path)
+            return True
+        else:
+            raise EnvironmentError('Cannot find .env file')
+
+    def register_config(self):
         """Register config file"""
         self.register_debug()
         self.register_crsf()
