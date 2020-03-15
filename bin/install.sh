@@ -14,6 +14,7 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 export FLASK_APP=main.py
+flask db:migrate
 
 elif [[ "$OSTYPE" == "msys"* ]]; then
 echo "Detecting OS: $OSTYPE";
@@ -21,4 +22,5 @@ py -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
 set FLASK_APP=main.py
+flask db:migrate
 fi
