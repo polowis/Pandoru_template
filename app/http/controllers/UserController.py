@@ -7,6 +7,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from flask import session
 from app.framework.util import *
 from flask import jsonify
+import json
 
 
 
@@ -17,7 +18,14 @@ class UserController(Controller):
     @route('/dashboard', methods=['GET'])
     @login_required
     def dashboard_view(self):
-        return jsonify(current_user.username, current_user.email, current_user.is_authenticated)
+        user = {
+            "id": current_user.id,
+            "user_id": current_user.user_id,
+            "name": current_user.username, 
+            "email": current_user.email,
+            
+        }
+        return jsonify(user)
 
     @route('/login', methods=['GET'])
     def login_view(self):
@@ -64,6 +72,7 @@ class UserController(Controller):
             user.username = request.input('username')
             user.email = request.input('email')
             user.password = request.input('password')
+            user.user_id = 32
             user.save()
 
             user_logged_in = User.query.filter_by(_email=request.input('email')).first()
