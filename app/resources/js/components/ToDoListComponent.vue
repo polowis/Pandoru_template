@@ -4,8 +4,9 @@
              <h1>Welcome back, {{ user.name }}! What would you like to do today?</h1>
              <section class="row">
             <div class="col-1" id="addTask">
-            <input class="form-control" type="text" data-ng-model="newTodo.Name" placeholder="I Need To..." required />
-            <button class="add" ng-click="addTodo(newTodo)" data-ng-disabled="createForm.$invalid">➕</button>
+            <input class="form-control" type="text" v-model="label" placeholder="Give your task a label" required />
+            <input class="form-control" type="text" v-model="description" placeholder="I need to..." required />
+              <button class="add" @click="addItem" data-ng-disabled="createForm.$invalid">➕</button>
             </div>
              <div class="col-1" id="search">
           <input type="text" class="form-control" data-ng-model="todoSearch.name" placeholder=" Search Tasks   🔎" />
@@ -16,13 +17,13 @@
           <button class='control' data-ng-disabled="!doneCount()>0" data-ng-click="clearCompleted()">Delete Completed</button>
         </div>
          <div class="col-1">
-          <button class='control' data-ng-click="markAllDone()" data-ng-disabled="!almostOneNotDone()">Mark All Completed</button>
+          <button class='control' @click="markAllDone()" data-ng-disabled="!almostOneNotDone()">Mark All Completed</button>
         </div>
          <div class="col-1">
-          <button class='control' data-ng-click="uncheckAllDone()" data-ng-disabled="!doneCount()>0">Unmark All Completed</button>
+          <button class='control' @click="uncheckAllDone()" data-ng-disabled="!doneCount()>0">Unmark All Completed</button>
         </div>
         <div class="col-1">
-          <button class='control' data-ng-click="deleteAll()" data-ng-disabled="!todos.length">Delete All</button>
+          <button class='control' @click="deleteAll()" data-ng-disabled="!todos.length">Delete All</button>
         </div>
       </section>
        <section class="row" id='stats'>
@@ -76,15 +77,39 @@ export default {
 
     data() {
         return{
-        task: []
+          label: '',
+          progress: '',
+          description: '',
+          done: false,
+          task: [],
+          token:document.head.querySelector('meta[name="csrf-token"]').content
         }
         
     },
+
     created() {
         socket.on('new user')
     },
-    methods: {
 
+    methods: {
+      addItem() {
+        this.task.push({
+          label : this.label,
+          description: this.description,
+          progress: this.progress, 
+          done: this.done
+        });
+      },
+
+      fetchItemList() {
+        axios.get('/api/todolist/'+ this.user.name).then(response => {
+          this.task = response.data;
+        });
+      },
+
+      deleteAll() {
+        
+      }
     }
 
 }
