@@ -4,6 +4,16 @@ if [[ "$PYTHON_REF" == "NoPython" ]]; then
     exit
 fi
 
+source ./bin/node.sh
+
+RED='\033[0;31m'
+WHITE='\033[00m'
+
+if  ! isNodeInstalled ; then
+    echo -e "${RED}Node is not install ${WHITE}"
+    exit 
+fi
+
 # This is your app
 # PYTHON_REF is python or python3
 $PYTHON_REF -c "print('Python requirement satisfied >=3.6+')";
