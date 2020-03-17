@@ -17,6 +17,8 @@ db =  SQLAlchemy(app)
 login = LoginManager(app)
 migrate = Migrate(app, db)
 
+login.login_view = "UserController:login_view"
+
 from app import http, framework, kernel, model
 from app.framework.util.template import ViewFunction
 
