@@ -1,1 +1,13 @@
-<h1>dfsf</h1>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/todo.css') }}">
+    </head>
+    <body>
+        <div id="app">
+       <todolist-component :user="{{ user }}"></todolist-component>
+    </div>
+    <script src=" {{ url_for('static', filename='js/app.js')}}"></script>
+    </body>
+</html>

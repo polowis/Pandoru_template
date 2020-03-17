@@ -1,0 +1,234 @@
+@import url(https://fonts.googleapis.com/css?family=Play);
+ * {
+	 font-size: 100%;
+	 -webkit-box-sizing: border-box;
+	 -moz-box-sizing: border-box;
+	 box-sizing: border-box;
+}
+ html {
+	 font-size: 100%;
+	 height: 100%;
+	 width: 100%;
+	 box-sizing: border-box;
+}
+h1 {
+    color: white;
+}
+
+ body {
+	 background: #212225;
+	 font-size: 16px;
+	 font-family: 'Play', sans-serif;
+	 text-shadow: 2px 2px rgba(13, 13, 13, 1), -1px -1px #262626;
+}
+ .container {
+	 width: 70%;
+	 margin: 80px auto;
+}
+ .container [class*="col-"] {
+	 color: rgba(168, 178, 179, 1);
+	 margin: 5px;
+	 display: flex;
+	 justify-content: center;
+	 transition: all 0.7s ease-in;
+}
+ .container .row {
+	 border-bottom: 1px solid #5f5f60;
+}
+ .form-control {
+	 border: none;
+	 border-bottom: 1px solid #5f5f60;
+	 background: transparent;
+	 padding: 5px;
+	 margin: 1rem 0 1rem 0;
+}
+ #actions {
+	 padding: 1rem;
+}
+ #actions button {
+	 border: none;
+	 padding: 0.35rem;
+	 height: auto;
+	 width: 11rem;
+	 background: #33628a;
+	 color: rgba(168, 178, 179, 1);
+	 border-radius: 2px;
+	 text-shadow: 1px 1px rgba(13, 13, 13, 1), -1px -1px #33628a;
+	 transition: all 0.3s ease-in;
+	 cursor: pointer;
+}
+ #actions button:hover {
+	 box-shadow: 1px 1px 1px 1px rgba(13, 13, 13, .5);
+}
+ #stats {
+	 height: auto;
+	 line-height: 2rem;
+	 border-bottom: none;
+}
+ #stats span {
+	 color: #dfb349;
+}
+ #items {
+	 padding: 1rem;
+	 color: #dfb349;
+}
+ .add {
+	 margin-left: 0.5rem;
+	 height: auto;
+	 width: auto;
+	 border: none;
+	 background: transparent;
+	 font-weight: bold;
+	 color: #dfb349;
+	 cursor: pointer;
+	 text-shadow: 1px 1px rgba(13, 13, 13, 1), -1px -1px #262626;
+}
+ #ac {
+	 display: flex;
+	 justify-content: center;
+}
+ label {
+	 background: transparent;
+	 text-align: center;
+	 cursor: pointer;
+}
+ label button {
+	 margin-top: 1rem;
+	 width: 1.5em;
+	 height: 1.5em;
+	 border: none;
+	 background: #dfb349;
+	 font-weight: bold;
+	 border-radius: 2px;
+	 transition: all 0.5s ease;
+	 cursor: pointer;
+}
+ label button:hover, label button:active {
+	 background: #bf4c40;
+}
+ label input[type="checkbox"] {
+	 background: #dfb349;
+	 width: 1.5em;
+	 height: 1.5em;
+	 border-radius: 2px;
+	 outline: none;
+	 cursor: pointer;
+	 -webkit-appearance: none;
+	 -moz-appearance: none;
+	 appearance: none;
+	 transition: all 0.5s ease-in;
+}
+ label input[type="checkbox"]:checked, label input[type="checkbox"]:hover {
+	 background: #33628a;
+}
+ #list {
+	 line-height: 5rem;
+	 font-size: 1.2rem;
+	 display: flex;
+	 justify-content: center;
+}
+ #list .toDoLineDone {
+	 text-decoration: line-through;
+	 font-weight: bold;
+	 color: #bf4c40;
+}
+ #search input, #addTask input {
+	 color: rgba(168, 178, 179, 1);
+	 background: transparent;
+	 border: none;
+	 border-bottom: 1px solid #5f5f60;
+	 transition: translateX 6s ease-in;
+}
+ #search input:focus, #addTask input:focus {
+	 outline: none;
+	 border: 1px solid #5f5f60;
+}
+ #search input:focus::-webkit-input-placeholder, #addTask input:focus::-webkit-input-placeholder {
+	 transform: translateX(70%);
+	 opacity: 0;
+}
+ #search input:focus::-webkit-input-placeholder:-moz-placeholder, #addTask input:focus::-webkit-input-placeholder:-moz-placeholder {
+	 transform: translateX(70%);
+	 opacity: 0;
+}
+ #search input:focus::-webkit-input-placeholder::-moz-placeholder, #addTask input:focus::-webkit-input-placeholder::-moz-placeholder {
+	 transform: translateX(70%);
+	 opacity: 0;
+}
+ #search input:focus::-webkit-input-placeholder:-ms-input-placeholder, #addTask input:focus::-webkit-input-placeholder:-ms-input-placeholder {
+	 transform: translateX(70%);
+	 opacity: 0;
+}
+ #search input:focus::-webkit-input-placeholder::-ms-input-placeholder, #addTask input:focus::-webkit-input-placeholder::-ms-input-placeholder {
+	 transform: translateX(70%);
+	 opacity: 0;
+}
+ #search input::-webkit-input-placeholder, #addTask input::-webkit-input-placeholder {
+	 transition: ease-in 0.3s;
+	 transform-origin: 0 50%;
+}
+ #search input:-moz-placeholder, #addTask input:-moz-placeholder {
+	 transition: ease-in 0.3s;
+	 transform-origin: 0 50%;
+}
+ #search input::-moz-placeholder, #addTask input::-moz-placeholder {
+	 transition: ease-in 0.3s;
+	 transform-origin: 0 50%;
+}
+ #search input:-ms-input-placeholder, #addTask input:-ms-input-placeholder {
+	 transition: ease-in 0.3s;
+	 transform-origin: 0 50%;
+}
+ #search input::-ms-input-placeholder, #addTask input::-ms-input-placeholder {
+	 transition: ease-in 0.3s;
+	 transform-origin: 0 50%;
+}
+ #cls {
+	 padding: 0.5rem;
+	 border: none;
+}
+ #cls button {
+	 border: none;
+	 padding: 0.35rem;
+	 height: auto;
+	 width: auto;
+	 background: #33628a;
+	 color: rgba(168, 178, 179, 1);
+	 border-radius: 2px;
+	 text-shadow: 1px 1px rgba(13, 13, 13, 1), -1px -1px #33628a;
+	 transition: all 0.3s ease-in;
+}
+ #cls button:hover {
+	 box-shadow: 1px 1px 1px 1px rgba(13, 13, 13, .5);
+}
+ @media all and (min-width: 850px) {
+	 .row {
+		 display: -webkit-box;
+		 display: -moz-box;
+		 display: -ms-flexbox;
+		 display: -webkit-flex;
+		 display: flex;
+		 width: 100%;
+		 border-bottom: 1px solid #5f5f60;
+		 justify-content: center;
+	}
+	 [class*="col-"]:last-child {
+		 margin-right: 0;
+	}
+	 .col-1 {
+		 -webkit-box-flex: 1;
+		 -moz-box-flex: 1;
+		 -ms-flex: 1;
+		 -webkit-flex: 1;
+		 flex: 1;
+	}
+	 .col-2 {
+		 -webkit-box-flex: 2;
+		 -moz-box-flex: 2;
+		 -ms-flex: 2;
+		 -webkit-flex: 2;
+		 flex: 2;
+		 margin-bottom: 0;
+	}
+}
+ 
