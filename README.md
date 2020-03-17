@@ -5,6 +5,7 @@
 1. Python >= 3.6+
 2. Selenium driver (browser testing, driver used: Chrome)
 3. Database setup (sqlite, mysql, postgresql, etc.)
+4. NodeJS >= 10
 
 ## Installation
 
@@ -24,7 +25,7 @@ In order to work on this project on your machine, you can follow the instruction
     ```bash
     ./bin/install.sh
     ```
-    In case you encounter errors such as `command not found` or `permission denied` you may need to follow these steps to solve your problem:
+    In case you encounter errors such as `command not found` or `permission denied` you may need to follow these steps to make the file executable in order to solve your problem:
     ```bash
     sudo chmod +x ./bin/install.sh
     ./bin/install.sh
