@@ -6,19 +6,20 @@
 
               <div class="modal-header">
                 <slot name="header">
-                  <strong>{{item.label}}</strong>
+                  <strong>{{item.title}}</strong>
                 </slot>
               </div>
 
               <div class="modal-body">
                 <slot name="body">
-                  {{item.progress}}
+                  {{item.description}}
                 </slot>
               </div>
 
               <div class="modal-footer">
                 <slot name="footer">
-                  default footer
+                  
+                  {{item.progress}}
                   <button class="modal-default-button btn btn-success" @click.prevent="$emit('close')">
                     OK
                   </button>

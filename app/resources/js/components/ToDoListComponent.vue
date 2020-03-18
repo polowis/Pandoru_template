@@ -24,12 +24,12 @@
           <button class='control' @click="uncheckAllDone()" data-ng-disabled="!doneCount()>0">Unmark All Completed</button>
         </div>
         <div class="col-1">
-          <button class='control' @click="deleteAll()" data-ng-disabled="!todos.length">Delete All</button>
+          <button class='control' @click.prevent="deleteAll()" data-ng-disabled="!todos.length">Delete All</button>
         </div>
       </section>
        <section class="row" id='stats'>
         <div class="col-1">
-          <span>No&nbsp;</span>Tasks&nbsp;<span class="badge" >Remaining&nbsp; </span>
+          <span v-if="this.task.length < 1">No&nbsp;</span><span v-if="this.task.length < 1">Tasks&nbsp;</span><span v-if="this.task.length >= 1">Tasks&nbsp;<span class="badge" >Remaining&nbsp; {{this.task.length}} </span></span>
         </div>
         <div class="col-1">
           <div class="text-right">Today is</div>
@@ -42,20 +42,20 @@
       </section>
        <section class="row" v-for="item in task" :key="item.title">
         <div class="col-2" id='ac'>
-          <title>Done
+          <label>Done
             <br>
-            <input class="form-control" ng-model="todo.isDone" type="checkbox" name="done" />
-          </title>
+            <input class="form-control" v-model="item.done"  @click.prevent="markItemAsDone(item)" type="checkbox" name="done" />
+          </label>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <title id='del'>Delete
+          <label id='del'>Delete
             <br>
             <button type="button" @click.prevent="deleteItem(item)" name="delete"></button>
-          </title>
+          </label>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-           <title id='pro'>In Progress
+           <label id='pro' v-if="item.progress == 1">In Progress
             <br>
-            <button type="pro" ng-click="deleteTodo($index)" name="pro" id="progress_status"></button>
-          </title>
+            <button type="pro" name="pro" id="progress_status"></button>
+          </label>
         </div>
         <div class="col-2" id="list">
           <span class="todoName" @click="showModal = true">{{ item.title }}</span>
@@ -89,12 +89,13 @@ export default {
           description: '',
           done: false,
           showModal: false,
-          task: [
-            {
-              "title": "test",
-              "progress": "in progress"
-            }
-          ],
+          task: [{
+            id: 0,
+            title: 'test',
+            description: 'test1',
+            progress: 1,
+            done: 0,
+          }],
           token:document.head.querySelector('meta[name="csrf-token"]').content
         }
         
@@ -109,6 +110,7 @@ export default {
         
         axios.post('/api/create', {title: this.title, description: this.description, progress: this.progress}).then(response => {
           this.task.push({
+            id: this.id,
             title : this.title,
             description: this.description,
             progress: this.progress, 
@@ -129,21 +131,49 @@ export default {
       fetchItemList() {
         axios.get('/api/todolist/'+ this.user.user_id).then(response => {
           this.task = response.data;
+          console.log(this.task[0].title);
         });
       },
 
       deleteAll() {
-        
+        for(let item = 0; item < this.task.length; item++) {
+            axios.post('/api/delete/' + this.task[item].id).then(response => {
+              this.task = []
+          }).then((res) =>{
+
+          }).catch(error =>{
+                  
+          });
+          }
       },
       deleteItem(item) {
-        console.log(this.task.indexOf(item))
-        this.task.splice(this.task.indexOf(item), 1)
+        let item_id = this.task[this.task.indexOf(item)].id
+        axios.post('/api/delete/' + item_id).then(response => {
+          this.task.splice(this.task.indexOf(item), 1)
+        }).then((res) =>{
+
+        }).catch(error =>{
+                
+        });
         
+        
+      },
+      markItemAsDone(item)
+      {
+        let item_id = this.task[this.task.indexOf(item)].id
+        axios.post('/api/done/' + item_id).then(response => {
+          item_id.done = true
+        }).then((res) =>{
+
+        }).catch(error =>{
+                
+        });
       }
+
     },
     beforeMount(){
       this.fetchItemList()
- },
+    }
 
 }
     
