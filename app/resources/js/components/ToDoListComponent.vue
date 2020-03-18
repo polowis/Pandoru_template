@@ -37,7 +37,7 @@
       </section>
        <section class="row">
         <div class='col-2' id='items'>
-          <span class="todoName text-center">Good Job! All Tasks Are Complete.</span>
+          <span class="todoName text-center" v-if="this.task.length < 1">Good Job! All Tasks Are Complete.</span>
         </div>
       </section>
        <section class="row" v-for="item in task" :key="item.label">
@@ -126,7 +126,7 @@ export default {
         
       },
       deleteItem() {
-        
+
       }
     }
 

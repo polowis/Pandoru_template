@@ -7,8 +7,6 @@ class UserTest(unittest.TestCase):
         user.username ="polowis" 
         user.email=' exmaple@gmail.com'
         user.password = 'irunaonlinepolowis'
-        self.assertEqual(user.has_correct_password('irunaonlinepolowis'), True)
-        self.assertEqual(user.has_correct_password('sdfsa'), False)
 
 if __name__ == '__main__':
     unittest.main()

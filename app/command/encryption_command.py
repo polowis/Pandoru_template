@@ -5,7 +5,7 @@ import click
 
 @app.cli.command('hash')
 @click.argument('password')
-def hash(password):
+def hash(password: str):
     hash_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
     info('The encrypted string is:')
     warn(str(hash_password))
