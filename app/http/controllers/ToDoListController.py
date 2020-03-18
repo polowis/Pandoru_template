@@ -50,3 +50,16 @@ class ToDoListController(Controller):
         data = json.dumps(todolist, cls=AlchemyEncoder)
         return Response(data, mimetype='application/json')
 
+    @route('/done/<item_id>', methods=['POST'])
+    def done(self, item_id):
+        todolist = ToDoList.query.filter_by(id=item_id).first()
+        todolist.done = True
+        todolist.save()
+        return jsonify(message="Success")
+    
+    @route("/delete/<item_id>", methods=['POST'])
+    def delete(self, item_id):
+        todolist = ToDoList.query.filter_by(id=item_id).first()
+        todolist.delete()
+        return jsonify(message="Success")
+
