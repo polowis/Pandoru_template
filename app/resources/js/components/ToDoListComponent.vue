@@ -2,12 +2,12 @@
   
     <div class="container" id="wrapper">
          <form name="createForm" class="form" novalidate>
-             <h1>Welcome back, {{ user.name }}! What would you like to do today?</h1>
+             <h1 class="rainbow">Welcome back, {{ user.name }}! What would you like to do today?</h1>
              <section class="row">
             <div class="col-1" id="addTask">
             <input class="form-control" type="text" v-model="label" placeholder="Give your task a label" required />
             <input class="form-control" type="text" v-model="description" placeholder="I need to..." required />
-              <button class="add" @click="addItem" data-ng-disabled="createForm.$invalid">➕</button>
+              <button class="add" @click.prevent="addItem" data-ng-disabled="createForm.$invalid">➕</button>
             </div>
              <div class="col-1" id="search">
           <input type="text" class="form-control" data-ng-model="todoSearch.name" placeholder=" Search Tasks   🔎" />
@@ -54,7 +54,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
            <label id='pro'>In Progress
             <br>
-            <button type="button" ng-click="deleteTodo($index)" name="pro"></button>
+            <button type="pro" ng-click="deleteTodo($index)" name="pro" id="progress_status"></button>
           </label>
         </div>
         <div class="col-2" id="list">
@@ -85,7 +85,7 @@ export default {
     data() {
         return{
           label: '',
-          progress: '',
+          progress: true,
           description: '',
           done: false,
           showModal: false,
@@ -112,6 +112,8 @@ export default {
           progress: this.progress, 
           done: this.done
         });
+        this.label = ""
+        this.description = ""
       },
 
       fetchItemList() {
@@ -121,6 +123,9 @@ export default {
       },
 
       deleteAll() {
+        
+      },
+      deleteItem() {
         
       }
     }
