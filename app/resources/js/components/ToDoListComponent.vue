@@ -1,4 +1,5 @@
 <template>
+  
     <div class="container" id="wrapper">
          <form name="createForm" class="form" novalidate>
              <h1>Welcome back, {{ user.name }}! What would you like to do today?</h1>
@@ -39,7 +40,7 @@
           <span class="todoName text-center">Good Job! All Tasks Are Complete.</span>
         </div>
       </section>
-       <section class="row" ng-repeat="todo in todos | filter:todoSearch.name" ng-class="{'todoItem-done': todo.isDone, 'todoItem-toDo': !todo.isDone}">
+       <section class="row" v-for="item in task" :key="item.label">
         <div class="col-2" id='ac'>
           <label>Done
             <br>
@@ -57,8 +58,10 @@
           </label>
         </div>
         <div class="col-2" id="list">
-          <span class="todoName"></span>
+          <span class="todoName" @click="showModal = true">{{ item.label }}</span>
           </div>
+          <ModalComponent :item="item" v-if="showModal" @close="showModal = false">
+      </ModalComponent>
           </section>  
           <section class = 'row' id = 'cls'>
            <div class = "col-2" >
@@ -71,9 +74,13 @@
 </template>
 <script>
 
+import ModalComponent from './ModalComponent'
 
 export default {
     props: ['user'],
+    components: {
+      ModalComponent
+    },
 
     data() {
         return{
@@ -81,7 +88,13 @@ export default {
           progress: '',
           description: '',
           done: false,
-          task: [],
+          showModal: false,
+          task: [
+            {
+              "label": "test",
+              "progress": "in progress"
+            }
+          ],
           token:document.head.querySelector('meta[name="csrf-token"]').content
         }
         
