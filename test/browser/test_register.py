@@ -29,10 +29,10 @@ class TestRegistrationPage(unittest.TestCase):
         password = self.driver.find_element_by_name('password')
         password_confirmation = self.driver.find_element_by_name('password_confirmation')
 
-        username.send_keys('Polowis')
-        email.send_keys('tranphuochung0912@gmail.com')
+        username.send_keys('example')
+        email.send_keys('example@gmail.com')
         password.send_keys('irunaonlinepolowis')
-        password_confirmation.send_keys('irunaonlinepolowis')
+        password_confirmation.send_keys('exampleofsuperlongpassword')
 
         submit_button = self.driver.find_element_by_id('register')
         submit_button.send_keys(Keys.ENTER)

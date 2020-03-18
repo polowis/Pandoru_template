@@ -5,7 +5,7 @@
              <h1 class="rainbow">Welcome back, {{ user.name }}! What would you like to do today?</h1>
              <section class="row">
             <div class="col-1" id="addTask">
-            <input class="form-control" type="text" v-model="label" placeholder="Give your task a label" required />
+            <input class="form-control" type="text" v-model="title" placeholder="Give your task a title" required />
             <input class="form-control" type="text" v-model="description" placeholder="I need to..." required />
               <button class="add" @click.prevent="addItem" data-ng-disabled="createForm.$invalid">➕</button>
             </div>
@@ -40,25 +40,25 @@
           <span class="todoName text-center" v-if="this.task.length < 1">Good Job! All Tasks Are Complete.</span>
         </div>
       </section>
-       <section class="row" v-for="item in task" :key="item.label">
+       <section class="row" v-for="item in task" :key="item.title">
         <div class="col-2" id='ac'>
-          <label>Done
+          <title>Done
             <br>
             <input class="form-control" ng-model="todo.isDone" type="checkbox" name="done" />
-          </label>
+          </title>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <label id='del'>Delete
+          <title id='del'>Delete
             <br>
-            <button type="button" ng-click="deleteTodo($index)" name="delete"></button>
-          </label>
+            <button type="button" @click.prevent="deleteItem(item)" name="delete"></button>
+          </title>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-           <label id='pro'>In Progress
+           <title id='pro'>In Progress
             <br>
             <button type="pro" ng-click="deleteTodo($index)" name="pro" id="progress_status"></button>
-          </label>
+          </title>
         </div>
         <div class="col-2" id="list">
-          <span class="todoName" @click="showModal = true">{{ item.label }}</span>
+          <span class="todoName" @click="showModal = true">{{ item.title }}</span>
           </div>
           <ModalComponent :item="item" v-if="showModal" @close="showModal = false">
       </ModalComponent>
@@ -84,14 +84,14 @@ export default {
 
     data() {
         return{
-          label: '',
+          title: '',
           progress: true,
           description: '',
           done: false,
           showModal: false,
           task: [
             {
-              "label": "test",
+              "title": "test",
               "progress": "in progress"
             }
           ],
@@ -106,18 +106,28 @@ export default {
 
     methods: {
       addItem() {
-        this.task.push({
-          label : this.label,
-          description: this.description,
-          progress: this.progress, 
-          done: this.done
-        });
-        this.label = ""
-        this.description = ""
+        
+        axios.post('/api/create', {title: this.title, description: this.description, progress: this.progress}).then(response => {
+          this.task.push({
+            title : this.title,
+            description: this.description,
+            progress: this.progress, 
+            done: this.done
+          });
+
+          this.title = ""
+          this.description = ""
+
+        }).then((res) =>{
+
+        }).catch(error =>{
+                
+          });
+       
       },
 
       fetchItemList() {
-        axios.get('/api/todolist/'+ this.user.name).then(response => {
+        axios.get('/api/todolist/'+ this.user.user_id).then(response => {
           this.task = response.data;
         });
       },
@@ -125,10 +135,15 @@ export default {
       deleteAll() {
         
       },
-      deleteItem() {
-
+      deleteItem(item) {
+        console.log(this.task.indexOf(item))
+        this.task.splice(this.task.indexOf(item), 1)
+        
       }
-    }
+    },
+    beforeMount(){
+      this.fetchItemList()
+ },
 
 }
     

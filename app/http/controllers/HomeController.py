@@ -15,7 +15,8 @@ class HomeController(Controller):
         user = {
             "id": current_user.id,
             "name": current_user.username, 
-            "email": current_user.email
+            "email": current_user.email,
+            "user_id": current_user.user_id
             
         }
         return view('test', user=json.dumps(user))
