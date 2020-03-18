@@ -46,3 +46,11 @@ class ToDoList(db.Model, BaseModel):
     @author.setter
     def author(self, author):
         self._creator = author
+    
+    @property
+    def done(self):
+        return self._done
+    
+    @done.setter
+    def done(self, done):
+        self._done = done
