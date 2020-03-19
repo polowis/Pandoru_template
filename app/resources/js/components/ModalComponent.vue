@@ -6,20 +6,20 @@
 
               <div class="modal-header">
                 <slot name="header">
-                  <strong>{{item.title}}</strong>
+                  <strong>{{ title }}</strong>
                 </slot>
               </div>
 
               <div class="modal-body">
                 <slot name="body">
-                  {{item.description}}
+                  {{ desc }}
                 </slot>
               </div>
 
               <div class="modal-footer">
                 <slot name="footer">
                   
-                  {{item.progress}}
+                  {{items.progress}}
                   <button class="modal-default-button btn btn-success" @click.prevent="$emit('close')">
                     OK
                   </button>
@@ -32,6 +32,12 @@
 </template>
 <script>
 export default {
-    props: ['user', 'item', 'showModal']
+    props: ['user', 'items', 'showModal', 'title', 'desc'],
+    methods:{
+      getItem(item) {
+        console.log(items)
+      }
+    }
 }
+
 </script>

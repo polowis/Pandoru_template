@@ -27,9 +27,11 @@ class AlchemyEncoder(json.JSONEncoder):
 
 class ToDoListController(Controller):
     route_prefix = '/api'
+
     def construct(cls):
         ToDoListController.register(app)
     
+
     @route('/create', methods=['POST'])
     @login_required
     def create(self):
@@ -41,21 +43,25 @@ class ToDoListController(Controller):
         todolist.author = current_user.user_id
         todolist.save()
 
-        return jsonify(
-            message='Success')
+        data = json.dumps(todolist, cls=AlchemyEncoder)
+        return Response(data, mimetype="application/json")
     
+
     @route('/todolist/<user_id>')
     def fetch(self, user_id):
         todolist = ToDoList.query.filter_by(_creator=user_id).all()
         data = json.dumps(todolist, cls=AlchemyEncoder)
         return Response(data, mimetype='application/json')
 
+
     @route('/done/<item_id>', methods=['POST'])
     def done(self, item_id):
         todolist = ToDoList.query.filter_by(id=item_id).first()
         todolist.done = True
+        todolist.progress = False
         todolist.save()
         return jsonify(message="Success")
+        
     
     @route("/delete/<item_id>", methods=['POST'])
     def delete(self, item_id):
@@ -63,3 +69,6 @@ class ToDoListController(Controller):
         todolist.delete()
         return jsonify(message="Success")
 
+    @route('item/<item_id>', methods=['GET'])
+    def item(item_id):
+        todolist = ToDoList.query.filter_by(id=item_).first()

@@ -15,13 +15,13 @@
              </section>
          <section class="row" id='actions'>
         <div class="col-1">
-          <button class='control' data-ng-disabled="!doneCount()>0" data-ng-click="clearCompleted()">Delete Completed</button>
+          <button class='control' data-ng-disabled="!doneCount()>0" @click.prevent="deleteComplete()">Delete Completed</button>
         </div>
          <div class="col-1">
-          <button class='control' @click="markAllDone()" data-ng-disabled="!almostOneNotDone()">Mark All Completed</button>
+          <button class='control' @click.prevent="markAllDone()" data-ng-disabled="!almostOneNotDone()">Mark All Completed</button>
         </div>
          <div class="col-1">
-          <button class='control' @click="uncheckAllDone()" data-ng-disabled="!doneCount()>0">Unmark All Completed</button>
+          <button class='control' @click.prevent="uncheckAllDone()" data-ng-disabled="!doneCount()>0">Unmark All Completed</button>
         </div>
         <div class="col-1">
           <button class='control' @click.prevent="deleteAll()" data-ng-disabled="!todos.length">Delete All</button>
@@ -32,7 +32,10 @@
           <span v-if="this.task.length < 1">No&nbsp;</span><span v-if="this.task.length < 1">Tasks&nbsp;</span><span v-if="this.task.length >= 1">Tasks&nbsp;<span class="badge" >Remaining&nbsp; {{this.task.length}} </span></span>
         </div>
         <div class="col-1">
-          <div class="text-right">Today is</div>
+          <div class="text-right">Today is {{ getDate() }}</div>
+        </div>
+        <div class="col-1">
+          <div class="text-right">Task details</div>
         </div>
       </section>
        <section class="row">
@@ -40,7 +43,7 @@
           <span class="todoName text-center" v-if="this.task.length < 1">Good Job! All Tasks Are Complete.</span>
         </div>
       </section>
-       <section class="row" v-for="item in task" :key="item.title">
+       <section class="row" v-for="item in task" :key="item.id">
         <div class="col-2" id='ac'>
           <label>Done
             <br>
@@ -57,10 +60,14 @@
             <button type="pro" name="pro" id="progress_status"></button>
           </label>
         </div>
-        <div class="col-2" id="list">
-          <span class="todoName" @click="showModal = true">{{ item.title }}</span>
+        <div class="col-2" id="list" >
+          <span class="todoName"  :class="{toDoLineDone: item.done}" @click="showModal = true">{{ item.title }}</span>
           </div>
-          <ModalComponent :item="item" v-if="showModal" @close="showModal = false">
+          <div class="col-2" id="list">
+            <span class="todoname" :class="{toDoLineDone: item.done}">{{ item.description }}</span>
+          </div>
+          <ModalComponent :items="item" v-if="showModal" :title="item.title" :desc="item.description" @close="showModal = false">
+            
       </ModalComponent>
           </section>  
           <section class = 'row' id = 'cls'>
@@ -110,12 +117,12 @@ export default {
         
         axios.post('/api/create', {title: this.title, description: this.description, progress: this.progress}).then(response => {
           this.task.push({
-            id: this.id,
-            title : this.title,
-            description: this.description,
-            progress: this.progress, 
-            done: this.done
-          });
+            id: response.data.id,
+            title: response.data.title,
+            description: response.data.description,
+            done: response.data.done,
+            progress: response.data.progress,
+          })
 
           this.title = ""
           this.description = ""
@@ -131,7 +138,6 @@ export default {
       fetchItemList() {
         axios.get('/api/todolist/'+ this.user.user_id).then(response => {
           this.task = response.data;
-          console.log(this.task[0].title);
         });
       },
 
@@ -160,14 +166,38 @@ export default {
       },
       markItemAsDone(item)
       {
-        let item_id = this.task[this.task.indexOf(item)].id
-        axios.post('/api/done/' + item_id).then(response => {
-          item_id.done = true
+        let item_element = this.task[this.task.indexOf(item)]
+        axios.post('/api/done/' + item_element.id).then(response => {
+          item_element.done = true;
+          item_element.progress = false;
+          
         }).then((res) =>{
 
         }).catch(error =>{
                 
         });
+      },
+
+      getDate() {
+         let today = new Date();
+         let mm = today.getMonth() + 1;
+          let dd = today.getDate();
+          let yyyy = today.getFullYear();
+          let date = mm + "/" + dd + "/" + yyyy;
+          return date;
+      },
+      deleteComplete() {
+        for(let item = 0; item < this.task.length; item++) {
+            if(this.task[item].done == true || this.task[item].done == 1){
+                axios.post('/api/delete/' + this.task[item].id).then(response => {
+                  this.task.splice(item, 1)
+              }).then((res) =>{
+
+              }).catch(error =>{
+                      
+              });
+                }
+          }
       }
 
     },

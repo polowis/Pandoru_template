@@ -46,7 +46,7 @@ class UserController(Controller):
             if user is None or not user.has_correct_password(request.input('pass')): 
                 flash('Email or password is wrong')
                 return redirect('/login')
-            #log(user)
+
             login_user(user)
             session['username'] = user.username
             return redirect('/dashboard')

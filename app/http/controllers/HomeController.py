@@ -23,6 +23,5 @@ class HomeController(Controller):
 
     @route('/', methods=["GET"])
     def home(self):
-        
         return view('index')
 
