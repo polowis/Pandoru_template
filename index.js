@@ -3,9 +3,8 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
 io.on('connection', function(socket){
-    console.log('someone joined')
-  io.on('new user', function(){
-      console.log('new user joined')
+  socket.on('update list', function(task){
+      io.emit('update list', task)
   })
 });
 

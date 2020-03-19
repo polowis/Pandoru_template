@@ -142,8 +142,12 @@ export default {
     },
 
     created() {
-        socket.on('new user')
+
+        socket.on('update list', (tasks) => {
+          this.task = tasks
+        })
     },
+
     computed: {
       filter(){
         if(this.search.length >= 1){
@@ -229,7 +233,7 @@ export default {
 
           this.title = ""
           this.description = ""
-
+          socket.emit('update list', this.task)
         }).then((res) =>{
 
         }).catch(error =>{

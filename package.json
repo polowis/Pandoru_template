@@ -44,7 +44,6 @@
   "devDependencies": {
     "@vue/test-utils": "^1.0.0-beta.32",
     "axios": "^0.19",
-    "babel-jest": "^25.1.0",
     "bootstrap": "^4.0.0",
     "cross-env": "^6.0",
     "jquery": "^3.2",
