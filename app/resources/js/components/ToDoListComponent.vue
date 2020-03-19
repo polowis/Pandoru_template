@@ -87,7 +87,7 @@
           </div>
 
           <button class="large-btn github-btn" @click.prevent="deleteItem(item)">Click to <span>delete</span></button>
-          <button class="large-btn facebook-btn" @click.prevent="editItem()">Click to <span>edit</span></button>
+          <button class="large-btn facebook-btn" @click.prevent="editItem(item)">Click to <span>edit</span></button>
         </div>
       </div>
     </div>
@@ -172,9 +172,21 @@ export default {
       },
 
 
-      editItem()
+      editItem(item)
       {
-        console.log(document.getElementById('n-title'))
+        let itemElement = this.task[this.task.indexOf(item)]
+        let title = document.getElementById('n-title').value
+        let description = document.getElementById('n-description').value
+
+        axios.post('/api/'+ itemElement.id, {
+          title: title,
+          description: description
+        }).then(response => {
+          itemElement.title = title
+          itemElement.description = description
+          this.hide(itemElement.id)
+        })
+
       },
 
 

@@ -70,5 +70,14 @@ class ToDoListController(Controller):
         return jsonify(message="Success")
 
     @route('item/<item_id>', methods=['GET'])
-    def item(item_id):
+    def item(self,item_id):
         todolist = ToDoList.query.filter_by(id=item_).first()
+
+    @route('<item_id>', methods=['POST'])
+    def edit(self, item_id):
+        data = request.get_json()
+        todolist = ToDoList.query.filter_by(id=item_id).first()
+        todolist.title = data['title']
+        todolist.description = data['description']
+        todolist.save()
+        return jsonify(message="Success")
