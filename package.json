@@ -27,8 +27,24 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "serve": "nodemon index.js"
   },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "vue-jest",
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+    },
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/app/resource/js/$1"
+    }
+  },
   "devDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.32",
     "axios": "^0.19",
+    "babel-jest": "^25.1.0",
     "bootstrap": "^4.0.0",
     "cross-env": "^6.0",
     "jquery": "^3.2",
@@ -39,6 +55,7 @@
     "sass": "^1.20.1",
     "sass-loader": "^8.0.0",
     "vue": "^2.5.17",
+    "vue-jest": "^3.0.5",
     "vue-template-compiler": "^2.6.10"
   },
   "dependencies": {
