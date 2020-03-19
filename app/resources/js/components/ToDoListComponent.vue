@@ -14,16 +14,16 @@
              </section>
          <section class="row" id='actions'>
         <div class="col-1">
-          <button class='control'  @click.prevent="deleteComplete()">Delete Completed</button>
+          <button class='control'  @click.prevent="deleteComplete()" :disabled="this.task.length == 0 ">Delete Completed</button>
         </div>
          <div class="col-1">
-          <button class='control' @click.prevent="markAllDone()">Mark All Completed</button>
+          <button class='control' @click.prevent="markAllDone()" :disabled="this.task.length == 0 ">Mark All Completed</button>
         </div>
          <div class="col-1">
-          <button class='control' @click.prevent="uncheckAllDone()">Unmark All Completed</button>
+          <button class='control' @click.prevent="uncheckAllDone()" :disabled="this.task.length == 0 ">Unmark All Completed</button>
         </div>
         <div class="col-1">
-          <button class='control' @click.prevent="deleteAll()" data-ng-disabled="!todos.length">Delete All</button>
+          <button class='control' @click.prevent="deleteAll()" :disabled="this.task.length == 0 ">Delete All</button>
         </div>
       </section>
        <section class="row" id='stats'>
@@ -282,6 +282,21 @@ export default {
         }).catch(error =>{
                 
         });
+      },
+
+      markAllDone()
+      {
+        for(let item = 0; item < this.task.length; item++){
+           axios.post('/api/done/' + this.task[item].id).then(response => {
+            this.task[item].done = true;
+            this.task[item].progress = false;
+          }).then((res) =>{
+
+          }).catch(error =>{
+                  
+          });
+        }
+         
       },
 
       getDate() {
