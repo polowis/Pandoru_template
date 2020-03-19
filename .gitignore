@@ -123,4 +123,4 @@ dmypy.json
 .pyre/
 .DS_Store
 node_modules
-/static/js/app.js
+app/static/js/app.js
