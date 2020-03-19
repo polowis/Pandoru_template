@@ -9,18 +9,18 @@
               <button class="add" @click.prevent="addItem" data-ng-disabled="createForm.$invalid">➕</button>
             </div>
              <div class="col-1" id="search">
-          <input type="text" class="form-control" data-ng-model="todoSearch.name" placeholder=" Search Tasks   🔎" />
+          <input type="text" class="form-control" v-model="search" placeholder=" Search Tasks   🔎" />
         </div>
              </section>
          <section class="row" id='actions'>
         <div class="col-1">
-          <button class='control' data-ng-disabled="!doneCount()>0" @click.prevent="deleteComplete()">Delete Completed</button>
+          <button class='control'  @click.prevent="deleteComplete()">Delete Completed</button>
         </div>
          <div class="col-1">
-          <button class='control' @click.prevent="markAllDone()" data-ng-disabled="!almostOneNotDone()">Mark All Completed</button>
+          <button class='control' @click.prevent="markAllDone()">Mark All Completed</button>
         </div>
          <div class="col-1">
-          <button class='control' @click.prevent="uncheckAllDone()" data-ng-disabled="!doneCount()>0">Unmark All Completed</button>
+          <button class='control' @click.prevent="uncheckAllDone()">Unmark All Completed</button>
         </div>
         <div class="col-1">
           <button class='control' @click.prevent="deleteAll()" data-ng-disabled="!todos.length">Delete All</button>
@@ -42,7 +42,7 @@
           <span class="todoName text-center" v-if="this.task.length < 1">Good Job! All Tasks Are Complete.</span>
         </div>
       </section>
-       <section class="row" v-for="item in task" :key="item.id">
+       <section class="row" v-for="item in filter" :key="item.id">
         <div class="col-2" id='ac'>
           <label>Done
             <br>
@@ -123,6 +123,7 @@ export default {
 
     data() {
         return{
+          search: '',
           title: '',
           progress: true,
           description: '',
@@ -142,6 +143,19 @@ export default {
 
     created() {
         socket.on('new user')
+    },
+    computed: {
+      filter(){
+        if(this.search.length >= 1){
+          return this.task.filter((item) => {
+            return item.title.startsWith(this.search);
+          })
+          
+        }
+        else{
+            return this.task
+          }
+      }
     },
 
     methods: {
@@ -201,6 +215,7 @@ export default {
         });
       },
 
+      
       addItem() {
         
         axios.post('/api/create', {title: this.title, description: this.description, progress: this.progress}).then(response => {
