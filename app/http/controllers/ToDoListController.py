@@ -61,6 +61,14 @@ class ToDoListController(Controller):
         todolist.progress = False
         todolist.save()
         return jsonify(message="Success")
+    
+    @route('/undone/<item_id>', methods=['POST'])
+    def done(self, item_id):
+        todolist = ToDoList.query.filter_by(id=item_id).first()
+        todolist.done = False
+        todolist.progress = True
+        todolist.save()
+        return jsonify(message="Success")
         
     
     @route("/delete/<item_id>", methods=['POST'])
@@ -72,6 +80,7 @@ class ToDoListController(Controller):
     @route('item/<item_id>', methods=['GET'])
     def item(self,item_id):
         todolist = ToDoList.query.filter_by(id=item_).first()
+
 
     @route('<item_id>', methods=['POST'])
     def edit(self, item_id):

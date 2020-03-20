@@ -207,7 +207,23 @@ export default {
 
       },
 
+      uncheckAllDone(){
+         for(let item = 0; item < this.task.length; item++) {
+            if(this.task[item].done == true || this.task[item].done == 1){
+                axios.post('/api/undone/' + this.task[item].id).then(response => {
+                  this.task[item].done = false;
+                  this.task[item].progress = true;
 
+              }).then((res) =>{
+
+              }).catch(error =>{
+                      
+              });
+                }
+          }
+          socket.emit('update list', this.task)
+      },
+      
       deleteItemByButton(item_id){
         axios.post('/api/delete/' + item_id).then(response => {
           this.task.splice(item_id, 1)
