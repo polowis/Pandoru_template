@@ -252,12 +252,14 @@ export default {
         for(let item = 0; item < this.task.length; item++) {
             axios.post('/api/delete/' + this.task[item].id).then(response => {
               this.task = []
+
           }).then((res) =>{
 
           }).catch(error =>{
                   
           });
           }
+          socket.emit('update list', this.task)
       },
 
       deleteItem(item) {
@@ -265,6 +267,7 @@ export default {
         axios.post('/api/delete/' + item_id).then(response => {
           this.task.splice(this.task.indexOf(item), 1)
           this.hide(item_id)
+          socket.emit('update list', this.task)
         }).then((res) =>{
 
         }).catch(error =>{
@@ -280,6 +283,7 @@ export default {
         axios.post('/api/done/' + item_element.id).then(response => {
           item_element.done = true;
           item_element.progress = false;
+          socket.emit('update list', this.task)
           
         }).then((res) =>{
 
@@ -300,6 +304,7 @@ export default {
                   
           });
         }
+        socket.emit('update list', this.task)
          
       },
 
@@ -316,6 +321,7 @@ export default {
             if(this.task[item].done == true || this.task[item].done == 1){
                 axios.post('/api/delete/' + this.task[item].id).then(response => {
                   this.task.splice(item, 1)
+
               }).then((res) =>{
 
               }).catch(error =>{
@@ -323,6 +329,7 @@ export default {
               });
                 }
           }
+          socket.emit('update list', this.task)
       }
 
     },
