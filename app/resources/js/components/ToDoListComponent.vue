@@ -4,9 +4,9 @@
              <h1 class="rainbow">Welcome back, {{ user.name }}! What would you like to do today?</h1>
              <section class="row">
             <div class="col-1" id="addTask">
-            <input class="form-control" type="text" v-model="title" placeholder="Give your task a title" required />
+            <input class="form-control" type="text"  v-model="title" placeholder="Give your task a title" required />
             <input class="form-control" type="text" v-model="description" placeholder="I need to..." required />
-              <button class="add" @click.prevent="addItem" data-ng-disabled="createForm.$invalid">➕</button>
+              <button class="add" @click.prevent="addItem" :disabled="invalidSubmit()">➕</button>
             </div>
              <div class="col-1" id="search">
           <input type="text" class="form-control" v-model="search" placeholder=" Search Tasks   🔎" />
@@ -290,6 +290,15 @@ export default {
         }).catch(error =>{
                 
         });
+      },
+
+      invalidSubmit(){
+        let valid_letters = /^[a-z0-9]+$/i
+       if(this.title.match(valid_letters) && this.description.match(valid_letters)){
+         return false;
+       } else{
+         return true;
+       }
       },
 
       markAllDone()
