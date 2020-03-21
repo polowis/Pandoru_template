@@ -2,6 +2,7 @@ from app import app, db
 from app.config import Config
 from app.framework.util.color import *
 import os
+from app.framework.util.faker.fake_generator import FakerGenerator
 
 @app.cli.command('db:fresh')
 def reset_database():
@@ -27,6 +28,9 @@ def migrate_database():
     os.system('flask db migrate')
     os.system('flask db upgrade')
 
+@app.cli.command('db:fill')
+def fill():
+    FakerGenerator().generate_fake_users()
 
 @app.cli.command('test')
 def test():

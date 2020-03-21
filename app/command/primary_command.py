@@ -16,3 +16,4 @@ def node():
     time.sleep(2)
     os.system('sh ./bin/redis.sh')
     os.system('npm run serve')
+

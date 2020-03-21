@@ -1,6 +1,7 @@
 import math
 import random
 
+
 class Faker:
     """A package that generate fake data"""
     def __init__(self, lang=None):
