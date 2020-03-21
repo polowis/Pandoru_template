@@ -66,10 +66,12 @@ class Configurate:
 
     def register_database(self):
         """Register database"""
-        
-        database_support = ['mysql', 'sqlite', 'postgresql', 'oracle', 'firebird', 'sybase']
-        if self.config.DB_CONNECTION.lower() in database_support:
-            self.connect_to_database_engine()
+        if self.config.TESTING == True:
+            self.app.config[self.SQLALCHEMY_DATABASE_URI] = self.config.DB_TEST
+        else:
+            database_support = ['mysql', 'sqlite', 'postgresql', 'oracle', 'firebird', 'sybase']
+            if self.config.DB_CONNECTION.lower() in database_support:
+                self.connect_to_database_engine()
 
 
     def register_sqlalchemy_track_modifications(self):

@@ -29,5 +29,5 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Testing
-    TEST_DB=f'{DB_URI}'
+    DB_TEST=f'{DB_URI}'
     SELENIUM_DRIVER='chrome'
