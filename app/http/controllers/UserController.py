@@ -49,7 +49,7 @@ class UserController(Controller):
 
             login_user(user)
             session['username'] = user.username
-            return redirect(redirect_url('/dashboard'))
+            return redirect(redirect_url('UserController:dashboard_view'))
 
         else:
             return redirect('/login')

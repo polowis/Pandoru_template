@@ -1,6 +1,6 @@
 import inspect
 import re
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, url_for
 from app.framework.requests import request
 from flask_login import current_user, login_user, logout_user, login_required
 from flask import session
@@ -117,7 +117,7 @@ def redirect_url(default='/'):
     """Redirect user, default to /index"""
     return req.args.get('next') or \
            req.referrer or \
-           default
+           url_for(default)
 
 
 
