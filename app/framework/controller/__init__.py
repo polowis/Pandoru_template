@@ -5,7 +5,7 @@ from app.framework.requests import request
 from flask_login import current_user, login_user, logout_user, login_required
 from flask import session
 from app.framework.util import *
-
+from flask import request as req
 
 def redirect_if_authenticated(redirect_url):
     """Redirect if user is not authenticated"""
@@ -113,6 +113,11 @@ def redirect_to(location, code=302, response=None):
     """redirect to location"""
     return redirect(location, code, response)
 
+def redirect_url(default='/'):
+    """Redirect user, default to /index"""
+    return req.args.get('next') or \
+           req.referrer or \
+           default
 
 
 

@@ -49,7 +49,7 @@ class UserController(Controller):
 
             login_user(user)
             session['username'] = user.username
-            return redirect('/dashboard')
+            return redirect(redirect_url('/dashboard'))
 
         else:
             return redirect('/login')
@@ -78,7 +78,8 @@ class UserController(Controller):
             user_logged_in = User.query.filter_by(_email=request.input('email')).first()
             login_user(user_logged_in)
             session['user'] = user_logged_in.username
-
+            
+            
             return redirect_to('/dashboard')
         else:
             return redirect_to('/register')
