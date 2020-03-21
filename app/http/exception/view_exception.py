@@ -20,3 +20,9 @@ def page_csrf(e):
     """Handle csrf error"""
     error = { 'title': '419 | Page expired', 'message': 'Page expired'}
     return render_template('error/419.html', error=error)
+
+@app.errorhandler(401)
+def page_not_authorized(e):
+    """Handle unauthorized error"""
+    error = {'title': '401 | Page not authorized', 'message': 'Page not authorized'}
+    return render_template('error/401.html', error=error)
