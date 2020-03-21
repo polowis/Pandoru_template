@@ -60,4 +60,3 @@ $ flask test
 $ flask serve
 $ flask key:generate
 ```
-
