@@ -123,6 +123,7 @@ export default {
 
     data() {
         return{
+          room: this.user.name + this.user.email,
           search: '',
           title: '',
           progress: true,
@@ -142,7 +143,8 @@ export default {
     },
 
     created() {
-
+        //let room = this.user.name + this.user.email
+        socket.emit('privateroom', this.user.name+this.user.email)
         socket.on('update list', (tasks) => {
           this.task = tasks
         })
@@ -211,8 +213,11 @@ export default {
          for(let item = 0; item < this.task.length; item++) {
             if(this.task[item].done == true || this.task[item].done == 1){
                 axios.post('/api/undone/' + this.task[item].id).then(response => {
+                  if(response.data.message == 'Success'){
                   this.task[item].done = false;
                   this.task[item].progress = true;
+                  socket.emit('update list', {task: this.task, room: this.room})
+                  }
 
               }).then((res) =>{
 
@@ -221,7 +226,6 @@ export default {
               });
                 }
           }
-          socket.emit('update list', this.task)
       },
       
       deleteItemByButton(item_id){
@@ -239,18 +243,19 @@ export default {
       addItem() {
         
         axios.post('/api/create', {title: this.title, description: this.description, progress: this.progress}).then(response => {
-          this.task.push({
-            id: response.data.id,
-            title: response.data.title,
-            description: response.data.description,
-            done: response.data.done,
-            progress: response.data.progress,
-          })
+           if(response.data.message == 'Success'){
+            this.task.push({
+              id: response.data.id,
+              title: response.data.title,
+              description: response.data.description,
+              done: response.data.done,
+              progress: response.data.progress,
+            })
 
-          this.title = ""
-          this.description = ""
-          socket.emit('update list', this.task)
-        }).then((res) =>{
+            this.title = ""
+            this.description = ""
+            socket.emit('update list', {task: this.task, room: this.room})
+        }}).then((res) =>{
 
         }).catch(error =>{
                 
@@ -260,31 +265,36 @@ export default {
 
       fetchItemList() {
         axios.get('/api/todolist/'+ this.user.user_id).then(response => {
+
           this.task = response.data;
+         
         });
       },
 
       deleteAll() {
         for(let item = 0; item < this.task.length; item++) {
             axios.post('/api/delete/' + this.task[item].id).then(response => {
+              if(response.data.message == 'Success'){
               this.task = []
+              socket.emit('update list', {task: this.task, room: this.room})
 
-          }).then((res) =>{
+          }}).then((res) =>{
 
           }).catch(error =>{
                   
           });
           }
-          socket.emit('update list', this.task)
+          
       },
 
       deleteItem(item) {
         let item_id = this.task[this.task.indexOf(item)].id
         axios.post('/api/delete/' + item_id).then(response => {
+          if(response.data.message == 'Success'){
           this.task.splice(this.task.indexOf(item), 1)
           this.hide(item_id)
-          socket.emit('update list', this.task)
-        }).then((res) =>{
+          socket.emit('update list', {task: this.task, room: this.room})
+        }}).then((res) =>{
 
         }).catch(error =>{
                 
@@ -297,11 +307,12 @@ export default {
       {
         let item_element = this.task[this.task.indexOf(item)]
         axios.post('/api/done/' + item_element.id).then(response => {
+          if(response.data.message == 'Success'){
           item_element.done = true;
           item_element.progress = false;
-          socket.emit('update list', this.task)
+          socket.emit('update list', {task: this.task, room: this.room})
           
-        }).then((res) =>{
+        }}).then((res) =>{
 
         }).catch(error =>{
                 
@@ -309,7 +320,7 @@ export default {
       },
 
       invalidSubmit(){
-        let valid_letters = /^[a-z0-9]+$/i
+        let valid_letters = /^[a-z\d\-_\s]+$/i
        if(this.title.match(valid_letters) && this.description.match(valid_letters)){
          return false;
        } else{
@@ -321,15 +332,17 @@ export default {
       {
         for(let item = 0; item < this.task.length; item++){
            axios.post('/api/done/' + this.task[item].id).then(response => {
+           if(response.data.message == 'Success'){
             this.task[item].done = true;
             this.task[item].progress = false;
-          }).then((res) =>{
+            socket.emit('update list', {task: this.task, room: this.room})
+          }}).then((res) =>{
 
           }).catch(error =>{
                   
           });
         }
-        socket.emit('update list', this.task)
+        
          
       },
 
@@ -345,16 +358,18 @@ export default {
         for(let item = 0; item < this.task.length; item++) {
             if(this.task[item].done == true || this.task[item].done == 1){
                 axios.post('/api/delete/' + this.task[item].id).then(response => {
+                 if(response.data.message == 'Success'){
                   this.task.splice(item, 1)
+                  socket.emit('update list', {task: this.task, room: this.room})
 
-              }).then((res) =>{
+              }}).then((res) =>{
 
               }).catch(error =>{
                       
               });
                 }
           }
-          socket.emit('update list', this.task)
+          
       }
 
     },

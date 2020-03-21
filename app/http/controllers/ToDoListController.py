@@ -41,10 +41,14 @@ class ToDoListController(Controller):
         todolist.description = data['description']
         todolist.progress = data['progress']
         todolist.author = current_user.user_id
-        todolist.save()
-
+        try:
+            todolist.save()
+        except:
+            return jsonify(message="Failure")
         data = json.dumps(todolist, cls=AlchemyEncoder)
-        return Response(data, mimetype="application/json")
+        data = json.loads(data)
+        data.update({'message': 'Success'})
+        return Response(json.dumps(data), mimetype="application/json")
     
 
     @route('/todolist/<user_id>')
@@ -67,14 +71,20 @@ class ToDoListController(Controller):
         todolist = ToDoList.query.filter_by(id=item_id).first()
         todolist.done = False
         todolist.progress = True
-        todolist.save()
+        try:
+            todolist.save()
+        except:
+            return jsonify(message="Failure")
         return jsonify(message="Success")
         
     
     @route("/delete/<item_id>", methods=['POST'])
     def delete(self, item_id):
         todolist = ToDoList.query.filter_by(id=item_id).first()
-        todolist.delete()
+        try:
+            todolist.delete()
+        except:
+            return jsonify(message="Failure")
         return jsonify(message="Success")
 
     @route('item/<item_id>', methods=['GET'])
@@ -88,5 +98,8 @@ class ToDoListController(Controller):
         todolist = ToDoList.query.filter_by(id=item_id).first()
         todolist.title = data['title']
         todolist.description = data['description']
-        todolist.save()
+        try:
+            todolist.save()
+        except:
+            return jsonify(message="Failure")
         return jsonify(message="Success")
