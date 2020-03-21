@@ -3,10 +3,12 @@
 ## Requirement
 
 1. Python >= 3.6+
-2. Selenium driver (browser testing, driver used: Chrome)
-3. Database setup (sqlite, mysql, postgresql, etc.)
-4. NodeJS >= 11
-5. Redis 
+2. Database setup (sqlite, mysql, postgresql, etc.)
+3. NodeJS >= 11
+4. Redis 
+
+## Optional Dependencies
+1. ```webdriver``` - required if you want to run ```flask test``` command
 
 ## Installation
 
