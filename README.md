@@ -6,6 +6,7 @@
 2. Selenium driver (browser testing, driver used: Chrome)
 3. Database setup (sqlite, mysql, postgresql, etc.)
 4. NodeJS >= 10
+5. Redis (Recommended)
 
 ## Installation
 
@@ -47,5 +48,16 @@ This command will drop all tables and rerun the database
 
 ```
 $ flask db:fresh
+```
+
+## Available commands
+
+```
+$ flask db:migrate 
+$ flask db:fresh
+$ flask node
+$ flask test
+$ flask server
+$ flask key:generate
 ```
 
