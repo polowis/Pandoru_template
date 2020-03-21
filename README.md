@@ -5,8 +5,8 @@
 1. Python >= 3.6+
 2. Selenium driver (browser testing, driver used: Chrome)
 3. Database setup (sqlite, mysql, postgresql, etc.)
-4. NodeJS >= 10
-5. Redis (Recommended)
+4. NodeJS >= 11
+5. Redis 
 
 ## Installation
 
