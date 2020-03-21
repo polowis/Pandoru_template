@@ -69,7 +69,6 @@ $ flask db:migrate
 $ flask db:fresh
 $ flask node
 $ flask test
-$ flask server
+$ flask serve
 $ flask key:generate
 ```
-
