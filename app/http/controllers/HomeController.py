@@ -3,6 +3,7 @@ from app.framework.controller import *
 from flask_login import login_required, current_user
 import json
 
+
 class HomeController(Controller):
 
     def construct(cls):
