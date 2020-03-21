@@ -23,7 +23,7 @@ In order to work on this project on your machine, you can follow the instruction
     cd Pandoru_template
     ```
 
-5. Run the `install.sh` bin script
+5. Run the `install.sh` bin script <br>
     **If your machine has satisfied with all the requirements listed above, skip this step**
     ```bash
     ./bin/install.sh
@@ -33,8 +33,8 @@ In order to work on this project on your machine, you can follow the instruction
     sudo chmod +x ./bin/install.sh
     ./bin/install.sh
     ```
-    
-6. Run ```setup.sh``` bin script
+
+6. Run ```setup.sh``` bin script <br>
     **If you already run the ```install.sh``` script, skip this step**
     ```bash
     ./bin/setup.sh
