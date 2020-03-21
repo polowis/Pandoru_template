@@ -63,7 +63,7 @@ class ToDoListController(Controller):
         return jsonify(message="Success")
     
     @route('/undone/<item_id>', methods=['POST'])
-    def done(self, item_id):
+    def undone(self, item_id):
         todolist = ToDoList.query.filter_by(id=item_id).first()
         todolist.done = False
         todolist.progress = True
