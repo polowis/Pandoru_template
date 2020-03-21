@@ -22,7 +22,9 @@ In order to work on this project on your machine, you can follow the instruction
     ```bash
     cd Pandoru_template
     ```
+
 5. Run the `install.sh` bin script
+    **If your machine has satisfied with all the requirements listed above, skip this step**
     ```bash
     ./bin/install.sh
     ```
@@ -30,6 +32,16 @@ In order to work on this project on your machine, you can follow the instruction
     ```bash
     sudo chmod +x ./bin/install.sh
     ./bin/install.sh
+    ```
+    
+6. Run ```setup.sh``` bin script
+    **If you already run the ```install.sh``` script, skip this step**
+    ```bash
+    ./bin/setup.sh
+    ```
+    In case you encounter errors such as `command not found` or `permission denied` you may need to follow these steps to make the file executable in order to solve your problem:
+    ```bash
+    sudo chmod +x ./bin/setup.sh
     ```
 
 ## Configuration
