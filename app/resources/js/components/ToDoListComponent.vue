@@ -104,7 +104,9 @@
           </section>  
           <section class = 'row' id = 'cls'>
            <div class = "col-2" >
-            <button ng-click = 'clear()' >Clear My Local Storage</button>
+             <!--
+            <button @click="gobackHome()">Go to home page</button>
+             -->
            </div>
         </section>
          </form>
@@ -165,6 +167,10 @@ export default {
     },
 
     methods: {
+      gobackHome()
+      {
+        window.location.href = '/'
+      },
       show(name){
         this.$modal.show(name.toString(), {
         title: 'Alert!',

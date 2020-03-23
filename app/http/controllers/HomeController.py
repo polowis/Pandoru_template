@@ -10,7 +10,7 @@ class HomeController(Controller):
         HomeController.register(app)
 
 
-    @route('/test', methods=["GET"])
+    @route('/todolist', methods=["GET"])
     @login_required
     def test(self):
         user = {
