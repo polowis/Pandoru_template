@@ -17,3 +17,8 @@ def node():
     os.system('sh ./bin/redis.sh')
     os.system('npm run serve')
 
+@app.cli.command('redis')
+def redis():
+    """Run redis server"""
+    os.system('redis-server')
+
