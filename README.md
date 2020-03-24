@@ -1,5 +1,7 @@
 # Pandoru_template
- 
+
+This repo also contains the example todolist app.
+
 ## Requirement
 
 1. Python >= 3.6+
