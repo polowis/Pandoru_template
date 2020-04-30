@@ -63,12 +63,16 @@ This command will drop all tables and rerun the database
 ```
 $ flask db:fresh
 ```
-
+## Test database connection
+```
+$ flask db:connection
+```
 ## Available commands
 
 ```
 $ flask db:migrate 
 $ flask db:fresh
+$ flask db:connection
 $ flask node
 $ flask test
 $ flask serve
