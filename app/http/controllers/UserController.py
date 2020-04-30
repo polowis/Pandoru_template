@@ -30,7 +30,7 @@ class UserController(Controller):
     @route('/login', methods=['GET'])
     def login_view(self):
         if current_user.is_authenticated:
-            return redirect('/dashboard')
+            return redirect('/')
 
         return view('auth/login')
 
@@ -49,7 +49,7 @@ class UserController(Controller):
 
             login_user(user)
             session['username'] = user.username
-            return redirect(redirect_url('UserController:dashboard_view'))
+            return redirect('/')
 
         else:
             return redirect('/login')
@@ -57,7 +57,7 @@ class UserController(Controller):
     @route('/register', methods=['GET'])
     def register_view(self):
         if current_user.is_authenticated:
-            return redirect('/dashboard')
+            return redirect('/')
         return view('auth/register')
     
 
@@ -80,7 +80,7 @@ class UserController(Controller):
             session['user'] = user_logged_in.username
             
             
-            return redirect_to('/dashboard')
+            return redirect_to('/')
         else:
             return redirect_to('/register')
 
