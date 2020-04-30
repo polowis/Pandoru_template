@@ -38,7 +38,7 @@ class TestRegistrationPage(unittest.TestCase):
         submit_button.send_keys(Keys.ENTER)
 
         current_url = self.driver.current_url
-        self.assertEqual(current_url, f'{app_domain}/dashboard')
+        self.assertEqual(current_url, f'{app_domain}')
         
 
 if __name__ == '__main__':
