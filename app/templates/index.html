@@ -22,7 +22,7 @@
                             <span class="navbar-toggler-bar"></span>
                         </button>
                         {% if current_user.is_authenticated %}
-                        <a class="navbar-brand" href="/">{{ current_user.username }}</a>
+                        <a class="navbar-brand" href="/todolist">{{ current_user.username }}! Go to your todo list!</a>
                         {% else %}
                         <a class="navbar-brand" href="/">Pandoru</a>
                         {% endif %}
