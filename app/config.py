@@ -23,6 +23,7 @@ class Config(object):
     DB_PASSWORD=''
 
     #DB_URI is optional
+    # if you use sqlite, you need to specify the path in DB_URI
     DB_URI = f'{DB_CONNECTION}://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}'
     
     DATABASE_CONNECT_OPTIONS = {}

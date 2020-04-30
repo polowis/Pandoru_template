@@ -3,12 +3,12 @@ from app.config import Config
 from app.framework.util.color import *
 import os
 from app.framework.util.faker.fake_generator import FakerGenerator
+from sqlalchemy_utils import database_exists, create_database, drop_database
 
 @app.cli.command('db:fresh')
 def reset_database():
     """Destroys the database and tables."""
     database_url = app.config.get('SQLALCHEMY_DATABASE_URI')
-    from sqlalchemy_utils import database_exists, create_database, drop_database
     if database_exists(database_url):
         warn('Dropping database')
         drop_database(database_url)
@@ -40,3 +40,14 @@ def test():
         os.system('nose2')
     except ImportError:
         error('Nose2 is not installed. Try to run pip install nose2')
+
+@app.cli.command('db:connection')
+def db_connection():
+    database_url = app.config.get('SQLALCHEMY_DATABASE_URI')
+    if database_exists(database_url):
+        info("Database connection established successfully")
+
+    if not database_exists(database_url):
+        warn("The database connection is not established")
+        warn("Please check your connection again")
+        

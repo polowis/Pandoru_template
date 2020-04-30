@@ -69,9 +69,12 @@ class Configurate:
         if self.config.TESTING == True:
             self.app.config[self.SQLALCHEMY_DATABASE_URI] = self.config.DB_TEST
         else:
-            database_support = ['mysql', 'sqlite', 'postgresql', 'oracle', 'firebird', 'sybase']
-            if self.config.DB_CONNECTION.lower() in database_support:
-                self.connect_to_database_engine()
+            if self.has_database_uri():
+                self.app.config[self.SQLALCHEMY_DATABASE_URI] = self.config.DB_URI
+            else:
+                database_support = ['mysql', 'sqlite', 'postgresql', 'oracle', 'firebird', 'sybase']
+                if self.config.DB_CONNECTION.lower() in database_support:
+                    self.connect_to_database_engine()
 
 
     def register_sqlalchemy_track_modifications(self):
@@ -116,7 +119,7 @@ class Configurate:
         """Check if environment key exists"""
         members = dir(self.config)
         if key in members:
-            if key != '':
+            if len(key) > 1:
                 return True
         return False
         """ error_message = "Expected environment variable '{}' not set in Config file.".format(key)
