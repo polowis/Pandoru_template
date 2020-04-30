@@ -13,6 +13,7 @@ def serve():
 def node():
     """Start node server """
     warn('Make sure you have node install...')
+    warn('Make sure redis is running...')
     time.sleep(2)
     os.system('sh ./bin/redis.sh')
     os.system('npm run serve')
