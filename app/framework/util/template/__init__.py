@@ -2,6 +2,7 @@ from flask import get_flashed_messages
 import base64
 import os
 from math import floor
+from ..moment.core import *
 
 class ViewFunction:
     """Custom view function"""
@@ -10,7 +11,8 @@ class ViewFunction:
         self.app.jinja_env.globals.update(
             error_message=self.__error_message, 
             error=self.__error,
-            nonce=self.__nonce
+            nonce=self.__nonce,
+            moment=moment
         )
         
 
