@@ -1,7 +1,7 @@
 {
-  "name": "work2",
+  "name": "pandoru",
   "version": "1.0.0",
-  "description": "1. Python >= 3.6+ 2. Selenium driver (browser testing, driver used: Chrome) 3. Database setup (sqlite, mysql, postgresql, etc.)",
+  "description": "A flask template",
   "main": "index.js",
   "directories": {
     "test": "test"
