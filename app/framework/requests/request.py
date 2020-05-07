@@ -74,23 +74,28 @@ class Request:
         """Return json"""
         return req.get_json()
     
+
     def header(self, value=None):
         """Get header request"""
         if value is None:
             return req.headers
         return req.headers.get(value)
 
+
     def platform(self, **kwargs):
         """Return request's OS platform"""
         return req.user_agent.platform
+    
     
     def browser(self, **kwargs):
         """Return request's browser"""
         return req.user_agent.browser
     
+
     def version(self, **kwargs):
         """Return browser version"""
         return req.user_agent.version
+
 
     def ip(self, deep_detect=True):
         """Return request's IP address
@@ -108,6 +113,7 @@ class Request:
 
         return ip
 
+
     def __checkIP(self):
         """Check for local ip"""
         ip = self.ip()
@@ -116,6 +122,7 @@ class Request:
         if(ip == "127.0.0.1" or ip == "0.0.0.0"):
             ip = ""
         return ip
+
 
     def location(self, **kwargs):
         """Return request's location (country name)

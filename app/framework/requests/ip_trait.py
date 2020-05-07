@@ -47,38 +47,46 @@ class IP:
         self.region = self.get_region_name_by_ip()
         self.country = self.get_country_name_by_ip()
         self.country_code = self.details["geoplugin_countryCode"]
-    
+
+
     def get_country_name_by_ip(self):
         """return country name"""
         return self.details["geoplugin_countryName"]
+
 
     def get_city_name_by_ip(self):
         """return city name"""
         return self.details["geoplugin_city"]
 
+
     def get_state_name_by_ip(self):
         """return state name"""
         return self.details["geoplugin_region"]
     
+
     def get_region_name_by_ip(self):
         """return region name"""
         return self.details["geoplugin_region"]
     
+
     def get_address_name_by_ip(self):
         """Return countryName, regionName and cityName"""
-        address = []
-        address.append(self.country)
+        location = []
+        location.append(self.details["geoplugin_countryName"])
 
-        if(len(self.state) >= 1):
-            address.append(self.state)
+        if(len(self.details["geoplugin_region"]) >= 1):
+            location.append(self.details["geoplugin_region"])
 
-        if(len(self.city) >=1):
-            address.append(self.city)
-        return ', '.join(address.reverse()) 
-        
+        if(len(self.details["geoplugin_city"]) >=1):
+            location.append(self.details["geoplugin_city"])
+        location.reverse()
+        return ', '.join(location) 
+
 
     def getDetails(self):
-        """Return all you need to know about this ip address"""
+        """Return all you need to know about this ip address
+        return type: dict
+        """
         url = 'http://www.geoplugin.net/json.gp?ip={}'.format(self.ip)
         res = requests.get(url)
         j = json.loads(res.text)
