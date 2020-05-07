@@ -6,7 +6,7 @@ import requests, json
 class Request:
     """Handle request, response"""
     def IP(self):
-        return IP(self.ip())
+        return IP(self.__checkIP())
 
     def input(self, name=None):
         """Get input form data"""
@@ -108,12 +108,22 @@ class Request:
 
         return ip
 
+    def __checkIP(self):
+        """Check for local ip"""
+        ip = self.ip()
+
+        # check for local ip
+        if(ip == "127.0.0.1" or ip == "0.0.0.0"):
+            ip = ""
+        return ip
+
     def location(self, **kwargs):
         """Return request's location (country name)
         If you want to get more details, use method chaining IP instead
         Eg: request.IP().state
         """
-        url = 'http://www.geoplugin.net/json.gp?ip={}'.format(self.ip())
+        
+        url = 'http://www.geoplugin.net/json.gp?ip={}'.format(self.__checkIP())
         r = requests.get(url)
         j = json.loads(r.text)
         locale = j["geoplugin_countryName"]
