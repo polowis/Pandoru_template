@@ -32,3 +32,6 @@ class Config(object):
     # Testing
     DB_TEST=f'{DB_URI}'
     SELENIUM_DRIVER='chrome'
+
+    ## App' locales
+    LOCALES = "en"
