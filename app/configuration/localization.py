@@ -1,9 +1,12 @@
 locales_mapping = {
-   
+
 }
 
 #If false the system will use en as locale
-useAcceptLanguageHeader = True,
+useAcceptLanguageHeader = True
+
+# If no translation can be found
+fallBackLocale = "en"
 
 locales_support = {
     """
