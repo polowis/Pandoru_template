@@ -1,5 +1,7 @@
 import socket
 import requests
+import json
+from ..util import *
 
 def is_valid_ipv4_address(address):
     """Return true if valid IPv4 address"""
@@ -38,7 +40,7 @@ class IP:
     """Class base to handle incoming user ip address"""
     def __init__(self, ip):
         self.ip = ip
-        self.details = self.__getDetails()
+        self.details = self.getDetails()
         self.address = self.get_address_name_by_ip()
         self.city = self.get_city_name_by_ip()
         self.state = self.get_state_name_by_ip()
@@ -75,7 +77,7 @@ class IP:
         return ', '.join(address.reverse()) 
         
 
-    def __getDetails(self):
+    def getDetails(self):
         """Return all you need to know about this ip address"""
         url = 'http://www.geoplugin.net/json.gp?ip={}'.format(self.ip)
         res = requests.get(url)
