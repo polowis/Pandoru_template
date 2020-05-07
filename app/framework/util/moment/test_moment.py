@@ -36,7 +36,6 @@ class MomentTest(unittest.TestCase):
     
     def test_adding_hours(self):
         self.assertEqual("2016-02-09 12:00 AM", moment.date("2012-12-09").add(years=3, months=2).format("YYYY-M-D h:m A"))
-        print(moment.date("2016-09-28T21:45:23Z").fromNow())
 
 
 if __name__ == "__main__":
