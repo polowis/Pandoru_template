@@ -135,5 +135,8 @@ class Request:
         j = json.loads(r.text)
         locale = j["geoplugin_countryName"]
         return locale
+    
+    def locale(self):
+        return req.accept_languages
 
 request = Request()
