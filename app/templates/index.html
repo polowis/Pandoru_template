@@ -24,7 +24,7 @@
                         {% if current_user.is_authenticated %}
                         <a class="navbar-brand" href="/todolist">{{ locale.lang("greeting.username", name=current_user.username) }}! Go to your todo list!</a>
                         {% else %}
-                        <a class="navbar-brand" href="/">Pandoru</a>
+                        <a class="navbar-brand" href="/">Pandoru / Current date: {{ moment.now().format('YYYY-MM-DD')}}</a>
                         {% endif %}
                     </div>
                     <div class="collapse navbar-collapse" id="navbarToggler">
