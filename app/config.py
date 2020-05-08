@@ -33,5 +33,9 @@ class Config(object):
     DB_TEST=f'{DB_URI}'
     SELENIUM_DRIVER='chrome'
 
+    ## Set to true if you wish to use localization in front-end template
+    ## you can still use it by importing localization class in backend
+    ENABLE_LOCALIZATION=True 
     ## App' locales
     LOCALES = "en"
+
