@@ -6,16 +6,37 @@ import requests, json
 class Request:
     """Handle request, response"""
     def IP(self):
+        """Return the IP instance of request"""
         return IP(self.__checkIP())
 
     def input(self, name=None):
         """Get input form data"""
-        if name is None:
-            return req.form
-        if isinstance(name, str):
-            return req.form.get(name)
-        raise ValueError("Argument must be a string")
+        if req.is_json():
+            return self.__find_with_json(name)
+        else:
+            if name is None:
+                return req.form
+            if isinstance(name, str):
+                return req.form.get(name)
+            raise ValueError("Argument must be a string")
 
+    def __find_with_json(self, key: str):
+        """ use "dot" notation to access the arrays"""
+        data = self.get_json()
+            if isinstance(key, str):
+                return self.__find(key, data)
+
+
+    def method(self, methodType: str):
+        """Check for request method \n
+        For eg: if request.method("GET"): 
+
+        """
+        if methodType.upper() == "GET":
+            return req.method == "GET"
+
+        elif methodType.upper() == "POST":
+            return req.method == "POST"
    
     def query(self, name=None):
         """Get query string"""
@@ -98,7 +119,7 @@ class Request:
 
 
     def ip(self, deep_detect=True):
-        """Return request's IP address
+        """Return request's IP address \n
         If you want to get more details, use method chaining IP instead
         Eg: request.IP().state
         """
@@ -137,6 +158,17 @@ class Request:
         return locale
     
     def locale(self):
+        """return current locale of request"""
         return req.accept_languages
+    
+
+    def __find(self, element: str, json: dict):
+        """Find by dot notation"""
+
+        keys = element.split(".")
+        rv = json
+        for key in keys:
+            rv = rv[key]
+        return rv
 
 request = Request()
