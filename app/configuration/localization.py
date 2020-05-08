@@ -4,7 +4,9 @@ locales_mapping = {
     "en-US": "en", 
     "en-AU": "en"
 }
+
 # change this if you want to test in different locale
+# this will ignore locales_support and locales_mapping
 test_locales = None
 
 #If false the system will use en as locale
