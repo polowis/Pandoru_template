@@ -3,6 +3,8 @@ import base64
 import os
 from math import floor
 from ..moment.core import *
+from ....config import *
+from ..locale.localization import *
 
 class ViewFunction:
     """Custom view function"""
@@ -12,7 +14,8 @@ class ViewFunction:
             error_message=self.__error_message, 
             error=self.__error,
             nonce=self.__nonce,
-            moment=moment
+            moment=moment,
+            locale=Localization()
         )
         
 
@@ -33,6 +36,7 @@ class ViewFunction:
             return ''
     
     def __nonce(self):
+        """Nonce hashing functon"""
         length = 32
         if length < 1:
             return ''
@@ -43,6 +47,12 @@ class ViewFunction:
         elif length%3 == 2:
             b64len+=3
         return string[0:b64len].decode()
+    
+    def __locale(self):
+        """Enable localization"""
+        if Config.ENABLE_LOCALIZATION:
+            return Localization()
+        return Localization()
 
 
 
