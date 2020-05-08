@@ -28,11 +28,36 @@ class Localization:
         """Return supported accept_language
         Note: this only check for supported language in config file.
         """
+        
         locales = self.get_supported_locales().keys()
         if(len(locales) < 1):
-            return req.accept_languages.best_match(DEFAULT_LOCALES)
+            """
+            If user does not provide supported locales, 
+            get default app's locale
+            """
+            lang = req.accept_languages.best_match(DEFAULT_LOCALES)
+            localeMap = locales_mapping.get(lang)
+            return self.__current_locales(lang, localeMap)
         else:
-            return req.accept_languages.best_match(locales)
+            """
+            If user provide supported locales
+            """
+            lang = req.accept_languages.best_match(locales)
+            localeMap = locales_mapping.get(lang)
+            return self.__current_locales(lang, localeMap)
+
+    def __current_locales(self, lang, localeMap):
+        """This will check for if test_locales is enable
+        For purpose testing with different locales
+        """
+        if test_locales is None:
+            if localeMap is None:
+                return lang
+            else:
+                return localeMap
+        else:
+            return test_locales
+
 
     def get_current_locales_name(self) -> str:
         """Return the current locales name as a string"""
@@ -43,12 +68,13 @@ class Localization:
         """Return an array with all the keys for the supported locales."""
         return locales_support.keys()
 
+    def get_test_locales(self):
+        """If test locales is enable, use for testing"""
+        return test_locales
+
     def lang(self, key: str, **kwargs):
         """get translation for given key"""
-        locales = DEFAULT_LOCALES 
-        log(kwargs)
-        if locales is None:
-            locales = self.get_current_locales()
+        locales = self.get_current_locales()
 
         fileName = self.get_file_name(key)[0]
         try:
