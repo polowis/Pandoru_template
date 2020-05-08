@@ -1,12 +1,17 @@
+#Map locales
 locales_mapping = {
-
+    "en-GB": "en",
+    "en-US": "en", 
+    "en-AU": "en"
 }
+# change this if you want to test in different locale
+test_locales = None
 
 #If false the system will use en as locale
 useAcceptLanguageHeader = True
 
 # If no translation can be found
-fallBackLocale = "en"
+fall_back_locale = "en"
 
 locales_support = {
     """
