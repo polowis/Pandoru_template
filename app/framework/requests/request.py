@@ -11,7 +11,7 @@ class Request:
 
     def input(self, name=None):
         """Get input form data"""
-        if req.is_json():
+        if req.is_json:
             return self.__find_with_json(name)
         else:
             if name is None:
@@ -23,8 +23,8 @@ class Request:
     def __find_with_json(self, key: str):
         """ use "dot" notation to access the arrays"""
         data = self.get_json()
-            if isinstance(key, str):
-                return self.__find(key, data)
+        if isinstance(key, str):
+            return self.__find(key, data)
 
 
     def method(self, methodType: str):
