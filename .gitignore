@@ -124,3 +124,4 @@ dmypy.json
 .DS_Store
 node_modules
 app/static/js/app.js
+docs/.jekyll-cache

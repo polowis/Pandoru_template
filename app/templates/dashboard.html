@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+    </head>
+    <body>
+        <div id="app">
+            <dashboard-component :user="{{ user }}"></dashboard-component>
+        </div>
+        <script nonce="{{ nonce() }}" src=" {{ url_for('static', filename='js/app.js')}}"></script>
+    </body>
+</html>

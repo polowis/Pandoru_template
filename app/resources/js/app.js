@@ -24,6 +24,7 @@ window.socket = io('http://localhost:2000')
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default)
 Vue.component('todolist-component', require('./components/ToDoListComponent.vue').default)
+Vue.component('dashboard-component', require('./components/DashboardComponent.vue').default)
 import VModal from 'vue-js-modal'
 
 Vue.use(VModal, { dialog: true })

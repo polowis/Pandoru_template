@@ -24,6 +24,15 @@ class HomeController(Controller):
         return view('test', user=json.dumps(user))
 
     @route('/', methods=["GET"])
+    @login_required
     def home(self):
-        return view('index')
+        user = {
+            "id": current_user.id,
+            "name": current_user.username, 
+            "email": current_user.email,
+            "user_id": current_user.user_id,
+            "avatar": current_user.avatar,
+            
+        }
+        return view('dashboard', user=json.dumps(user))
 

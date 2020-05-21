@@ -12,6 +12,7 @@ class User(UserMixin, db.Model, BaseModel):
     _user_id = db.Column(db.String(128), unique=True)
     _email = db.Column(db.String(120), index=True, unique=True)
     _password = db.Column(db.String(128))
+    _avatar = db.Column(db.String(128), default="/uploads/user.png")
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
@@ -50,6 +51,15 @@ class User(UserMixin, db.Model, BaseModel):
             raise ValueError("no password given")
 
         self._password = self.set_password(password)
+
+    @property
+    def avatar(self):
+        return self._avatar
+    
+    @avatar.setter
+    def avatar(self, avatar):
+        """Set user avatar image"""
+        self._avatar = avatar
 
     def set_password(self, password : str):
         """Set password for user"""

@@ -32,18 +32,18 @@ class UserController(Controller):
         if current_user.is_authenticated:
             return redirect('/')
 
-        return view('auth/login')
+        return view('auth/auth')
 
     @route('/login', methods=['POST'])
     def login_action(self):
 
         form = FormRequest({
-            'user_email': 'email'
+            'email': 'email'
         })
 
         if form.is_validated():
-            user = User.query.filter_by(_email=request.input('user_email')).first()
-            if user is None or not user.has_correct_password(request.input('pass')): 
+            user = User.query.filter_by(_email=request.input('email')).first()
+            if user is None or not user.has_correct_password(request.input('password')): 
                 flash('Email or password is wrong')
                 return redirect('/login')
 

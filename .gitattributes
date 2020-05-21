@@ -2,3 +2,4 @@
 * text=auto
 *.css linguist-language=Python
 app/static/js/app.js linguist-vendored
+docs/ linguist-vendored
