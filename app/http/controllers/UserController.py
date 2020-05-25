@@ -88,3 +88,10 @@ class UserController(Controller):
     def logout(self):
         logout_user()
         return redirect('/login')
+    
+
+    @route('/user/avatar/edit', methods=['POST'])
+    @login_required
+    def edit_avatar(self):
+        user = User.query.filter_by(user_id=current_user.user_id).first()
+

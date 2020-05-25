@@ -489,7 +489,7 @@
 	 border: none;
 	 resize: none;
 	 margin-top: 15px;
-	 color: #fff;
+	 color:white;
 	 max-width: calc(100% - 70px);
 }
  .status-textarea::placeholder {
