@@ -5,15 +5,23 @@ from app.framework.database.base_model import BaseModel
 from flask_login import UserMixin
 
 
-
+followers = db.Table('followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+)
 class User(UserMixin, db.Model, BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     _username = db.Column(db.String(64), index=True, unique=True)
     _user_id = db.Column(db.String(128), unique=True)
     _email = db.Column(db.String(120), index=True, unique=True)
     _password = db.Column(db.String(128))
-    _avatar = db.Column(db.String(128), default="/uploads/user.png")
+    _avatar = db.Column(db.String(128), default="user.png")
     _place = db.Column(db.String(128), nullable=True)
+    _background = db.Column(db.String(128), default="background.png")
+    followed = db.relationship('User', secondary=followers,
+    primaryjoin=(followers.c.follower_id == id), 
+    secondaryjoin=(followers.c.followed_id == id), 
+    backref=db.backref('followers', lazy='dynamic'), lazy="dynamic")
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
@@ -61,6 +69,14 @@ class User(UserMixin, db.Model, BaseModel):
     def avatar(self, avatar):
         """Set user avatar image"""
         self._avatar = avatar
+    
+    @property
+    def background(self):
+        return self._background
+    
+    @background.setter
+    def background(self, background):
+        self._background = background
 
     def set_password(self, password : str):
         """Set password for user"""
@@ -69,6 +85,21 @@ class User(UserMixin, db.Model, BaseModel):
     def has_correct_password(self, password: str):
         """Return true if password match"""
         return bcrypt.checkpw(password.encode(), self._password.encode())
+
+    def follow(self, user):
+        """follow a user"""
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        """unfollow a user"""
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        """check if user is following another user"""
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
 
     def __generate_user_id(self):
         """generate unique user_id"""

@@ -185,7 +185,7 @@
                 <div class="album-title"><strong>{{user.name}}</strong> posted a new <span v-if="item.photo == null">status</span><span v-else>photo</span> on their timeline</div>
                 <div class="album-date">6 hours ago</div>
               </div>
-              <button class="intro-menu"></button>
+              <button class="intro-menu"><a href="#"></a></button>
             </div>
             <div class="album-content">{{item.content}}
               <div class="album-photos">
@@ -397,7 +397,8 @@ export default {
             status: "",
             task: [],
             stage: "status",
-            file: ""
+            file: "",
+            editMode: false,
         }
     },
     methods: {
@@ -424,6 +425,7 @@ export default {
         let formData = new FormData()
         formData.append('file', this.file)
         formData.append('content', this.status)
+        
         axios.post('/api/photo/create', 
                
           formData, 
@@ -459,6 +461,10 @@ export default {
 
       handlePhotoUpload(){
         this.file = this.$refs.file.files[0];
+      },
+
+      toggleEditMode() {
+        this.editMode =! this.editMode;
       }
 
 

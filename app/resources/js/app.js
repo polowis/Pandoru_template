@@ -9,7 +9,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import io from 'socket.io-client'
-window.socket = io('http://localhost:2000')
+//window.socket = io('http://localhost:2000')
 
 /**
  * The following block of code may be used to automatically register your
