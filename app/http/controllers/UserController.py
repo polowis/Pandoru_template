@@ -8,6 +8,8 @@ from flask import session
 from app.framework.util import *
 from flask import jsonify
 import json
+from flask import request as req
+from werkzeug.utils import secure_filename
 
 
 
@@ -94,4 +96,61 @@ class UserController(Controller):
     @login_required
     def edit_avatar(self):
         user = User.query.filter_by(user_id=current_user.user_id).first()
+        file = req.files['file']
+        filename = secure_filename(file.filename.rsplit('.', 1)[0].lower() + str(datetime.datetime.now()) + '.' + file.filename.rsplit('.', 1)[1].lower())
+        file.save('app/static/uploads/' + filename)
+        user.avatar = filename
+        try:
+            user.save()
+        except:
+            return jsonify(message="Failure")
+        return jsonify(message="Success")
+    
+
+    @route('/user/background/edit', methods=['POST'])
+    @login_required
+    def edit_background(self):
+        user = User.query.filter_by(user_id=current_user.user_id).first()
+        file = req.files['file']
+        filename = secure_filename(file.filename.rsplit('.', 1)[0].lower() + str(datetime.datetime.now()))
+        file.save('app/static/uploads/' + filename)
+        user.background = filename
+        try:
+            user.save()
+        except:
+            return jsonify(message="Failure")
+        return jsonify(message="Success")
+    
+    @route('/user/delete/<user_id>', methods=['GET'])
+    @login_required
+    def show_profile(self, user_id):
+        if current_user.user_id == user_id:
+            return redirect('/')
+        else:
+            _user = User.query.filter(id=user_id).first()
+            user = {
+            "id": _user.id,
+            "name": _user.username, 
+            "email": _user.email,
+            "user_id": _user.user_id,
+            "avatar": _user.avatar,
+            "background": _user.background  
+            }
+            return view('dashboard', user=json.dumps(user))
+
+    @route('/user/place/edit', methods=['POST'])
+    @login_required
+    def edit_user_place(self):
+        data = request.get_json()
+        user = User.query.filter_by(user_id=current_user.user_id).first()
+        user.place = data['place']
+        try:
+            user.save()
+        except:
+            return jsonify(message="Failure")
+        return jsonify(message="Success", place=data['place'])
+
+
+        
+
 

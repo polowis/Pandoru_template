@@ -15,9 +15,11 @@ class User(UserMixin, db.Model, BaseModel):
     _user_id = db.Column(db.String(128), unique=True)
     _email = db.Column(db.String(120), index=True, unique=True)
     _password = db.Column(db.String(128))
-    _avatar = db.Column(db.String(128), default="user.png")
-    _place = db.Column(db.String(128), nullable=True)
-    _background = db.Column(db.String(128), default="background.png")
+    _avatar = db.Column(db.String(128), default="profile.jpg")
+    _place = db.Column(db.String(128), nullable=True, default="Australia")
+    _background = db.Column(db.String(128), default="background.jpg")
+    _job = db.Column(db.String(128), default="human")
+    _job_place = db.Column(db.String(128), default="Earth")
     followed = db.relationship('User', secondary=followers,
     primaryjoin=(followers.c.follower_id == id), 
     secondaryjoin=(followers.c.followed_id == id), 
@@ -100,6 +102,29 @@ class User(UserMixin, db.Model, BaseModel):
         """check if user is following another user"""
         return self.followed.filter(
             followers.c.followed_id == user.id).count() > 0
+    @property        
+    def place(self):
+        return self._place
+
+    @place.setter
+    def place(self, place):
+        self._place = place
+
+    @property
+    def job(self):
+        return self._job
+
+    @job.setter
+    def job(self, job):
+        self._job = job
+    
+    @property
+    def job_place(self):
+        return self._job_place
+    
+    @job_place.setter
+    def job_place(self, job_place):
+        self._job_place = job_place
 
     def __generate_user_id(self):
         """generate unique user_id"""

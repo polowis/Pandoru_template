@@ -125,3 +125,4 @@ dmypy.json
 node_modules
 app/static/js/app.js
 docs/.jekyll-cache
+app/static/uploads

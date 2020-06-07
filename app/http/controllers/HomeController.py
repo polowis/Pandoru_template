@@ -32,7 +32,11 @@ class HomeController(Controller):
             "email": current_user.email,
             "user_id": current_user.user_id,
             "avatar": current_user.avatar,
-            
+            "background": current_user.background,
+            "place": current_user.place, 
+            "job": current_user.job,
+            "job_place": current_user.job_place
+           
         }
         return view('dashboard', user=json.dumps(user))
 
