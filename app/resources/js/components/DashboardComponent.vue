@@ -9,17 +9,6 @@
     </div>
     <div class="logo">Onion</div>
     <SideMenuComponent></SideMenuComponent>
-    
-    <a href="https://twitter.com/HungTra51048517" class="follow-me" target="_blank">
-      <span class="follow-text">
-        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
-        Follow me on Twitter
-     </span>
-      <span class="developer">
-        <img src="https://avatars0.githubusercontent.com/u/39208974?s=460&u=48aef927b291ab830fea070bd6b9b5acd9a67b80&v=4" />
-        Polowis - @hungtran
-      </span>
-    </a>
   </div>
   <div class="main">
     <div class="search-bar">
@@ -114,14 +103,14 @@
               <div class="info-item">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 503.889 503.889" fill="currentColor">
                   <path d="M453.727 114.266H345.151V70.515c0-20.832-16.948-37.779-37.78-37.779H196.517c-20.832 0-37.78 16.947-37.78 37.779v43.751H50.162C22.502 114.266 0 136.769 0 164.428v256.563c0 27.659 22.502 50.161 50.162 50.161h403.565c27.659 0 50.162-22.502 50.162-50.161V164.428c0-27.659-22.503-50.162-50.162-50.162zm-262.99-43.751a5.786 5.786 0 015.78-5.779h110.854a5.786 5.786 0 015.78 5.779v43.751H190.737zM32 164.428c0-10.015 8.147-18.162 18.162-18.162h403.565c10.014 0 18.162 8.147 18.162 18.162v23.681c0 22.212-14.894 42.061-36.22 48.27l-167.345 48.723a58.482 58.482 0 01-32.76 0L68.22 236.378C46.894 230.169 32 210.321 32 188.109zm421.727 274.725H50.162c-10.014 0-18.162-8.147-18.162-18.161V253.258c8.063 6.232 17.254 10.927 27.274 13.845 184.859 53.822 175.358 52.341 192.67 52.341 17.541 0 7.595 1.544 192.67-52.341 10.021-2.918 19.212-7.613 27.274-13.845v167.733c.001 10.014-8.147 18.162-18.161 18.162z" /></svg>
-                {{user.job}} at <a href="#">{{user.job_place}}</a>
+                {{userJob}} at <a href="#">{{userJobPlace}}</a>
               </div>
               <div class="info-item">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                   <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                   <path d="M9 22V12h6v10" />
                 </svg>
-                Live in <a href="#">{{user.place}}</a>
+                Live in <a href="#">{{userPlace}}</a>
               </div>
               <div class="info-item">
                 <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
@@ -296,67 +285,15 @@
       </div>
     </div>
     <div class="side-wrapper contacts">
-      <div class="side -title">CONTACTS</div>
-      <div class="user">
-        <img src="https://randomuser.me/api/portraits/men/1.jpg" class="user-img">
-        <div class="username">Andrei Mashrin
+      <div class="side -title">People also use this website</div>
+      <br>
+      <div class="user" v-for="_user in users" :key="_user.username">
+        <img :src="'/static/uploads/' + _user.avatar" class="user-img">
+        <div class="username">{{_user.username}}
           <div class="user-status"></div>
         </div>
       </div>
-      <div class="user">
-        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=046c29138c1335ef8edee7daf521ba50" class="user-img">
-        <div class="username">Aryn Jacobssen
-          <div class="user-status offline"></div>
-        </div>
-      </div>
-      <div class="user">
-        <img src="https://tinyfac.es/data/avatars/7D3FA6C0-83C8-4834-B432-6C65ED4FD4C3-500w.jpeg" class="user-img">
-        <div class="username">Carole Landu
-          <div class="user-status offline"></div>
-        </div>
-      </div>
-      <div class="user">
-        <img src="https://images.pexels.com/photos/598745/pexels-photo-598745.jpeg?h=350&auto=compress&cs=tinysrgb" class="user-img">
-        <div class="username">Chineze Afa
-          <div class="user-status"></div>
-        </div>
-      </div>
-      <div class="user">
-        <img src="https://pbs.twimg.com/profile_images/2452384114/noplz47r59v1uxvyg8ku.png" class="user-img">
-        <div class="username">Mok Kwang
-          <div class="user-status"></div>
-        </div>
-      </div>
-      <div class="user">
-        <img src="https://randomuser.me/api/portraits/women/63.jpg" class="user-img">
-        <div class="username">Naomi Yepes
-          <div class="user-status"></div>
-        </div>
-      </div>
-      <div class="user">
-        <img src="https://images.unsplash.com/photo-1476493279419-b785d41e38d8?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=61eaea85f1aa3d065400179c78163f15" class="user-img">
-        <div class="username">Shaamikh Ale
-          <div class="user-status"></div>
-        </div>
-      </div>
-      <div class="user">
-        <img src="https://m.media-amazon.com/images/M/MV5BMjI4NDcyNjQxNl5BMl5BanBnXkFtZTgwMzI4OTM3NjM@._V1_UY256_CR13,0,172,256_AL_.jpg" class="user-img">
-        <div class="username">Sofia Alcocer
-          <div class="user-status idle"></div>
-        </div>
-      </div>
-      <div class="user">
-        <img src="https://images.unsplash.com/photo-1509380836717-c4320ccf1a6f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=e01c8c45a063daaf6d6e571a32bd6c90" class="user-img">
-        <div class="username">Wen Yahui
-          <div class="user-status"></div>
-        </div>
-      </div>
-      <div class="user">
-        <img src="https://pbs.twimg.com/profile_images/737221709267374081/sdwta9Oh.jpg" alt="" class="user-img">
-        <div class="username">Leslee Moss
-          <div class="user-status idle"></div>
-        </div>
-      </div>
+      
     </div>
     <div class="search-bar right-search">
       <input type="text" placeholder="Search" />
@@ -390,13 +327,15 @@ export default {
             leftSide: true,
             status: "",
             task: [],
+            users: [],
             stage: "status",
             file: "",
             editMode: false,
             mainStage: "timeline",
             userPlace : this.user.place,
             userJob: this.user.job,
-            userJobPlace: this.user.job_place
+            userJobPlace: this.user.job_place,
+            editSuccess: false,
         }
     },
     methods: {
@@ -471,6 +410,12 @@ export default {
         this.mainStage = 'timeline'
       },
 
+      fetchUsers() {
+        axios.get('/api/users/fetch').then(response => {
+          this.users = response.data
+        })
+      },
+
       switchAbout(){
         this.mainStage = 'about'
       },
@@ -479,8 +424,8 @@ export default {
         if(this.userPlace.length < 1) return;
         if(this.userJob.length < 1) return;
         if(this.userJobPlace.length < 1) return;
-        
-        axios.post('user/place/edit', {
+
+        axios.post('user/edit', {
           place: this.userPlace,
           job: this.userJob,
           jobPlace: this.userJobPlace
@@ -488,6 +433,9 @@ export default {
         }).then(response => {
           if(response.data.message == 'Success'){
             this.user.place = response.data.place
+            this.user.userJobPlace = response.data.jobPlace
+            this.user.userJob = response.data.job
+            alert('Your changes have been saved!')
           }
         })
       }
@@ -496,6 +444,7 @@ export default {
     },
      beforeMount(){
       this.fetchStatus()
+      this.fetchUsers()
     }
 
 }

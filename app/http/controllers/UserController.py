@@ -95,7 +95,7 @@ class UserController(Controller):
     @route('/user/avatar/edit', methods=['POST'])
     @login_required
     def edit_avatar(self):
-        user = User.query.filter_by(user_id=current_user.user_id).first()
+        user = User.query.filter_by(_user_id=current_user.user_id).first()
         file = req.files['file']
         filename = secure_filename(file.filename.rsplit('.', 1)[0].lower() + str(datetime.datetime.now()) + '.' + file.filename.rsplit('.', 1)[1].lower())
         file.save('app/static/uploads/' + filename)
@@ -110,7 +110,7 @@ class UserController(Controller):
     @route('/user/background/edit', methods=['POST'])
     @login_required
     def edit_background(self):
-        user = User.query.filter_by(user_id=current_user.user_id).first()
+        user = User.query.filter_by(_user_id=current_user.user_id).first()
         file = req.files['file']
         filename = secure_filename(file.filename.rsplit('.', 1)[0].lower() + str(datetime.datetime.now()))
         file.save('app/static/uploads/' + filename)
@@ -138,17 +138,19 @@ class UserController(Controller):
             }
             return view('dashboard', user=json.dumps(user))
 
-    @route('/user/place/edit', methods=['POST'])
+    @route('/user/edit', methods=['POST'])
     @login_required
     def edit_user_place(self):
         data = request.get_json()
-        user = User.query.filter_by(user_id=current_user.user_id).first()
+        user = User.query.filter_by(_user_id=current_user.user_id).first()
         user.place = data['place']
+        user.job = data['job']
+        user.job_place = data['jobPlace']
         try:
             user.save()
         except:
             return jsonify(message="Failure")
-        return jsonify(message="Success", place=data['place'])
+        return jsonify(message="Success", place=data['place'], job=data['job'], jobPlace=data['jobPlace'])
 
 
         

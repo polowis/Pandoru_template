@@ -2,6 +2,7 @@ from app import app
 from app.framework.controller import *
 from flask_login import login_required, current_user
 from app.model.status import *
+from app.model.user import *
 from app.framework.requests.request import request
 from flask import jsonify, Response
 import json
@@ -100,6 +101,16 @@ class StatusController(Controller):
     def edit(self, item_id):
         status = Status.query.filter_by(id=item_id).first()
         status.content = request.get('content')
+    
+    @route('/users/fetch', methods=['GET'])
+    @login_required
+    def fecth_users(self):
+        users = User.query.filter().all()   
+        data = []
+        for user in users:
+            data.append({"username": user.username, "avatar": user.avatar})
+        
+        return jsonify(data)
     
     
 
