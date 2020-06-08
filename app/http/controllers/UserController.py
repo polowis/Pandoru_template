@@ -71,6 +71,10 @@ class UserController(Controller):
         })
         if form.is_validated():
             user = User()
+            if(len(request.input('password')) < 8):
+                flash('password length must be greater than 8')
+                return redirect('/login')
+
             user.username = request.input('username')
             user.email = request.input('email')
             user.password = request.input('password')
