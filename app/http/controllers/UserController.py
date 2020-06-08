@@ -4,7 +4,7 @@ from app.framework.requests.form_request import FormRequest
 from app.framework.requests.request import request
 from app.model.user import User
 from flask_login import current_user, login_user, logout_user, login_required
-from flask import session
+from flask import session, abort
 from app.framework.util import *
 from flask import jsonify
 import json
@@ -151,8 +151,25 @@ class UserController(Controller):
         except:
             return jsonify(message="Failure")
         return jsonify(message="Success", place=data['place'], job=data['job'], jobPlace=data['jobPlace'])
+    
 
-
-        
-
-
+    @route('/user/<user_id>', methods=['GET'])
+    @login_required
+    def view_profile(self, user_id):
+        user = User.query.filter_by(_user_id=user_id).first()
+        if user is None:
+            abort(404)
+        if current_user.user_id == user_id:
+            return redirect('/')
+        user_details = {
+            "id": user.id,
+            "name": user.username, 
+            "email": user.email,
+            "user_id": user.user_id,
+            "avatar": user.avatar,
+            "background": user.background,
+            "place": user.place, 
+            "job": user.job,
+            "job_place": user.job_place
+        }
+        return view('profile', user=json.dumps(user_details))

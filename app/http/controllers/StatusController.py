@@ -108,7 +108,7 @@ class StatusController(Controller):
         users = User.query.filter().all()   
         data = []
         for user in users:
-            data.append({"username": user.username, "avatar": user.avatar})
+            data.append({"username": user.username, "avatar": user.avatar, "user_id": user.user_id})
         
         return jsonify(data)
     

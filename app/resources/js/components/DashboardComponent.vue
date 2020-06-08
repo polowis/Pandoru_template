@@ -8,7 +8,7 @@
 </svg>
     </div>
     <div class="logo">Onion</div>
-    <SideMenuComponent></SideMenuComponent>
+    <SideMenuComponent @changeStage="changeStage($event)"></SideMenuComponent>
   </div>
   <div class="main">
     <div class="search-bar">
@@ -28,14 +28,14 @@
           <a class="profile-menu-link" :class="{'active': mainStage == 'timeline'}" @click.prevent="mainStage = 'timeline'">Timeline</a>
           <a class="profile-menu-link" :class="{'active': mainStage == 'about'}" @click.prevent="mainStage = 'about'">About</a>
           <a class="profile-menu-link" :class="{'active': mainStage == 'friend'}" @click.prevent="mainStage = 'friend'">Friends</a>
-          <a class="profile-menu-link">Photos</a>
+          <a class="profile-menu-link" :class="{'active': mainStage == 'photo'}" @click.prevent="mainStage = 'photo'">Photos</a>
           <a class="profile-menu-link">More</a>
         </div>
       </div>
       <!--
         Friend stage
         -->
-        <div class="timeline" v-if="mainStage == 'friend'">
+        <div class="timeline" v-if="mainStage == 'friend' || mainStage == 'photo'">
         <div class="timeline-left">
           <div class="intro" style="background-color: #151728;">
             <div class="intro-title">
@@ -289,7 +289,7 @@
       <br>
       <div class="user" v-for="_user in users" :key="_user.username">
         <img :src="'/static/uploads/' + _user.avatar" class="user-img">
-        <div class="username">{{_user.username}}
+        <div class="username"><a :href="'/user/' + _user.user_id">{{_user.username}}</a>
           <div class="user-status"></div>
         </div>
       </div>
@@ -339,6 +339,9 @@ export default {
         }
     },
     methods: {
+      changeStage(stage) {
+        this.mainStage = stage
+      },
       createStatus(){
         if(this.status.length < 1) return;
         axios.post('/api/status/create', {content: this.status}).then(response => {

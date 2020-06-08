@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+        <script src="https://kit.fontawesome.com/3021faaaff.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div id="app">
+            <profile-component :user="{{ user }}"></profile-component>
+        </div>
+        <script nonce="{{ nonce() }}" src=" {{ url_for('static', filename='js/app.js')}}"></script>
+    </body>
+</html>

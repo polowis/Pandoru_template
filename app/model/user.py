@@ -86,7 +86,7 @@ class User(UserMixin, db.Model, BaseModel):
     
     def has_correct_password(self, password: str):
         """Return true if password match"""
-        return bcrypt.checkpw(password.encode(), self._password.encode())
+        return bcrypt.checkpw(password.encode(), self._password)
 
     def follow(self, user):
         """follow a user"""
