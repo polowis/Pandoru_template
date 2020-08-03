@@ -2,6 +2,7 @@ from flask import request as req
 from ..util import *
 from .ip_trait import *
 import requests, json
+from .file_handler import FileHandler
 
 class Request:
     """Handle request, response"""
@@ -107,6 +108,9 @@ class Request:
         """Return request's OS platform"""
         return req.user_agent.platform
     
+    def files(self, name):
+        """Return a file object"""
+        return FileHandler(name)
     
     def browser(self, **kwargs):
         """Return request's browser"""
