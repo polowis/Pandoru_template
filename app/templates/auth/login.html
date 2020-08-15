@@ -1,95 +1,93 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/open-iconic-bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css')}}">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css')}}">
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Login</title>
-<link rel="shortcut icon" href="favicon.ico">
-<link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css')}}">
 
-<script src="https://irunastall.com/js/app.js" defer type="ac2e3dca3dc3742d6464009d-text/javascript"></script>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/icomoon.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+  </head>
+  <body class="goto-here">
+      <noscript>We're sorry but this page doesn't work properly without JavaScript</noscript>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand noselect" href="/">Wibo</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
 
-<link rel="dns-prefetch" href="//fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item active"><a href="/" class="nav-link">Home</a></li>
+	          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Help</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+              	<a class="dropdown-item" href="shop.html">Shiping information</a>
+              	<a class="dropdown-item" href="wishlist.html">Term of service</a>
+                <a class="dropdown-item" href="product-single.html">Privacy policy</a>
+              </div>
+            </li>
+	          <li class="nav-item"><a href="about.html" class="nav-link">Shop</a></li>
+	          <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+	        </ul>
+	      </div>
+	    </div>
+    </nav>
+    <section class="login-section">
+      <div class="title-login noselect">Log in</div>
+      <form>
+        <div class="input-field noselect">
+          <input type="text"><label for="mail">Email Address</label>
+        </div>
+          <div class="input-field noselect">
+              <input type="password"><label for="mail">Password</label>
+            </div>
+            <div class="noselect" style="margin: 20px 0 0 30px; font-size: 13px;">Not a member?<a href="/register">  Sign up here</a> </div>
+            <div class="button-submit button" style="width: 80%; margin: 50px 0 0 30px;">
+                Log in
+            </div>
+      </form>
+      <br><br><br>
+      <div class="row">
+          <div class="col-md-12 text-center noselect">
 
+            <p>
+              Copyright &copy;<script>document.write(new Date().getFullYear());</script> Made with <i class="icon-heart color-danger" style="color: red;" aria-hidden="true"></i> by <a href="https://github.com/polowis" target="_blank">Polowis</a>
 
-<link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-</head>
-<body>
-<div id="app">
-<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-<div class="container">
-<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-<span class="navbar-toggler-icon"></span>
-</button>
-<div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-<ul class="navbar-nav mr-auto">
-</ul>
-
-<ul class="navbar-nav ml-auto">
-
-<li class="nav-item">
-<a class="nav-link" href="/login">Login</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="/register">Register</a>
-</li>
-</ul>
-</div>
-</div>
-</nav>
-<main class="py-4">
-<div class="container">
-<div class="row justify-content-center">
-<div class="col-md-8">
-<div class="card">
-<div class="card-header">Login</div>
-<div class="card-body">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for message in messages %}
-          <p style="margin-left: 10px; color:red;">{{ message }}</p>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-<form method="POST" action="/login">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-  <div class="form-group row">
-  <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
-  <div class="col-md-6">
-  <input id="email" type="email" class="form-control " name="user_email" value="" required autocomplete="email">
-  </div>
-  </div>
-  <div class="form-group row">
-  <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
-  <div class="col-md-6">
-  <input id="password" type="password" class="form-control " name="pass" required autocomplete="new-password">
-  </div>
-  </div>
-<div class="form-group row mb-0">
-<div class="col-md-6 offset-md-4">
-<button type="submit" id="submit_button" class="btn btn-primary">
-Login
-</button>
-<br>
-<br>
-</div>
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
-</div>
-</main>
-</div>
-<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js" data-cf-settings="ac2e3dca3dc3742d6464009d-|49" defer=""></script></body>
-</html>
+            </p>
+          </div>
+        </div>
+    </section>
 
 
 
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+    <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-migrate-3.0.1.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.waypoints.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.stellar.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/aos.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/main.js')}}"></script>
+    </body>
+    </html>

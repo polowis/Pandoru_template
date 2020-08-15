@@ -27,3 +27,6 @@ class HomeController(Controller):
     def home(self):
         return view('index')
 
+    @route('/about', methods=["GET"])
+    def about(self):
+        return view('about')
