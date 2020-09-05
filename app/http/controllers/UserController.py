@@ -3,6 +3,7 @@ from app.framework.controller import *
 from app.framework.requests.form_request import FormRequest
 from app.framework.requests.request import request
 from app.model.user import User
+from app.model.company import Company
 from flask_login import current_user, login_user, logout_user, login_required
 from flask import session
 from app.framework.util import *
@@ -36,23 +37,13 @@ class UserController(Controller):
 
     @route('/login', methods=['POST'])
     def login_action(self):
-
-        form = FormRequest({
-            'user_email': 'email'
-        })
-
-        if form.is_validated():
-            user = User.query.filter_by(_email=request.input('user_email')).first()
-            if user is None or not user.has_correct_password(request.input('pass')): 
-                flash('Email or password is wrong')
-                return redirect('/login')
-
-            login_user(user)
-            session['username'] = user.username
-            return redirect('/')
-
-        else:
+        company = Company.query.filter_by(_mailing_address=data['mailing_address']).first()
+        if company is None or not company.has_correct_password(data['password']):
             return redirect('/login')
+        login_user(company)
+        session['company'] = company.mailing_address
+        return redirect('/')
+        
         
     @route('/register', methods=['GET'])
     def register_view(self):
@@ -63,26 +54,25 @@ class UserController(Controller):
 
     @route('/register', methods=['POST'])    
     def register_action(self):
-        form = FormRequest({
-            'email': 'email',
-            'username': 'alphanumeric'
-        })
-        if form.is_validated():
-            user = User()
-            user.username = request.input('username')
-            user.email = request.input('email')
-            user.password = request.input('password')
-            user.user_id = 32
-            user.save()
 
-            user_logged_in = User.query.filter_by(_email=request.input('email')).first()
-            login_user(user_logged_in)
-            session['user'] = user_logged_in.username
-            
-            
-            return redirect_to('/')
-        else:
-            return redirect_to('/register')
+        company = Company()
+        data = request.get_json()
+
+        company.company_name = data['companyName']
+        company.contact_name = data['contactName']
+        company.mailing_address = data['mailingAddress']
+        company.contact_number = data['contactNumber']
+        company.contact_title = data['contactTitle']
+        company.password = data['password']
+        company.business_type = data['businessType']
+        company.save()
+
+        logged_in = Company.query.filter_by(_mailing_address=data['mailingAddress']).first()
+        login_user(logged_in)
+        session['user'] = logged_in.mailing_address
+
+        return redirect_to('/')
+
 
     @route('/logout', methods=['POST'])
     def logout(self):
