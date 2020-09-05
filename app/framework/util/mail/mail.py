@@ -38,6 +38,7 @@ class Mail:
         self.text = ""
         self.html = None
         self.charset = None
+        self.subject = None
         self.current_directory = os.path.abspath(os.getcwd()) + "/app/resources/view/mail"
         self.env = Environment(loader=FileSystemLoader(current_directory))  
         self.env_template = None 
@@ -78,7 +79,7 @@ class Mail:
         if type(self.recipients) == str:
             temp = self.recipients
             self.recipients = [temp].append(recipient)
-            
+
     def charset(self, charset):
         """set the character set of this email"""
         self.charset = charset
@@ -106,7 +107,9 @@ class Mail:
             if i == filename:
                 return True
     
-
+    def subject(self, subject):
+        """set email subject"""
+        
     
     def from_sender(self, sender: str):
         """specify the sender email address, default is set to config file \n
@@ -134,6 +137,7 @@ class Mail:
         """
         charset = self.charset or 'utf-8'
         return MIMEText(text, _subtype=subtype, _charset=charset)
+    
 
     def send(self):
         """send email"""
@@ -143,6 +147,14 @@ class Mail:
 
         if self.html != None:
             msg = MIMEMultipart('alternative')
+            msg.attach(self._mimetext(self.html, "html"))
+
+            if(type(self.recipients) == dict):
+                for recipient in self.recipients:
+                    self.host.sendmail(self.from_sender, recipient, msg.as_string())
+            else:
+                self.host.sendmail(self.from_sender, self.recipients, msg.as_string())
+        self.host.quit()
 
 
     
