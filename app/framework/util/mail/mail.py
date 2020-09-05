@@ -139,8 +139,12 @@ class Mail:
         return MIMEText(text, _subtype=subtype, _charset=charset)
     
 
-    def send(self):
+    def send(self, mailObject=None):
         """send email"""
+        if mailObject is not None:
+            mailObject.build()
+            
+        
         assert send_to, "You must specify a recipient"
 
         assert send_from, "You must specify a sender"
@@ -155,7 +159,17 @@ class Mail:
             else:
                 self.host.sendmail(self.from_sender, self.recipients, msg.as_string())
         self.host.quit()
-
-
+    
+    def line(self, text):
+        """add text line"""
+        if type(text) is not str:
+            raise TypeError("Parameter text must be a string", type(text), "is provided")
+        if len(self.text) < 0: #if no previous line was entered
+            self.text = text
+        else:
+            self.text = self.text + "\n" + text
+        return self
+        
+    
     
 
