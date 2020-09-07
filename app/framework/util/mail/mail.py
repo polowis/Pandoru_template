@@ -159,9 +159,9 @@ class Mail:
 
     def send(self, mailObject=None):
         """send email"""
-        if mailObject is not None:
+        if isinstance(mailObject, Mail):
             mailObject.build()
-            self.charset 
+             
             
         
         assert send_to, "You must specify a recipient"
