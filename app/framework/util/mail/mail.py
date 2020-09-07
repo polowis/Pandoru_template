@@ -37,8 +37,8 @@ class Mail:
         self.host = self.init_host()
         self.text = ""
         self.html = None
-        self.charset = None
-        self.subject = None
+        self.email_charset = 'utf-8'
+        self.email_subject = None
         self.current_directory = os.path.abspath(os.getcwd()) + "/app/resources/view/mail"
         self.env = Environment(loader=FileSystemLoader(current_directory))  
         self.env_template = None 
@@ -106,9 +106,18 @@ class Mail:
         for i in templates:
             if i == filename:
                 return True
-    
+
+    @property
+    def subject(self):
+        return self.email_subject
+
+    @subject.setter
     def subject(self, subject):
         """set email subject"""
+        if type(subject) is not str:
+            raise TypeError("subject must be a string")
+        self.email_subject = subject
+        return self
         
     
     def from_sender(self, sender: str):
@@ -130,6 +139,15 @@ class Mail:
         self.recipients = recipient
 
         return self
+    
+    @property
+    def charset(self):
+        return self.email_charset
+
+    @charset.setter
+    def charset(self, charset):
+        self.email_charset = charset
+        return self
 
     def _mimetext(self, text, subtype='plain'):
         """Creates a MIMEText object with the given subtype (default: 'plain')
@@ -143,6 +161,7 @@ class Mail:
         """send email"""
         if mailObject is not None:
             mailObject.build()
+            self.charset 
             
         
         assert send_to, "You must specify a recipient"
@@ -160,7 +179,7 @@ class Mail:
                 self.host.sendmail(self.from_sender, self.recipients, msg.as_string())
         self.host.quit()
     
-    def line(self, text):
+    def line(self, text: str):
         """add text line"""
         if type(text) is not str:
             raise TypeError("Parameter text must be a string", type(text), "is provided")
