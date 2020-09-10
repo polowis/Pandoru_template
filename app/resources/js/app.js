@@ -22,8 +22,8 @@ window.socket = io('http://localhost:2000')
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default)
-Vue.component('todolist-component', require('./components/ToDoListComponent.vue').default)
+Vue.component('login-component', require('./components/LoginComponent.vue').default)
+
 import VModal from 'vue-js-modal'
 
 Vue.use(VModal, { dialog: true })
