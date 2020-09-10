@@ -49,7 +49,7 @@ class Company(db.Model, BaseModel):
     def contact_title(self):
         return self._contact_title
     
-    @contact_title.setter()
+    @contact_title.setter
     def contact_title(self, contact_title):
         self._contact_title = contact_title
     
