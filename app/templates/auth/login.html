@@ -23,57 +23,9 @@
   </head>
   <body class="goto-here">
       <noscript>We're sorry but this page doesn't work properly without JavaScript</noscript>
-    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-	    <div class="container">
-	      <a class="navbar-brand noselect" href="/">Wibo</a>
-	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="oi oi-menu"></span> Menu
-	      </button>
-
-	      <div class="collapse navbar-collapse" id="ftco-nav">
-	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item active"><a href="/" class="nav-link">Home</a></li>
-	          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Help</a>
-              <div class="dropdown-menu" aria-labelledby="dropdown04">
-              	<a class="dropdown-item" href="shop.html">Shiping information</a>
-              	<a class="dropdown-item" href="wishlist.html">Term of service</a>
-                <a class="dropdown-item" href="product-single.html">Privacy policy</a>
-              </div>
-            </li>
-	          <li class="nav-item"><a href="about.html" class="nav-link">Shop</a></li>
-	          <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
-	        </ul>
-	      </div>
-	    </div>
-    </nav>
-    <section class="login-section">
-      <div class="title-login noselect">Log in</div>
-      <form>
-        <div class="input-field noselect">
-          <input type="text"><label for="mail">Email Address</label>
-        </div>
-          <div class="input-field noselect">
-              <input type="password"><label for="mail">Password</label>
-            </div>
-            <div class="noselect" style="margin: 20px 0 0 30px; font-size: 13px;">Not a member?<a href="/register">  Sign up here</a> </div>
-            <div class="button-submit button" style="width: 80%; margin: 50px 0 0 30px;">
-                Log in
-            </div>
-      </form>
-      <br><br><br>
-      <div class="row">
-          <div class="col-md-12 text-center noselect">
-
-            <p>
-              Copyright &copy;<script>document.write(new Date().getFullYear());</script> Made with <i class="icon-heart color-danger" style="color: red;" aria-hidden="true"></i> by <a href="https://github.com/polowis" target="_blank">Polowis</a>
-
-            </p>
-          </div>
-        </div>
-    </section>
+    <div id="app">
+      <login-component></login-component>
+    </div>
 
 
 
@@ -89,5 +41,6 @@
     <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js')}}"></script>
     <script src="{{ url_for('static', filename='js/aos.js')}}"></script>
     <script src="{{ url_for('static', filename='js/main.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/app.js')}}"></script>
     </body>
     </html>
