@@ -155,18 +155,15 @@ class Mail:
         """
         charset = self.charset or 'utf-8'
         return MIMEText(text, _subtype=subtype, _charset=charset)
-    
 
     def send(self, mailObject=None):
         """send email"""
         if isinstance(mailObject, Mail):
-            mailObject.build()
-             
+            self.__build_mail_object()
             
-        
-        assert send_to, "You must specify a recipient"
+        assert self.recipients, "You must specify a recipient"
 
-        assert send_from, "You must specify a sender"
+        assert self.send_from "You must specify a sender"
 
         if self.html != None:
             msg = MIMEMultipart('alternative')
@@ -188,6 +185,15 @@ class Mail:
         else:
             self.text = self.text + "\n" + text
         return self
+    
+    def __build_mail_object(self, mailObject):
+        mailObject.build()
+        self.send_from = mailObject.send_from
+        self.recipients = mailObject.recipients
+        self.html = mailObject.html
+        self.charset = mailObject.charset
+        self.subject = mailObject.subject
+        self.text = mailObject.text
         
     
     
