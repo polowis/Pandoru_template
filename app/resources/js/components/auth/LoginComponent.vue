@@ -28,7 +28,7 @@
     </div>
 </template>
 <script>
-import HeaderComponent from './HeaderComponent'
+import HeaderComponent from '../HeaderComponent'
 export default {
     components: {
         HeaderComponent

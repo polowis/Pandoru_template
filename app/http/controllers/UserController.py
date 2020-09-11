@@ -35,7 +35,7 @@ class UserController(Controller):
 
         return view('auth/login')
 
-    @route('/login', methods=['POST'])
+    @route('/api/login', methods=['POST'])
     def login_action(self):
         company = Company.query.filter_by(_mailing_address=data['mailing_address']).first()
         if company is None or not company.has_correct_password(data['password']):
@@ -52,12 +52,13 @@ class UserController(Controller):
         return view('auth/register')
     
 
-    @route('/register', methods=['POST'])    
+    @route('api/register', methods=['POST'])    
     def register_action(self):
 
         company = Company()
         data = request.get_json()
-
+        log(data)
+        
         company.company_name = data['companyName']
         company.contact_name = data['contactName']
         company.mailing_address = data['mailingAddress']

@@ -9,7 +9,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import io from 'socket.io-client'
-window.socket = io('http://localhost:2000')
+//window.socket = io('http://localhost:2000')
 
 /**
  * The following block of code may be used to automatically register your
@@ -22,8 +22,8 @@ window.socket = io('http://localhost:2000')
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('login-component', require('./components/LoginComponent.vue').default)
-
+Vue.component('login-component', require('./components/auth/LoginComponent.vue').default)
+Vue.component('register-component', require('./components/auth/RegisterComponent.vue').default)
 import VModal from 'vue-js-modal'
 
 Vue.use(VModal, { dialog: true })
