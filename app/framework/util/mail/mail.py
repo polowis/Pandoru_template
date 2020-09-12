@@ -102,7 +102,11 @@ class Mail:
         """attach a file"""
         self.attachments.append(Attachment(filename, content_type, data, disposition, headers))
 
-    def via(self, data: dict):
+    def __bad_subject(self):
+        """check for bad subject, such as new line in subject"""
+        return '\n' in self.email_subject or '\r' in self.email_subject:
+
+    def attach_from_disk(self, data: dict):
         """replace properties with variable if specified
         :param data: dict dict of variables
         :example: {"name": "foo"}
@@ -202,8 +206,10 @@ class Mail:
             msg.attach(self._mimetext(self.html, "html"))
         
         if self.email_subject:
+            if self.__bad_subject():
+                raise Exception("Invalid email subject, email subject should not contain any new line")
             msg['Subject'] = self.email_subject
-            
+
         if self.__reply_to:
             msg['reply_to'] = self.__reply_to
 
