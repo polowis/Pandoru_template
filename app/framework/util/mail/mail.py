@@ -51,6 +51,7 @@ class Mail:
         self.__cc = None
         self.attachments = []
         self.date = time.time()
+        self.msg = None
 
 
     
@@ -98,7 +99,7 @@ class Mail:
         self.filename = filename
         return self
 
-    def attach(self, filename=None, content_type=None, data=None, disposition=None, headers=None):
+    def attach_from_disk(self, filename=None, content_type=None, data=None, disposition=None, headers=None):
         """attach a file"""
         self.attachments.append(Attachment(filename, content_type, data, disposition, headers))
 
@@ -106,7 +107,7 @@ class Mail:
         """check for bad subject, such as new line in subject"""
         return '\n' in self.email_subject or '\r' in self.email_subject:
 
-    def attach_from_disk(self, data: dict):
+    def attach(self, data: dict):
         """replace properties with variable if specified
         :param data: dict dict of variables
         :example: {"name": "foo"}
@@ -129,10 +130,7 @@ class Mail:
     @subject.setter
     def subject(self, subject):
         """set email subject"""
-        if type(subject) is not str:
-            raise TypeError("subject must be a string")
-        self.email_subject = subject
-        return self
+        return self.__build_mail_subject(subject)
         
     
     def from_sender(self, sender: str):
@@ -198,25 +196,25 @@ class Mail:
 
         assert self.send_from "You must specify a sender"
         if self.text != None:
-            msg = MIMEMultipart()
-            msg.attach(self._mimetext(self.text))
+            self.msg = MIMEMultipart()
+            self.msg.attach(self._mimetext(self.text))
 
         if self.html != None:
-            msg = MIMEMultipart('alternative')
-            msg.attach(self._mimetext(self.html, "html"))
+            self.msg = MIMEMultipart('alternative')
+            self.msg.attach(self._mimetext(self.html, "html"))
         
         if self.email_subject:
             if self.__bad_subject():
                 raise Exception("Invalid email subject, email subject should not contain any new line")
-            msg['Subject'] = self.email_subject
+            self.msg['Subject'] = self.email_subject
 
         if self.__reply_to:
-            msg['reply_to'] = self.__reply_to
+            self.msg['reply_to'] = self.__reply_to
 
         if self.__cc:
-            msg['Cc'] = self.__cc
+            self.msg['Cc'] = self.__cc
 
-        msg['date'] = formatdate(self.date, localtime=True)
+        self.msg['date'] = formatdate(self.date, localtime=True)
 
         if(type(self.recipients) == dict):
             for recipient in self.recipients:
@@ -244,6 +242,36 @@ class Mail:
         self.charset = mailObject.charset
         self.subject = mailObject.subject
         self.text = mailObject.text
+    
+    def __build_mail_subject(self, subject):
+        """build mail subject"""
+        if type(subject) is not str:
+            raise TypeError("subject must be a string")
+        self.email_subject = subject
+        return self
+
+    def __build_cc(self, address):
+        """Set the recipients of the message."""
+        if self.__cc:
+            self.msg['Cc'] = self.__cc
+            return self
+        return self
+    
+    def __build_reply_to(self, address):
+        """Set the reply-to address of the message"""
+        if self.__reply_to:
+            self.msg['reply_to'] = self.__reply_to
+            return self
+        return self
+
+    def __set_address(self, address, name = None, category):
+        """set address where the email is sent"""
+        if category == "cc":
+            return self.__cc = address
+        elif category == "reply_to":
+            return self.__reply_to = address
+
+    
         
     
     
