@@ -81,4 +81,6 @@ $ flask node
 $ flask test
 $ flask serve
 $ flask key:generate
+$ flask config:mail
+$ flask config:localization
 ```
