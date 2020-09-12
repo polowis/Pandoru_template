@@ -44,6 +44,9 @@ class Mail:
         self.env_template = None 
         self.html_attach_property = None
         self.filname = None # path to html file
+        self.__reply_to = None
+        self.__cc = None
+        self.attachment = None
 
 
     
@@ -156,24 +159,50 @@ class Mail:
         charset = self.charset or 'utf-8'
         return MIMEText(text, _subtype=subtype, _charset=charset)
 
+    @property
+    def reply_to(self):
+        return self.__reply_to
+    
+    @reply_to.setter
+    def reply_to(self, email):
+        self.__reply_to = email
+        return self
+    
+    @property
+    def cc(self):
+        return self.__cc
+    
+    @cc.setter
+    def cc(self, email):
+        self.__cc = email
+        return self
+
     def send(self, mailObject=None):
         """send email"""
         if isinstance(mailObject, Mail):
             self.__build_mail_object()
-            
+
         assert self.recipients, "You must specify a recipient"
 
         assert self.send_from "You must specify a sender"
+        if self.text != None:
+            msg = MIMEMultipart()
+            msg.attach(self._mimetext(self.text))
 
         if self.html != None:
             msg = MIMEMultipart('alternative')
             msg.attach(self._mimetext(self.html, "html"))
+            if(self.__reply_to):
+                msg['reply_to'] = self.__reply_to
 
-            if(type(self.recipients) == dict):
-                for recipient in self.recipients:
-                    self.host.sendmail(self.from_sender, recipient, msg.as_string())
-            else:
-                self.host.sendmail(self.from_sender, self.recipients, msg.as_string())
+            if(self.__cc):
+                msg['Cc'] = self.__cc
+
+        if(type(self.recipients) == dict):
+            for recipient in self.recipients:
+                self.host.sendmail(self.from_sender, recipient, msg.as_string())
+        else:
+            self.host.sendmail(self.from_sender, self.recipients, msg.as_string())
         self.host.quit()
     
     def line(self, text: str):
@@ -187,6 +216,7 @@ class Mail:
         return self
     
     def __build_mail_object(self, mailObject):
+        """build mail config from given mail object"""
         mailObject.build()
         self.send_from = mailObject.send_from
         self.recipients = mailObject.recipients
