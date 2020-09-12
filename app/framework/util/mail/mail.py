@@ -9,6 +9,7 @@ import glob
 from jinja2 import Environment, FileSystemLoader
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from .attachment import Attachment
 
 class Mail:
     """
@@ -46,7 +47,7 @@ class Mail:
         self.filname = None # path to html file
         self.__reply_to = None
         self.__cc = None
-        self.attachment = None
+        self.attachments = []
 
 
     
@@ -94,7 +95,10 @@ class Mail:
         self.filename = filename
         return self
 
-    def attach(self, data: dict):
+    def attach(self, filename=None, content_type=None, data=None, disposition=None, headers=None):
+        self.attachments.append(Attachment(filename, content_type, data, disposition, headers))
+
+    def via(self, data: dict):
         """replace properties with variable if specified
         :param data: dict dict of variables
         :example: {"name": "foo"}
