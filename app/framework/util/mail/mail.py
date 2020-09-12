@@ -10,6 +10,8 @@ from jinja2 import Environment, FileSystemLoader
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from .attachment import Attachment
+from email.utils import formatdate
+import time
 
 class Mail:
     """
@@ -48,6 +50,7 @@ class Mail:
         self.__reply_to = None
         self.__cc = None
         self.attachments = []
+        self.date = time.time()
 
 
     
@@ -197,11 +200,17 @@ class Mail:
         if self.html != None:
             msg = MIMEMultipart('alternative')
             msg.attach(self._mimetext(self.html, "html"))
-            if(self.__reply_to):
-                msg['reply_to'] = self.__reply_to
+        
+        if self.email_subject:
+            msg['Subject'] = self.email_subject
+            
+        if self.__reply_to:
+            msg['reply_to'] = self.__reply_to
 
-            if(self.__cc):
-                msg['Cc'] = self.__cc
+        if self.__cc:
+            msg['Cc'] = self.__cc
+
+        msg['date'] = formatdate(self.date, localtime=True)
 
         if(type(self.recipients) == dict):
             for recipient in self.recipients:
