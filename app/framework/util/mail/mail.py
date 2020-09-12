@@ -90,12 +90,13 @@ class Mail:
         return self
 
     def view(self, filename):
-        
+        """attach a HTML layout to this email"""
         self.env_template = self.env.get_template(filename)
         self.filename = filename
         return self
 
     def attach(self, filename=None, content_type=None, data=None, disposition=None, headers=None):
+        """attach a file"""
         self.attachments.append(Attachment(filename, content_type, data, disposition, headers))
 
     def via(self, data: dict):
