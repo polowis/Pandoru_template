@@ -258,7 +258,7 @@ class Mail:
     def _build_reply_to(self, address):
         """Set the reply-to address of the message"""
         if self.__reply_to:
-            self.msg['reply_to'] = self.__reply_to
+            self.msg['Reply_to'] = self.__reply_to
             return self
         return self
 
@@ -271,7 +271,7 @@ class Mail:
     
     def _build_date(self):
         """set date for the email"""
-        self.msg['date'] = formatdate(self.date, localtime=True)
+        self.msg['Date'] = formatdate(self.date, localtime=True)
         return True
 
     
