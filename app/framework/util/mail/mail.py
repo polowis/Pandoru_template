@@ -208,13 +208,9 @@ class Mail:
                 raise Exception("Invalid email subject, email subject should not contain any new line")
             self.msg['Subject'] = self.email_subject
 
-        if self.__reply_to:
-            self.msg['reply_to'] = self.__reply_to
+        self._build_cc()._build_reply_to()._build_date()
 
-        if self.__cc:
-            self.msg['Cc'] = self.__cc
-
-        self.msg['date'] = formatdate(self.date, localtime=True)
+        
 
         if(type(self.recipients) == dict):
             for recipient in self.recipients:
@@ -247,17 +243,19 @@ class Mail:
         """build mail subject"""
         if type(subject) is not str:
             raise TypeError("subject must be a string")
+        if  self.__bad_subject():
+                raise Exception("Invalid email subject, email subject should not contain any new line")
         self.email_subject = subject
         return self
 
-    def __build_cc(self, address):
+    def _build_cc(self, address):
         """Set the recipients of the message."""
         if self.__cc:
             self.msg['Cc'] = self.__cc
             return self
         return self
     
-    def __build_reply_to(self, address):
+    def _build_reply_to(self, address):
         """Set the reply-to address of the message"""
         if self.__reply_to:
             self.msg['reply_to'] = self.__reply_to
@@ -270,6 +268,11 @@ class Mail:
             return self.__cc = address
         elif category == "reply_to":
             return self.__reply_to = address
+    
+    def _build_date(self):
+        """set date for the email"""
+        self.msg['date'] = formatdate(self.date, localtime=True)
+        return True
 
     
         
