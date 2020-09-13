@@ -195,11 +195,20 @@ class Mail:
         assert self.recipients, "You must specify a recipient"
 
         assert self.send_from "You must specify a sender"
-        if self.text != None:
+
+        # if no body provided
+        if self.text == None and self.html == None:
+            raise Exception("You need to provide the body for the email. Email cannot be blank")
+        
+        # check if only plain text and no attachments
+        if self.text != None and len(self.attachments) == 0:
+            self.msg = self._mimetext(self.text)
+
+        elif len(self.attachments) > 0 and self.html == None:
             self.msg = MIMEMultipart()
             self.msg.attach(self._mimetext(self.text))
 
-        if self.html != None:
+        else:
             self.msg = MIMEMultipart('alternative')
             self.msg.attach(self._mimetext(self.html, "html"))
         
@@ -209,8 +218,6 @@ class Mail:
             self.msg['Subject'] = self.email_subject
 
         self._build_cc()._build_reply_to()._build_date()
-
-        
 
         if(type(self.recipients) == dict):
             for recipient in self.recipients:
@@ -239,7 +246,7 @@ class Mail:
         self.subject = mailObject.subject
         self.text = mailObject.text
     
-    def __build_mail_subject(self, subject):
+    def __build_mail_subject(self, subject: str):
         """build mail subject"""
         if type(subject) is not str:
             raise TypeError("subject must be a string")
@@ -248,21 +255,21 @@ class Mail:
         self.email_subject = subject
         return self
 
-    def _build_cc(self, address):
+    def _build_cc(self, address: str):
         """Set the recipients of the message."""
         if self.__cc:
             self.msg['Cc'] = self.__cc
             return self
         return self
     
-    def _build_reply_to(self, address):
+    def _build_reply_to(self, address: str):
         """Set the reply-to address of the message"""
         if self.__reply_to:
             self.msg['Reply_to'] = self.__reply_to
             return self
         return self
 
-    def __set_address(self, address, name = None, category):
+    def __set_address(self, address: str, name = None, category):
         """set address where the email is sent"""
         if category == "cc":
             return self.__cc = address
