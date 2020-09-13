@@ -37,7 +37,7 @@ class UserController(Controller):
 
     @route('/api/login', methods=['POST'])
     def login_action(self):
-        company = Company.query.filter_by(_mailing_address=data['mailing_address']).first()
+        company = Company.query.filter_by(_mailing_address=data['email']).first()
         if company is None or not company.has_correct_password(data['password']):
             return redirect('/login')
         login_user(company)
@@ -52,12 +52,11 @@ class UserController(Controller):
         return view('auth/register')
     
 
-    @route('api/register', methods=['POST'])    
+    @route('/api/register', methods=['POST'])    
     def register_action(self):
 
         company = Company()
         data = request.get_json()
-        log(data)
         
         company.company_name = data['companyName']
         company.contact_name = data['contactName']
@@ -66,16 +65,25 @@ class UserController(Controller):
         company.contact_title = data['contactTitle']
         company.password = data['password']
         company.business_type = data['businessType']
-        company.save()
+
+       
+        try:
+            company.save()
+        except:
+            return jsonify(message="Failure")
 
         logged_in = Company.query.filter_by(_mailing_address=data['mailingAddress']).first()
         login_user(logged_in)
         session['user'] = logged_in.mailing_address
 
-        return redirect_to('/')
+        return jsonify(message="Success")
 
 
     @route('/logout', methods=['POST'])
     def logout(self):
         logout_user()
         return redirect('/login')
+    
+   
+
+

@@ -1,9 +1,10 @@
-from app import db
+from app import db, login
 from sqlalchemy.sql import func
 from app.framework.database.base_model import BaseModel
 import bcrypt, math, random
+from flask_login import UserMixin
 
-class Company(db.Model, BaseModel):
+class Company(UserMixin, db.Model, BaseModel):
     __tablename__ = "company"
     id = db.Column(db.Integer, primary_key=True)
     _company_id = db.Column(db.String(128))
@@ -39,7 +40,7 @@ class Company(db.Model, BaseModel):
     # contact name
     @property
     def contact_name(self):
-        return self.contact_name
+        return self._contact_name
     
     @contact_name.setter
     def contact_name(self, contact_name):
@@ -59,7 +60,7 @@ class Company(db.Model, BaseModel):
     
     @mailing_address.setter
     def mailing_address(self, mailing_address):
-        self.mailing_address = mailing_address
+        self._mailing_address = mailing_address
     
     @property
     def business_type(self):
@@ -87,6 +88,10 @@ class Company(db.Model, BaseModel):
     def has_correct_password(self, password: str):
         """Return true if password match"""
         return bcrypt.checkpw(password.encode(), self._password.encode())
+
+@login.user_loader
+def load_user(id):
+    return Company.query.get(int(id))
     
     
 

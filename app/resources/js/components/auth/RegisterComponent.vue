@@ -40,6 +40,7 @@
           <div class="input-field noselect">
             <input type="text" v-model="businessType"><label for="mail">Business Type</label>
           </div>
+           <div class="input-field" style="color: red; margin-top: 0px;" v-if="businessTypeError == true">This is not a valid type of business</div>
           <div class="input-field noselect">
               <input type="password" v-model="password"><label for="mail">Password</label>
             </div>
@@ -139,30 +140,23 @@ export default {
         checkBusinessNameError() {
             if(this.businessName.match(/^[ a-z0-9]+$/i) == null) {
                 this.businessNameError = true
-                this.errors.push({name: "businessName", wrong: true})
+                
                 return;
             } 
-            let obj = this.errors.find(x => x.name == "businessName")
-            let index = this.errors.indexOf(obj)
-            if(index > -1) {
-                this.businessNameError = false
-                this.errors.splice(index, 1)
-            }
+            
+            this.businessNameError = false
+              
             return;
         },
 
         checkContactTitleError() {
             if(['Mr', 'Mrs', 'Dr', 'Ms'].includes(this.contactTitle)) {
-                let obj = this.errors.find(x => x.name == "contactTitle")
-                let index = this.errors.indexOf(obj)
-                if(index > -1) {
-                    this.contactTitleError = false
-                    this.errors.splice(index, 1)
-                }
+                
+                this.contactTitleError = false
+                    
                 return;
             }   
             this.contactTitleError = true
-            this.errors.push({name: "contactTitle", wrong: true})
             return;
 
         },
@@ -170,15 +164,12 @@ export default {
         checkContactNameError() {
             if(this.contactName.match(/^[ a-z0-9]+$/i) == null) {
                 this.contactNameError = true
-                this.errors.push({name: "contactName", wrong: true})
+              
                 return;
             } 
-            let obj = this.errors.find(x => x.name == "contactName")
-            let index = this.errors.indexOf(obj)
-            if(index > -1) {
-                this.contactNameError = false
-                this.errors.splice(index, 1)
-            }
+            
+            this.contactNameError = false
+               
             return;
         },
 
@@ -186,61 +177,42 @@ export default {
             const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if(this.mailingAddress.match(emailRegex) == null) {
                 this.mailingAddressError = true
-                this.errors.push({name: "mailingAddress", wrong: true})
+               
                 return;
             }
-            let obj = this.errors.find(x => x.name == "mailingAddress")
-            let index = this.errors.indexOf(obj)
-            if(index > -1) {
-                this.mailingAddressError = false
-                this.errors.splice(index, 1)
-            }
+            this.mailingAddressError = false
+            
             return;
         },
 
         checkBusinessNumberError() {
             const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
-            if(this.businessNumber.match(phoneRegex) == null || this.businessName.length <= 7) {
+            if(this.businessNumber.match(phoneRegex) == null || this.businessNumber.length <= 7) {
                 this.businessNumberError = true;
-                this.errors.push({name: "businessNumber", wrong: true})
-                return true;
+                return
             }
-            let obj = this.errors.find(x => x.name == "businessNumber")
-            let index = this.errors.indexOf(obj)
-            if(index > -1) {
-                this.businessNumberError = false
-                this.errors.splice(index, 1)
-            }
-            return false;
+           
+            this.businessNumberError = false
+            return
         },
 
         checkBusinessTypeError() {
             if(this.businessType.match(/^[ a-z0-9]+$/i) == null) {
                 this.businessTypeError = true
-                this.errors.push({name: "businessType", wrong: true})
                 return;
             } 
-            let obj = this.errors.find(x => x.name == "businessType")
-            let index = this.errors.indexOf(obj)
-            if(index > -1) {
-                this.businessTypeError = false
-                this.errors.splice(index, 1)
-            }
+           
+            this.businessTypeError = false
+                
             return;
         },
 
         checkPassword() {
             if(this.password.length < 8 || this.password != this.confirmPassword) {
                 this.passwordError = true
-                this.errors.push({nane: "password", wrong: true})
                 return;
             }
-            let obj = this.errors.find(x => x.name == "password")
-            let index = this.errors.indexOf(obj)
-            if(index > -1) {
-                this.passwordError = false
-                this.errors.splice(index, 1)
-            }
+            this.passwordError = false
             return;
             
         },
@@ -250,10 +222,24 @@ export default {
             this.checkContactTitleError()
             this.checkContactNameError()
             this.checkMailingAddressError()
+            this.register()
 
            
         },
+
+        hasErrors() {
+            let values = [this.businessNameError, this.contactTitleError, 
+            this.contactNameError, this.mailingAddressError, this.businessNumberError, 
+            this.businessTypeError, this.passwordError]
+            
+            let errors = values.reduce((memo, element) => {
+                return element == true
+            })
+        },
+        
         register() {
+            if(this.hasErrors()) return;
+
             axios.post("/api/register", {
                 companyName: this.businessName,
                 contactName: this.contactName,
@@ -262,6 +248,10 @@ export default {
                 contactTitle: this.contactTitle,
                 password: this.password,
                 businessType: this.businessType
+            }).then(response => {
+                if(response.data.message == 'Success') {
+                    window.location = "/"
+                } 
             })
         }
 
