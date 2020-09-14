@@ -41,7 +41,7 @@ class Mail:
         self.use_ssl = True
         self.host = self.init_host()
         self.text = ""
-        self.html = None
+        self._html = None
         self.email_charset = 'utf-8'
         self.email_subject = None
         self.current_directory = os.path.abspath(os.getcwd()) + "/app/resources/view/mail"
@@ -92,7 +92,16 @@ class Mail:
 
     def charset(self, charset):
         """set the character set of this email"""
-        self.charset = charset
+        self.email_charset = charset
+        return self
+    
+    def html(self, html):
+        """Inject html code \n
+        """
+        if isinstance(html, str):
+            self._html = html
+        else:
+            raise TypeError("html must be a string")
         return self
 
     def view(self, filename):
@@ -101,9 +110,21 @@ class Mail:
         self.filename = filename
         return self
 
-    def attach_from_disk(self, filename=None, content_type=None, data=None, disposition=None, headers=None):
-        """attach a file"""
-        self.attachments.append(Attachment(filename, content_type, data, disposition, headers))
+    def set_view_directory(self, directory_path):
+        """set the path to the folder containing the view of the email \n
+        :param directory_path: path to the directory
+        """
+        self.current_directory = directory_path
+        return self
+
+    def attach_from_disk(self, filename=None, options={}):
+        """attach a file
+        :param filename: path to file
+        :param option: option to be passed
+        """
+        if filename is not str:
+            raise TypeError("Filename must be a string")
+        self.attachments.append(Attachment(filename, data=options))
 
     def __bad_subject(self):
         """check for bad subject, such as new line in subject"""
@@ -115,7 +136,6 @@ class Mail:
         :example: {"name": "foo"}
         """
         self.html_attach_property = data
-        self.html = self.env_template.render(self.html_attach_property)
 
         return self
 
@@ -199,20 +219,20 @@ class Mail:
         assert self.send_from "You must specify a sender"
 
         # if no body provided
-        if self.text == None and self.html == None and len(self.attachments) == 0:
+        if self.text == None and self._html == None and len(self.attachments) == 0:
             raise Exception("You need to provide the body for the email. Email cannot be blank")
 
         # check if only plain text and no attachments
         if self.text != None and len(self.attachments) == 0:
             self.msg = self._mimetext(self.text)
 
-        elif len(self.attachments) > 0 and self.html == None:
+        elif len(self.attachments) > 0 and self._html == None:
             self.msg = MIMEMultipart()
             self.msg.attach(self._mimetext(self.text))
 
         else:
             self.msg = MIMEMultipart('alternative')
-            self.msg.attach(self._mimetext(self.html, "html"))
+            self.msg.attach(self._mimetext(self._html, "html"))
         
         if self.email_subject:
             if self.__bad_subject():
@@ -243,7 +263,7 @@ class Mail:
         mailObject.build()
         self.send_from = mailObject.send_from
         self.recipients = mailObject.recipients
-        self.html = mailObject.html
+        self._html = mailObject._html
         self.charset = mailObject.charset
         self.subject = mailObject.subject
         self.text = mailObject.text
@@ -269,6 +289,10 @@ class Mail:
         if self.__reply_to:
             self.msg['Reply_to'] = self.__reply_to
             return self
+        return self
+
+    def _build_view(self):
+        self._html = self.env_template.render(self.html_attach_property)
         return self
 
     def __set_address(self, address: str, name = None, category):
