@@ -15,8 +15,10 @@ from email.utils import formatdate
 from email.mime.image import MIMEImage
 import time
 from .exception import InvalidBodyText
+from bs4 import BeautifulSoup
+from .markdown import Markdown
 
-class Mail:
+class Mailable:
     """
     :param subject: email subject header
     :param recipients: list of email addresses
@@ -55,6 +57,7 @@ class Mail:
         self.attachments = []
         self.date = time.time()
         self.msg = None
+        self._replaced_img = None
 
 
     
@@ -187,6 +190,11 @@ class Mail:
         charset = self.charset or 'utf-8'
         return MIMEText(text, _subtype=subtype, _charset=charset)
 
+    def markdown(self, markdown_content=None, options=None):
+        """Compile markdown content to html and use it as email layout. 
+        You may also wish to specify css files as a key-value pair content"""
+        self._html = Markdown(markdown_content, options)
+        return self
    
     def reply_to(self, email):
         self.__reply_to = email
@@ -198,7 +206,7 @@ class Mail:
 
     def send(self, mailObject=None):
         """send email"""
-        if isinstance(mailObject, Mail):
+        if isinstance(mailObject, Mailable):
             self.__build_mail_object()
 
         assert self.recipients, "You must specify a recipient"
@@ -277,7 +285,7 @@ class Mail:
             self.msg['Reply_to'] = self.__reply_to
             return self
         return self
-
+        
     def _build_view(self):
         self._html = self.env_template.render(self.html_attach_property)
         return self
