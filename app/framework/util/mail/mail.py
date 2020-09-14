@@ -12,6 +12,7 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from .attachment import Attachment
 from email.utils import formatdate
+from email.mime.image import MIMEImage
 import time
 
 class Mail:
@@ -286,9 +287,12 @@ class Mail:
         """add attachments to email"""
         for attachment in self.attachments or []:
             with open(attachment.path, 'rb') as file:
-                file_to_attach = MIMEApplication(file.read(), Name=attachment.name, )
-            file_to_attach.add_header('content-disposition', attachment.disposition, filename=attachment.filename)
-            self.msg.attach(part)
+                if attachment.extension in ['.png', '.jpg']:
+                    file_to_attach = MIMEImage(file.read())
+                else:
+                    file_to_attach = MIMEApplication(file.read(), Name=attachment.name)
+                file_to_attach.add_header('content-disposition', attachment.disposition, filename=attachment.filename)
+            self.msg.attach(file_to_attach)
 
     
         
