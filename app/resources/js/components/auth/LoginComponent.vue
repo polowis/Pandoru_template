@@ -55,7 +55,9 @@ export default {
         }).then(response => {
           if(response.data.message == 'Success'){
             window.location = '/'
-          }
+            return
+          } 
+          this.passwordError = response.data.message
         })
       }
     }

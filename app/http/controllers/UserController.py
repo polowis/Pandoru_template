@@ -39,10 +39,10 @@ class UserController(Controller):
     def login_action(self):
         company = Company.query.filter_by(_mailing_address=data['email']).first()
         if company is None or not company.has_correct_password(data['password']):
-            return redirect('/login')
+            return jsonify(message="Password or email is incorrect")
         login_user(company)
         session['company'] = company.mailing_address
-        return redirect('/')
+        return jsonify(message="Success")
         
         
     @route('/register', methods=['GET'])
