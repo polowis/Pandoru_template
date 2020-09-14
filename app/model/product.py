@@ -5,6 +5,7 @@ from app.framework.database.base_model import BaseModel
 class Product(db.Model, BaseModel):
     __tablename__ = "product"
     id = db.Column(db.Integer, primary_key=True)
+    _product_id = db.Column(db.Integer)
     _price = db.Column(db.Float)
     _name = db.Column(db.String(128))
     _description = db.Column(db.String(128))

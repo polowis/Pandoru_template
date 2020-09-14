@@ -51,3 +51,23 @@ class ProductController(Controller):
         product = Product.query.filter_by(_owner=owner_id).first()
         data = json.dumps(product, cls=AlchemyEncoder)
         return Response(data, mimetype='application/json')
+    
+    @route('/api/product/update/<product_id>')
+    def update(product_id):
+        product = Product.query.filter_by(id=product_id).first()
+        product.name = data['name']
+        product.price = data['price']
+        product.description = data['description']
+        product.category = data['category']
+        product.tag = data['tag']
+        try:
+            product.save()
+        except:
+            return jsonify(message="Failure")
+        return jsonify(message="Success")
+    
+    @route('/api/product/<product_id>', methods=['GET'])
+    def item(self, product_id):
+        product = Product.query.filter_by(id=product_id).first()
+        data = json.dumps(product, cls=AlchemyEncoder)
+        return Response(data, mimetype='application/json')
