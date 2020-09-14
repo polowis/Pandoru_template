@@ -9,6 +9,7 @@ import glob
 from jinja2 import Environment, FileSystemLoader
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
 from .attachment import Attachment
 from email.utils import formatdate
 import time
@@ -197,9 +198,9 @@ class Mail:
         assert self.send_from "You must specify a sender"
 
         # if no body provided
-        if self.text == None and self.html == None:
+        if self.text == None and self.html == None and len(self.attachments) == 0:
             raise Exception("You need to provide the body for the email. Email cannot be blank")
-        
+
         # check if only plain text and no attachments
         if self.text != None and len(self.attachments) == 0:
             self.msg = self._mimetext(self.text)
@@ -280,6 +281,14 @@ class Mail:
         """set date for the email"""
         self.msg['Date'] = formatdate(self.date, localtime=True)
         return True
+    
+    def _add_attachments(self):
+        """add attachments to email"""
+        for attachment in self.attachments or []:
+            with open(attachment.path, 'rb') as file:
+                file_to_attach = MIMEApplication(file.read(), Name=attachment.name, )
+            file_to_attach.add_header('content-disposition', attachment.disposition, filename=attachment.filename)
+            self.msg.attach(part)
 
     
         
