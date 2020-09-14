@@ -14,6 +14,7 @@ from .attachment import Attachment
 from email.utils import formatdate
 from email.mime.image import MIMEImage
 import time
+from .exception import InvalidBodyText
 
 class Mail:
     """
@@ -145,16 +146,11 @@ class Mail:
             if i == filename:
                 return True
 
-    @property
-    def subject(self):
-        return self.email_subject
-
-    @subject.setter
-    def subject(self, subject):
+    def subject(self, subj):
         """set email subject"""
-        return self.__build_mail_subject(subject)
+       self.email_subject = subj
+       return self
         
-    
     def from_sender(self, sender: str):
         """specify the sender email address, default is set to config file \n
         If no sender email address is specified in config file, you may use this \n
@@ -191,20 +187,11 @@ class Mail:
         charset = self.charset or 'utf-8'
         return MIMEText(text, _subtype=subtype, _charset=charset)
 
-    @property
-    def reply_to(self):
-        return self.__reply_to
-    
-    @reply_to.setter
+   
     def reply_to(self, email):
         self.__reply_to = email
         return self
     
-    @property
-    def cc(self):
-        return self.__cc
-    
-    @cc.setter
     def cc(self, email):
         self.__cc = email
         return self
@@ -236,7 +223,7 @@ class Mail:
         
         if self.email_subject:
             if self.__bad_subject():
-                raise Exception("Invalid email subject, email subject should not contain any new line")
+                raise InvalidBodyText("Invalid email subject, email subject should not contain any new line")
             self.msg['Subject'] = self.email_subject
 
         self._build_cc()._build_reply_to()._build_date()
@@ -270,7 +257,7 @@ class Mail:
     
     def __build_mail_subject(self, subject: str):
         """build mail subject"""
-        if type(subject) is not str:
+        if type(subject) is not None and is not str:
             raise TypeError("subject must be a string")
         if  self.__bad_subject():
                 raise Exception("Invalid email subject, email subject should not contain any new line")
@@ -321,5 +308,3 @@ class Mail:
     
         
     
-    
-
