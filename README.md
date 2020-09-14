@@ -1,4 +1,4 @@
-# Pandoru_template
+<img src="docs/beymax.png">
 
 This repo also contains the example todolist app.
 
