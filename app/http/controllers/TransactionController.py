@@ -14,7 +14,7 @@ def get_provider():
 infura_url = HTTP_PROVIDER + PROJECT_ID
 web3 = Web3(Web3.HTTPProvider(infura_url))
 
-address_server=ADDRESS
+
 balance = web3.fromWei(web3.eth.getBalance(address_server), 'ether')
 
 class TransactionController(Controller):
@@ -24,9 +24,10 @@ class TransactionController(Controller):
     
     @route('/api/ethereum/send')
     def send_ethereum_transaction(self):
-        private_key = PRIVATE_KEY
+        private_key = data['privateKey']
         nonce = web3.eth.getTransactionCount(address_server)
-
+        address_server= data['address']
+        balance = web3.fromWei(web3.eth.getBalance(address_server), 'ether')
         address_destination = data['address_destination']
         value = data['value']
         tx = {
