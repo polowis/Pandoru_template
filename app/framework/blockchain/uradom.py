@@ -110,6 +110,7 @@ class Uradom(object):
             print(f'{last_block}')
             print(f'{block}')
             print("\n-----------\n")
+            
             # Check that the hash of the block is correct
             last_block_hash = self.hash(last_block)
             if block['previous_hash'] != last_block_hash:
