@@ -213,6 +213,9 @@ class Mailable:
 
         assert self.send_from "You must specify a sender"
 
+        if self.text is not None and self._html is not None:
+            raise Exception("You can only specify either body text or html")
+
         # if no body provided
         if self.text == None and self._html == None and len(self.attachments) == 0:
             raise Exception("You need to provide the body for the email. Email cannot be blank")
