@@ -12,7 +12,7 @@ def back():
     return request.referrer
 
 class Route:
-    def get(self, url, view_function, name=None, middleware=None):
+    def get(self, url, view_function, name=None):
         if isinstance(view_function, str):
             try:
                 function = import_module(str(getModule(view_function)))
@@ -21,12 +21,10 @@ class Route:
                 raise ImportError('Module:', view_function, 'not found')
         else:
             res = view_function
-        
-        middleware()
         app.add_url_rule(url, name, view_func=res, methods=['GET'])
         
 
-    def post(self, url, view_function, name=None, middleware=None):
+    def post(self, url, view_function, name=None):
         if isinstance(view_function, str):
             try:
                 function = import_module(str(getModule(view_function)))
@@ -35,8 +33,6 @@ class Route:
                 raise ImportError('Module:', view_function, 'not found')
         else:
             res = view_function
-        
-        
         app.add_url_rule(url, name, view_func=res, methods=['POST'])
         
 route = Route()
