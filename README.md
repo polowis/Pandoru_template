@@ -2,7 +2,9 @@
 
 This repo also contains the example todolist app.
 
-This template contains many built in feature such as moment (to deal with datetime, localization, built in functions that allow you to retrieve user's IP details and many more.). You can also build your frontend code using single command (currently only supported for vue). Highly customizable
+This template contains many built in feature such as moment (to deal with datetime, localization, built in functions that allow you to retrieve user's IP details and many more.). You can also build your frontend code using single command (currently only supported for vue). Highly customizable.
+
+Note: The root of this project is placed at https://github.com/Strefio/Beymax (currently not open sourced)
 
 ## Requirement
 
