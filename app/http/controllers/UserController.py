@@ -7,9 +7,27 @@ from app.model.company import Company
 from flask_login import current_user, login_user, logout_user, login_required
 from flask import session
 from app.framework.util import *
-from flask import jsonify
+from flask import jsonify, Response
 import json
+from sqlalchemy.ext.declarative import DeclarativeMeta
 
+class AlchemyEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+        if isinstance(obj.__class__, DeclarativeMeta):
+            # an SQLAlchemy class
+            fields = {}
+            for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
+                data = obj.__getattribute__(field)
+                try:
+                    json.dumps(data) # this will fail on non-encodable values, like other classes
+                    fields[field] = data
+                except TypeError:
+                    fields[field] = None
+            # a json-encodable dict
+            return fields
+
+        return json.JSONEncoder.default(self, obj)
 
 
 class UserController(Controller):
@@ -51,20 +69,26 @@ class UserController(Controller):
             return redirect('/')
         return view('auth/register')
     
+    @route('/api/company', methods=['GET'])
+    @login_required
+    def company(self):
+        companies = Company.query.all()
+        data = json.dumps(companies, cls=AlchemyEncoder)
+        return Response(data, mimetype='application/json')
 
     @route('/api/register', methods=['POST'])    
     def register_action(self):
 
         company = Company()
-        data = request.get_json()
         
-        company.company_name = data['companyName']
-        company.contact_name = data['contactName']
-        company.mailing_address = data['mailingAddress']
-        company.contact_number = data['contactNumber']
-        company.contact_title = data['contactTitle']
-        company.password = data['password']
-        company.business_type = data['businessType']
+        company.company_name = request.get('companyName')
+        company.contact_name = request.get('contactName')
+        company.mailing_address = request.get('mailingAddress')
+        company.contact_number = request.get('contactNumber')
+        company.contact_title = request.get('contactTitle')
+        company.password = request.get('password')
+        company.business_type = request.get('businessType')
+        company.company_id = 16
 
        
         try:
@@ -72,7 +96,7 @@ class UserController(Controller):
         except:
             return jsonify(message="Failure")
 
-        logged_in = Company.query.filter_by(_mailing_address=data['mailingAddress']).first()
+        logged_in = Company.query.filter_by(_mailing_address=request.get('mailingAddress')).first()
         login_user(logged_in)
         session['user'] = logged_in.mailing_address
 

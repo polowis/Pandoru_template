@@ -1,9 +1,10 @@
 from app import db, login
 from sqlalchemy.sql import func
 from app.framework.database.base_model import BaseModel
-import bcrypt, math, random
+import bcrypt, math, random, time
 from flask_login import UserMixin
 
+current_time = lambda: int(round(time.time() * 1000))
 class Company(UserMixin, db.Model, BaseModel):
     __tablename__ = "company"
     id = db.Column(db.Integer, primary_key=True)
@@ -18,6 +19,14 @@ class Company(UserMixin, db.Model, BaseModel):
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
+
+    @property
+    def company_id(self):
+        return self._company_id
+    
+    @company_id.setter
+    def company_id(self, length):
+        self._company_id = self._generate_company_id(length)
 
     # company name
     @property
@@ -64,7 +73,7 @@ class Company(UserMixin, db.Model, BaseModel):
     
     @property
     def business_type(self):
-        return _business_type
+        return self._business_type
     
     @business_type.setter
     def business_type(self, business_type):
@@ -88,6 +97,15 @@ class Company(UserMixin, db.Model, BaseModel):
     def has_correct_password(self, password: str):
         """Return true if password match"""
         return bcrypt.checkpw(password.encode(), self._password.encode())
+    
+    def _generate_company_id(self, length=16) -> str:
+        """generate unique company_id"""
+        character = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        character_length = len(character)
+        randomID = ''
+        for i in range(length):
+            randomID += character[math.floor(random.random() * character_length)]
+        return randomID + str(current_time())
 
 @login.user_loader
 def load_user(id):

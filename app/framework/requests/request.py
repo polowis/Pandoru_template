@@ -76,7 +76,10 @@ class Request:
         raise ValueError("Name must be a string")
     
     def get(self, name):
-        """Retrieve value from request"""
+        """Retrieve value from form request"""
+        if req.is_json:
+            val: dict = req.get_json()
+            return val.get(name)
         return req.values.get(name)
     
         
@@ -174,5 +177,9 @@ class Request:
         for key in keys:
             rv = rv[key]
         return rv
+    
+    def files(self, filename):
+        return req.files[filename]
+
 
 request = Request()

@@ -24,6 +24,7 @@ import io from 'socket.io-client'
 
 Vue.component('login-component', require('./components/auth/LoginComponent.vue').default)
 Vue.component('register-component', require('./components/auth/RegisterComponent.vue').default)
+Vue.component('create-component', require('./components/product/createComponent.vue').default)
 import VModal from 'vue-js-modal'
 
 Vue.use(VModal, { dialog: true })
