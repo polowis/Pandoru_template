@@ -24,23 +24,12 @@
   <body class="goto-here">
       <noscript>We're sorry but this page doesn't work properly without JavaScript</noscript>
     <div id="app">
-      <create-component></create-component>
+      <create-component :user="{{ user }}"></create-component>
     </div>
 
 
 
     <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-    <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/jquery-migrate-3.0.1.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/popper.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.waypoints.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.stellar.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/owl.carousel.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/aos.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/main.js')}}"></script>
     <script src="{{ url_for('static', filename='js/app.js')}}"></script>
     </body>
     </html>

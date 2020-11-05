@@ -30,12 +30,26 @@ class ProductController(Controller):
         ProductController.register(app)
     
 
-    @route('/products/create', methods=['GET'])
+    @route('/product/create', methods=['GET'])
     @login_required
     def view_create(self):
-        return view('product/create')
+        user = {
+                "active": 1,
+                "id": current_user.id,
+                "user_id": current_user.company_id,
+                "name": current_user.company_name, 
+                "email": current_user.mailing_address,
+            }
+        return view('product/create', user=json.dumps(user))
 
-    @route('/api/products/create', methods=['POST'])
+    @route('/product/view', methods=['GET'])
+    @login_required
+    def view_product(self):
+        product = Product.query.filter_by(_owner=current_user.company_id).all()
+        data = json.dumps(product, cls=AlchemyEncoder)
+        return Response(data, mimetype='application/json')
+
+    @route('/api/product/create', methods=['POST'])
     @login_required
     def create(self):
         file = request.files('file')
@@ -64,30 +78,74 @@ class ProductController(Controller):
         product = Product.query.all()
         data = json.dumps(product, cls=AlchemyEncoder)
         return Response(data, mimetype='application/json')
-        
+
     @route('/api/product/owner/<owner_id>', methods=["GET"])
     def fetch_product(self, owner_id):
         product = Product.query.filter_by(_owner=owner_id).all()
         data = json.dumps(product, cls=AlchemyEncoder)
         return Response(data, mimetype='application/json')
 
-    
     @route('/api/product/update/<product_id>', methods=['POST'])
     def update(self, product_id):
         product: Product = Product.query.filter_by(id=product_id).first()
-        product.name = data['name']
-        product.price = data['price']
-        product.description = data['description']
-        product.category = data['category']
-        product.tag = data['tag']
+        product.name = request.get('name')
+        product.price = request.get('price')
+        product.description = request.get('description')
+        product.category = request.get('category')
+        product.tag = request.get('tag')
+        product.quantity = request.get('quantity')
         try:
             product.save()
         except:
             return jsonify(message="Failure")
         return jsonify(message="Success")
     
+    @route('/api/product/<product_id>', methods=['GET'])
+    def api_single_product(self):
+        product_get: Product = Product.query.filter_by(_product_id=product_id).first()
+        if product_get is not None:
+            product = {
+                "productID": product_get.product_id,
+                "name": product_get.name,
+                "price": product_get.price,
+                "description": product_get.description,
+                "category": product_get.category,
+                "photo": product_get.photo
+            }
+            return jsonify(data=json.dumps(product))
+        return jsonify(data="Error, could not find the product associated with given ID ")
     @route('/product/<product_id>', methods=['GET'])
-    def item(self, product_id):
-        product = Product.query.filter_by(id=product_id).first()
-        data = json.dumps(product, cls=AlchemyEncoder)
-        return Response(data, mimetype='application/json')
+    def item(self, product_id: str):
+        product_get: Product = Product.query.filter_by(_product_id=product_id).first()
+        if product_get is not None:
+            product = {
+                "productID": product_get.product_id,
+                "name": product_get.name,
+                "price": product_get.price,
+                "description": product_get.description,
+                "category": product_get.category,
+                "photo": product_get.photo
+            }
+            return view('/product/single', product=json.dumps(product), user=json.dumps(self.get_current_user()))
+        abort(404)
+
+    def get_current_user(self) -> dict:
+        if current_user.is_authenticated:
+            user = {
+                    "active": 1,
+                    "id": current_user.id,
+                    "user_id": current_user.company_id,
+                    "name": current_user.company_name, 
+                    "email": current_user.mailing_address,
+                }
+        else:
+            user = {
+                "active": 0,
+                "id": 0,
+                "user_id": 0,
+                "name": 0, 
+                "email": 0,
+            }
+        return user
+    
+

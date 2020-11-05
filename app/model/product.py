@@ -37,7 +37,7 @@ class Product(db.Model, BaseModel):
         return self._product_id
     
     @product_id.setter
-    def product_id(self, length) -> str:
+    def product_id(self, length: int) -> str:
         self._product_id = self._generate_product_id(length)
 
     @property
@@ -45,7 +45,7 @@ class Product(db.Model, BaseModel):
         return self._price
     
     @price.setter
-    def price(self, price) -> float:
+    def price(self, price: float) -> float:
         self._price = price
     
     @property
@@ -53,7 +53,7 @@ class Product(db.Model, BaseModel):
         return self._name
     
     @name.setter
-    def name(self, name) -> str:
+    def name(self, name: str) -> str:
         self._name = name
     
     @property
@@ -65,23 +65,23 @@ class Product(db.Model, BaseModel):
         self._description = description
     
     @property
-    def category(self):
+    def category(self) -> str:
         return self._category
     
     @category.setter
-    def category(self, category):
+    def category(self, category) -> str:
         self._category = category
     
     @property
-    def owner(self):
+    def owner(self) -> str:
         return self._owner
     
     @owner.setter
-    def owner(self, owner):
+    def owner(self, owner) -> str:
         self._owner = owner
     
     @property
-    def tag(self):
+    def tag(self) -> str:
         return self._tag
     
     @tag.setter

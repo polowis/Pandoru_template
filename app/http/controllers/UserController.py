@@ -34,6 +34,22 @@ class UserController(Controller):
     def construct(cls):
         UserController.register(app)
 
+
+    @route('/api/user', methods=['GET'])
+    def get_current_user(self):
+        if current_user.is_authenticated:
+            user = {
+                "active": 1,
+                "id": current_user.id,
+                "user_id": current_user.company_id,
+                "name": current_user.company_name, 
+                "email": current_user.mailing_address,
+            }
+
+            return jsonify(user)
+        else:
+            return jsonify(active=0)
+
     @route('/dashboard', methods=['GET'])
     @login_required
     def dashboard_view(self):
@@ -50,8 +66,15 @@ class UserController(Controller):
     def login_view(self):
         if current_user.is_authenticated:
             return redirect('/')
-
-        return view('auth/login')
+        else:
+            user = {
+                "active": 0,
+                "id": 0,
+                "user_id": 0,
+                "name": 0, 
+                "email": 0,
+            }
+            return view('auth/login', user=json.dumps(user))
 
     @route('/api/login', methods=['POST'])
     def login_action(self):
@@ -67,7 +90,15 @@ class UserController(Controller):
     def register_view(self):
         if current_user.is_authenticated:
             return redirect('/')
-        return view('auth/register')
+        else:
+            user = {
+                "active": 0,
+                "id": 0,
+                "user_id": 0,
+                "name": 0, 
+                "email": 0,
+            }
+            return view('auth/register', user=json.dumps(user))
     
     @route('/api/company', methods=['GET'])
     @login_required

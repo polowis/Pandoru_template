@@ -1,6 +1,6 @@
 <template>
     <div>
-    <HeaderComponent></HeaderComponent>
+    <HeaderComponent :user=user></HeaderComponent>
     <section class="login-section">
       <div class="title-login noselect">Post a product</div>
       <form autocomplete="false">
@@ -62,6 +62,7 @@
 <script>
 import HeaderComponent from '../HeaderComponent'
 export default {
+    props: ['user'],
     components: {
         HeaderComponent
     },
@@ -130,7 +131,7 @@ export default {
         formData.append('quantity', this.productQuantity)
         formData.append('tag', this.productTag)
 
-        axios.post('/api/products/create', 
+        axios.post('/api/product/create', 
           formData, 
           { 
             headers: {

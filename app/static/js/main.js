@@ -133,6 +133,9 @@
 	$('#dropdown04').on('show.bs.dropdown', function () {
 	  console.log('show');
 	});
+	$('#dropdown05').on('show.bs.dropdown', function () {
+		console.log('show');
+	  });
 
 	// scroll
 	var scrollWindow = function() {

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <HeaderComponent></HeaderComponent>
+        <HeaderComponent :user=user></HeaderComponent>
         <section class="login-section">
       <div class="title-login noselect">Business Information Application</div>
       <form autocomplete="false">
@@ -69,6 +69,7 @@
 <script>
 import HeaderComponent from '../HeaderComponent'
 export default {
+    props: ['user'],
     components: {
         HeaderComponent
     },

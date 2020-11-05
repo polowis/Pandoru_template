@@ -25,7 +25,23 @@ class HomeController(Controller):
 
     @route('/', methods=["GET"])
     def home(self):
-        return view('index')
+        if current_user.is_authenticated:
+            user = {
+                "active": 1,
+                "id": current_user.id,
+                "user_id": current_user.company_id,
+                "name": current_user.company_name, 
+                "email": current_user.mailing_address,
+            }
+        else:
+            user = {
+                "active": 0,
+                "id": 0,
+                "user_id": 0,
+                "name": 0, 
+                "email": 0,
+            }
+        return view('index', user=json.dumps(user))
 
     @route('/about', methods=["GET"])
     def about(self):
