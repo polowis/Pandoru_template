@@ -101,7 +101,7 @@ class ProductController(Controller):
         return jsonify(message="Success")
     
     @route('/api/product/<product_id>', methods=['GET'])
-    def api_single_product(self):
+    def api_single_product(self, product_id):
         product_get: Product = Product.query.filter_by(_product_id=product_id).first()
         if product_get is not None:
             product = {
@@ -112,8 +112,10 @@ class ProductController(Controller):
                 "category": product_get.category,
                 "photo": product_get.photo
             }
-            return jsonify(data=json.dumps(product))
+            data = json.dumps(product, cls=AlchemyEncoder)
+            return Response(data, mimetype='application/json')
         return jsonify(data="Error, could not find the product associated with given ID ")
+
     @route('/product/<product_id>', methods=['GET'])
     def item(self, product_id: str):
         product_get: Product = Product.query.filter_by(_product_id=product_id).first()

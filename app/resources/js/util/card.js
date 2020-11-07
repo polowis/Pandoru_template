@@ -39,6 +39,9 @@ class Card {
         let product = {
             productID: item_id,
             productQuantity: quantity,
+            name: "",
+            price: "",
+            photo: ""
         }
         storage.push(product)
         this.save(storage)

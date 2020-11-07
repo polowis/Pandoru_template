@@ -24,8 +24,8 @@ import io from 'socket.io-client'
 
 Vue.component('login-component', require('./components/auth/LoginComponent.vue').default)
 Vue.component('register-component', require('./components/auth/RegisterComponent.vue').default)
-Vue.component('create-component', require('./components/product/createComponent.vue').default)
-Vue.component('single-component', require('./components/product/singleComponent.vue').default)
+Vue.component('create-component', require('./components/product/CreateComponent.vue').default)
+Vue.component('single-component', require('./components/product/SingleComponent.vue').default)
 Vue.component('index-component', require('./components/IndexComponent.vue').default)
 Vue.component('cart-component', require('./components/product/CartComponent.vue').default)
 import VModal from 'vue-js-modal'

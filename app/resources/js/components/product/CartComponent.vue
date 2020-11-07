@@ -18,46 +18,25 @@
 						      </tr>
 						    </thead>
 						    <tbody>
-						      <tr class="text-center" v-for="cart in carts" v-bind:key="cart.productID">
+						      <tr class="text-center" v-for="cart in carts" v-bind:key="cart.ProductID">
 						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 						        
-						        <td class="image-prod"><div class="img" style="background-image:url(images/product-3.jpg);"></div></td>
+						        <td class="image-prod"><div class="img" :style="'background-image:url(' + '/static/uploads/'+cart.photo + ');'"></div></td>
 						        
 						        <td class="product-name">
-						        	<h3>Bell Pepper</h3>
+						        	<h3>{{cart.name}}</h3>
 						        	<p>Far far away, behind the word mountains, far from the countries</p>
 						        </td>
 						        
-						        <td class="price">$4.90</td>
+						        <td class="price">${{cart.price / cart.productQuantity}}</td>
 						        
 						        <td class="quantity">
 						        	<div class="input-group mb-3">
-					             	<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
+					             	<input type="text" name="quantity" class="quantity form-control input-number" @change="updateQuantity(cart.productID)" :value="cart.productQuantity" min="1" max="100">
 					          	</div>
 					          </td>
 						        
-						        <td class="total">$4.90</td>
-						      </tr><!-- END TR-->
-
-						      <tr class="text-center">
-						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-						        
-						        <td class="image-prod"><div class="img" style="background-image:url(images/product-4.jpg);"></div></td>
-						        
-						        <td class="product-name">
-						        	<h3>Bell Pepper</h3>
-						        	<p>Far far away, behind the word mountains, far from the countries</p>
-						        </td>
-						        
-						        <td class="price">$15.70</td>
-						        
-						        <td class="quantity">
-						        	<div class="input-group mb-3">
-					             	<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-					          	</div>
-					          </td>
-						        
-						        <td class="total">$15.70</td>
+						        <td class="total">${{cart.price}}</td>
 						      </tr><!-- END TR-->
 						    </tbody>
 						  </table>
@@ -137,22 +116,41 @@ export default {
     },
     data() {
         return {
-            carts: JSON.parse(localStorage.getItem('wiboCard'))
+            carts: ""
         }
-    },
+	},
+	
+	created() {
+		this.loadProducts()
+	},
 
     methods: {
-        loadProducts() {
-            for(let item = 0; item < this.cart.length; item++) {
-                this.getProductByID(item[i].productID)
-            }
+        async loadProducts() {
+			const cart = JSON.parse(localStorage.getItem('wiboCard'))
+            for(let i = 0; i < cart.length; i++) {
+				this.getProductByID(cart[i].productID).then(response => {
+					let data = response.data
+					cart[i].name = data.name
+					cart[i].price = data.price * cart[i].productQuantity
+					cart[i].photo = data.photo
+				})
+				
+			}
+			this.carts = cart
         },
 
         getProductByID(id) {
-            axios.post(`/api/product/${id}`).then(response => {
-                console.log(response.data)
-            })
-        }
+			
+            return axios.get(`/api/product/${id}`)
+		},
+		
+		updateQuantity(productID) {
+			for(let i = 0; i < this.carts.length; i++) {
+				if(this.carts[i].productID == productID) {
+
+				}
+			}
+		}
     }
 }
 </script>
