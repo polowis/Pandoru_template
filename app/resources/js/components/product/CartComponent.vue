@@ -64,15 +64,15 @@
   						<form action="#" class="info">
 	              <div class="form-group">
 	              	<label for="">Country</label>
-	                <input type="text" class="form-control text-left px-3" placeholder="">
+	                <input type="text" class="form-control text-left px-3" v-model="country" placeholder="">
 	              </div>
 	              <div class="form-group">
-	              	<label for="country">State/Province</label>
-	                <input type="text" class="form-control text-left px-3" placeholder="">
+	              	<label for="country">Address</label>
+	                <input type="text" class="form-control text-left px-3" v-model="address" placeholder="">
 	              </div>
 	              <div class="form-group">
 	              	<label for="country">Zip/Postal Code</label>
-	                <input type="text" class="form-control text-left px-3" placeholder="">
+	                <input type="text" class="form-control text-left px-3" v-model="zipcode" placeholder="">
 	              </div>
 	            </form>
     				</div>
@@ -91,16 +91,27 @@
     					</p>
     					<p class="d-flex">
     						<span>Discount</span>
-    						<span>$3.00</span>
+    						<span>$0</span>
     					</p>
     					<hr>
     					<p class="d-flex total-price">
     						<span>Total</span>
-    						<span>$17.60</span>
+    						<span>${{this.totalPrice}}</span>
     					</p>
+						<div class="input-field noselect">
+            			<input type="number" placeholder="1234 5678 9012 3456"><label for="card number">Card Number</label>
+          			</div>
+					  <div class="input-field noselect">
+            			<input type="number" placeholder="013"><label for="mail">CVV</label>
+          			</div>
+					   <div class="input-field noselect">
+            			<input type="text" placeholder="05/20"><label for="mail">Expired Date, month/year</label>
+          			</div>
     				</div>
-    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+    				<p><a href="#" @click.prevent="purchase()" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
     			</div>
+
+				
     		</div>
 			</div>
 		</section>
@@ -116,7 +127,13 @@ export default {
     },
     data() {
         return {
-            carts: ""
+			carts: "",
+			country: "",
+			zipcode: "",
+			address: "",
+			totalPrice: 0,
+			status: "",
+			statusMessage: ""
         }
 	},
 	
@@ -132,6 +149,7 @@ export default {
 					let data = response.data
 					cart[i].name = data.name
 					cart[i].price = data.price * cart[i].productQuantity
+					this.totalPrice += cart[i].price
 					cart[i].photo = data.photo
 				})
 				
@@ -150,6 +168,20 @@ export default {
 
 				}
 			}
+		},
+
+
+		purchase() {
+			axios.post('/purchase', {
+				country: this.country,
+				address: this.address,
+				zipcode: this.zipcode,
+				products: this.carts
+			}).then(response => {
+				let data = response.data
+				this.status = data.message
+				this.statusMessage = data.info
+			})
 		}
     }
 }

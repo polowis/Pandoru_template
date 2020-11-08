@@ -37,5 +37,8 @@ class TransactionItem(db.Model, BaseModel):
     def quantity(self, value):
         self._quantity = value
     
+    @property
+    def product(self):
+        return self._product
     
 

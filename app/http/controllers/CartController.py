@@ -37,6 +37,7 @@ class CartController(Controller):
 
     @route('/purchase', methods=['POST'])
     def purchase(self):
+        
         transaction: Transaction = Transaction()
         transaction.address = request.get('address')
         transaction.zipcode = request.get('zipcode')
@@ -44,11 +45,38 @@ class CartController(Controller):
         try:
             transaction.save()
         except:
-            return jsonify(message="Failure")
-        
+            return jsonify(message="Failure", info="There was an error with purchase transaction")
+
         products = request.get('products')
-        print(producs)
+        for product in products:
+            productTransaction: TransactionItem = TransactionItem()
+            productTransaction.product_id = product['productID']
+            productTransaction.transaction_id = transaction.transaction_id
+            productTransaction.quantity = product['productQuantity']
+            try:
+                productTransaction.save()
+            except:
+                return jsonify(message="Failure", info="There was an error with purchase transaction")
+        return jsonify(message="Success", info=f"Your transaction ID is: {transaction.transaction_id}. Please keep this number to track your products. You can safely clear your carts")
         
+    @route('/transaction/<transaction_id>')
+    def get_transaction_by_id(self, transaction_id):
+        transaction: Transaction = Transaction.query.filter_by(_transaction_id=transaction_id).first()
+        transactionItem: TransactionItem = TransactionItem.query.filter_by(_transaction_id=transaction_id).all()
+
+        _data = {
+            "transaction_id": transaction.transaction_id,
+            "products": transactionItem
+        }
+        data = json.dumps(_data, cls=AlchemyEncoder)
+        return Response(data, mimetype='application/json')
+
+    @route('/transaction/all')
+    def all_transactions(self):
+        transaction: Transaction = Transaction.query.all()
+        data = json.dumps(transaction, cls=AlchemyEncoder)
+        return Response(data, mimetype='application/json')
+
     def get_current_user(self) -> dict:
         if current_user.is_authenticated:
             user = {
